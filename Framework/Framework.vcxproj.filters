@@ -4,6 +4,9 @@
     <Filter Include="src">
       <UniqueIdentifier>{112d77df-5c29-448b-a6a7-e23932fda1bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scripts">
+      <UniqueIdentifier>{a578f3af-98da-4837-92c5-4c42519e22e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -20,5 +23,10 @@
     <ClInclude Include="src\IRender.h">
       <Filter>src</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="scripts\assets_copy.py">
+      <Filter>scripts</Filter>
+    </None>
   </ItemGroup>
 </Project>
