@@ -1,19 +1,21 @@
 #include <SFML/Graphics.hpp>
 #include <algorithm>
 #include <vector>
+#include <iostream>
 #include "Player.h"
 
 using uint = unsigned int;
 
 int main()
 {
+    // create the window
     uint screenHeight = sf::VideoMode::getDesktopMode().height;
     uint screenWidth = sf::VideoMode::getDesktopMode().width;
 
     uint minSize = std::min(screenHeight, screenWidth);
     uint windowSize = 0.7 * minSize;
 
-    sf::RenderWindow window(sf::VideoMode(windowSize, windowSize), "Test");
+    sf::RenderWindow window(sf::VideoMode(windowSize, windowSize), "Test"); 
 
     // create all renders
     std::vector<IRender*> allRenderVec;
@@ -25,8 +27,18 @@ int main()
     player.SetSize(50.0f, 50.0f);
     player.SetPosition(sf::Vector2f(100.0f, 100.0f));
 
+    float speed = 500.0f;
+
+    sf::Clock clock;
+    clock.restart();
+
     while (window.isOpen())
     {
+        // Deal time
+        sf::Time deltaTime = clock.getElapsedTime();
+        clock.restart();
+        float deltaTimeSecond = deltaTime.asSeconds();
+
         // Window event
         sf::Event event;
         while (window.pollEvent(event))
@@ -41,19 +53,19 @@ int main()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && positionY > 0)
         {
-            positionY -= 0.1f;
+            positionY -= speed * deltaTimeSecond;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) && positionY + sizeY < windowSize)
         {
-            positionY += 0.1f;
+            positionY += speed * deltaTimeSecond;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && positionX > 0)
         {
-            positionX -= 0.1f;
+            positionX -= speed * deltaTimeSecond;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && positionX + sizeX < windowSize)
         {
-            positionX += 0.1f;
+            positionX += speed * deltaTimeSecond;
         }
 
         player.SetPosition(sf::Vector2f(positionX, positionY));
