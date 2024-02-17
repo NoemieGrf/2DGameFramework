@@ -9,5 +9,16 @@
     <ClCompile Include="src\Main.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Player.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Player.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IRender.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

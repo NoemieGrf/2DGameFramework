@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <algorithm>
+#include <vector>
+#include "Player.h"
 
 using uint = unsigned int;
 
@@ -12,17 +14,16 @@ int main()
     uint windowSize = 0.7 * minSize;
 
     sf::RenderWindow window(sf::VideoMode(windowSize, windowSize), "Test");
-    
-    sf::Texture tex;
-    tex.loadFromFile("./assets/player.png");
 
-    sf::Sprite sp(tex);
-    sp.setScale(0.5f, 0.5f);
-    
-    float spPosX = 100;
-    float spPosY = 100;
-    
-    
+    // create all renders
+    std::vector<IRender*> allRenderVec;
+
+    // create a player
+    Player player("./assets/player.png");
+    allRenderVec.push_back(&player);
+
+    player.SetSize(50.0f, 50.0f);
+    player.SetPosition(sf::Vector2f(100.0f, 100.0f));
 
     while (window.isOpen())
     {
@@ -35,33 +36,34 @@ int main()
         }
 
         // User input
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+        auto [positionX, positionY] = player.GetPosition();
+        auto [sizeX, sizeY] = player.GetSize();
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && positionY > 0)
         {
-            spPosY -= 0.1f;
+            positionY -= 0.1f;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) && positionY + sizeY < windowSize)
         {
-            spPosY += 0.1f;
+            positionY += 0.1f;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && positionX > 0)
         {
-            spPosX -= 0.1f;
+            positionX -= 0.1f;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && positionX + sizeX < windowSize)
         {
-            spPosX += 0.1f;
+            positionX += 0.1f;
         }
 
-
-
-
-        sp.setPosition(spPosX, spPosY);
-
-
+        player.SetPosition(sf::Vector2f(positionX, positionY));
 
         // Render 
         window.clear(sf::Color::White);
-        window.draw(sp);
+        
+        for (IRender* pRender : allRenderVec)
+            pRender->Render(window);
+
         window.display();
     }
 
