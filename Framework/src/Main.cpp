@@ -51,22 +51,29 @@ int main()
         auto [positionX, positionY] = player.GetPosition();
         auto [sizeX, sizeY] = player.GetSize();
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && positionY > 0)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && positionY - sizeY * 0.5f > 0)
         {
             positionY -= speed * deltaTimeSecond;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) && positionY + sizeY < windowSize)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) && positionY + sizeY * 0.5f < windowSize)
         {
             positionY += speed * deltaTimeSecond;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && positionX > 0)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && positionX - sizeX * 0.5f > 0)
         {
             positionX -= speed * deltaTimeSecond;
+            player.SetFlip(false);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && positionX + sizeX < windowSize)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && positionX + sizeX * 0.5f < windowSize)
         {
             positionX += speed * deltaTimeSecond;
+            player.SetFlip(true);
         }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+            player.SetFlip(false);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+            player.SetFlip(true);
 
         player.SetPosition(sf::Vector2f(positionX, positionY));
 

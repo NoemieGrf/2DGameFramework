@@ -15,6 +15,7 @@ public:
 	auto GetSize() const -> sf::Vector2f;
 	auto SetPosition(const sf::Vector2f& newPos) -> void;
 	auto GetPosition() const -> const sf::Vector2f&;
+	auto SetFlip(bool doFlip) -> void;
 
 public:
 	auto Render(sf::RenderWindow& rdWindow) -> void override;
