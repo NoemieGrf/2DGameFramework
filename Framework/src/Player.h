@@ -1,26 +1,37 @@
 #pragma once
 
+// std
 #include <string>
-#include <SFML/Graphics.hpp>
+// 3rd party
+#include "SFML/Graphics.hpp"
+// myself
+#include "Noncopyable.h"
 
-#include "IRender.h"
-
-class Player: public IRender
+class Player: Noncopyable
 {
 public:
 	explicit Player(const std::string& pngPath);
 
 public:
-	auto SetSize(float width, float height) -> void;
-	auto GetSize() const -> sf::Vector2f;
 	auto SetPosition(const sf::Vector2f& newPos) -> void;
-	auto GetPosition() const -> const sf::Vector2f&;
+	auto GetPosition() const->const sf::Vector2f&;
+
+	auto SetSize(const sf::Vector2u& size) -> void;
+	auto GetSize() const -> const sf::Vector2u&;
+
 	auto SetFlip(bool doFlip) -> void;
 
-public:
-	auto Render(sf::RenderWindow& rdWindow) -> void override;
+	auto SetSpeed(float speed) -> void;
+	auto GetSpeed() const -> float;
+
+	auto GetDrawable() const -> const sf::Sprite&;
 
 private:
 	sf::Texture _playerTex;
 	sf::Sprite _playerSprite;
+
+private: // entity properties
+	sf::Vector2f _position;
+	sf::Vector2u _size;
+	float _speed;
 };
