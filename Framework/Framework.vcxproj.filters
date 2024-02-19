@@ -7,26 +7,50 @@
     <Filter Include="scripts">
       <UniqueIdentifier>{a578f3af-98da-4837-92c5-4c42519e22e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{84aba6e1-2b21-46c9-93c1-d4f4a48a1f4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Player">
+      <UniqueIdentifier>{2f199021-d65f-47cb-aa1a-8d69e18d92f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Game">
+      <UniqueIdentifier>{35f957f9-7c4e-43b6-ab0c-db2f9f5394c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Utility">
+      <UniqueIdentifier>{abdebdad-1804-43c5-8319-b739bf11389f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Player.cpp">
-      <Filter>src</Filter>
+      <Filter>src\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game.cpp">
+      <Filter>src\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player.h">
-      <Filter>src</Filter>
+      <Filter>src\Player</Filter>
     </ClInclude>
-    <ClInclude Include="src\IRender.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\Game.h">
+      <Filter>src\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameSetting.h">
+      <Filter>src\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Noncopyable.h">
+      <Filter>src\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="scripts\assets_copy.py">
       <Filter>scripts</Filter>
+    </None>
+    <None Include="config\GameConfig.json">
+      <Filter>config</Filter>
     </None>
   </ItemGroup>
 </Project>

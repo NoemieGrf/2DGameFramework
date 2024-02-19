@@ -1,0 +1,17 @@
+{
+  "BasicGameSetting": {
+    "WindowSetting": {
+    },
+    "PlayerSetting": {
+      "PlayerInitPosition": {
+        "X": 100,
+        "Y": 100
+      },
+      "PlayerInitSize": {
+        "Width": 50,
+        "Height": 50
+      },
+      "PlayerInitMoveSpeed": 500
+    }
+  }
+}
