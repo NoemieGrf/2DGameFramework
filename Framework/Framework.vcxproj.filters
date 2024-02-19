@@ -65,6 +65,9 @@
     <ClInclude Include="src\GlobalDefine.h">
       <Filter>src\Game</Filter>
     </ClInclude>
+    <ClInclude Include="src\Util.hpp">
+      <Filter>src\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="scripts\assets_copy.py">

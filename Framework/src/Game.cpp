@@ -9,6 +9,7 @@
 // myself
 #include "Player.h"
 #include "RuntimeIdManager.h"
+#include "Util.hpp"
 
 void Game::InitConfig()
 {
@@ -67,14 +68,22 @@ void Game::InitScene()
     _pPlayer->SetSize(_pGameSetting->playerInitSize);
     _pPlayer->SetSpeed(_pGameSetting->playerInitMoveSpeed);
 
-    // todo
-    // create a monster
-    uint id = RuntimeIdManager::GetNextRuntimeId();
-    _pMonsters[id] = std::make_unique<Monster>("./assets/monster0.png", id);
-    // initialise a monster
-    _pMonsters[id]->SetPosition(_pGameSetting->monsterInitPosition);
-    _pMonsters[id]->SetSize(_pGameSetting->monsterInitSize);
-    _pMonsters[id]->SetSpeed(_pGameSetting->monsterInitMoveSpeed);
+    // create 3 monsters
+    for (int i = 0; i < 3; i++)
+    {
+        //  create a monster 
+        uint id = RuntimeIdManager::GetNextRuntimeId();
+        _pMonsters[id] = std::make_unique<Monster>("./assets/monster0.png", id);
+        // initialise a monster
+        sf::Vector2f originPos = _pGameSetting->monsterInitPosition;
+        sf::Vector2 finalPos = originPos + sf::Vector2f(
+            Util::GetRandomNumber<float>(10.0f, 300.0f),
+            Util::GetRandomNumber<float>(10.0f, 300.0f)
+        );
+        _pMonsters[id]->SetPosition(finalPos);
+        _pMonsters[id]->SetSize(_pGameSetting->monsterInitSize);
+        _pMonsters[id]->SetSpeed(_pGameSetting->monsterInitMoveSpeed);
+    }
 }
 
 void Game::Run()

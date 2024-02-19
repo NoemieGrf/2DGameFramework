@@ -108,6 +108,7 @@
     <ClInclude Include="src\Noncopyable.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\RuntimeIdManager.h" />
+    <ClInclude Include="src\Util.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\GameConfig.json" />
