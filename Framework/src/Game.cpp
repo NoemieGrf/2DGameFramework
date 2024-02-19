@@ -113,7 +113,9 @@ void Game::Run()
             {
                 float deltaDistanceX = (playerPositionX - monsterPositionX) / abs(playerPositionX - monsterPositionX) * monsterSpeed * deltaTimeSecond;
                 monsterPositionX += deltaDistanceX;
-                pMonster->SetFlip(deltaDistanceX > 0);
+
+                if (abs(playerPositionX - monsterPositionX) > 0.5)
+                    pMonster->SetFlip(deltaDistanceX > 0);
             }
             if (monsterPositionY != playerPositionY)
             {
