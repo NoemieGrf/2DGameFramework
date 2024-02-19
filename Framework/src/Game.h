@@ -1,13 +1,13 @@
 #pragma once
 
-// std
-#include <memory>
 // 3rd
 #include "SFML/Window.hpp"
 // myself
+#include "GlobalDefine.h"
 #include "Noncopyable.h"
 #include "GameSetting.h"
 #include "Player.h"
+#include "Monster.h"
 
 class Game : Noncopyable
 {
@@ -21,7 +21,8 @@ public:
 	void Destroy();
 
 private:
-	std::unique_ptr<GameSetting> _pGameSetting = nullptr;
-	std::unique_ptr<sf::RenderWindow> _pWindow = nullptr;
-	std::unique_ptr<Player> _pPlayer = nullptr;
+	uptr<GameSetting> _pGameSetting = nullptr;
+	uptr<sf::RenderWindow> _pWindow = nullptr;
+	uptr<Player> _pPlayer = nullptr;
+	umap<uint, uptr<Monster>> _pMonsters = {};
 };

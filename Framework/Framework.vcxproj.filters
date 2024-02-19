@@ -10,14 +10,20 @@
     <Filter Include="config">
       <UniqueIdentifier>{84aba6e1-2b21-46c9-93c1-d4f4a48a1f4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Player">
-      <UniqueIdentifier>{2f199021-d65f-47cb-aa1a-8d69e18d92f0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Game">
       <UniqueIdentifier>{35f957f9-7c4e-43b6-ab0c-db2f9f5394c2}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Utility">
       <UniqueIdentifier>{abdebdad-1804-43c5-8319-b739bf11389f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Entity">
+      <UniqueIdentifier>{f3acfe04-875a-4229-9a3c-caeee0408b7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Entity\Monster">
+      <UniqueIdentifier>{5f3730c2-4249-4599-a039-82ab67baf40b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Entity\Player">
+      <UniqueIdentifier>{2f199021-d65f-47cb-aa1a-8d69e18d92f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -25,15 +31,21 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Player.cpp">
-      <Filter>src\Player</Filter>
+      <Filter>src\Entity\Player</Filter>
     </ClCompile>
     <ClCompile Include="src\Game.cpp">
+      <Filter>src\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Monster.cpp">
+      <Filter>src\Entity\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RuntimeIdManager.cpp">
       <Filter>src\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player.h">
-      <Filter>src\Player</Filter>
+      <Filter>src\Entity\Player</Filter>
     </ClInclude>
     <ClInclude Include="src\Game.h">
       <Filter>src\Game</Filter>
@@ -43,6 +55,15 @@
     </ClInclude>
     <ClInclude Include="src\Noncopyable.h">
       <Filter>src\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Monster.h">
+      <Filter>src\Entity\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RuntimeIdManager.h">
+      <Filter>src\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GlobalDefine.h">
+      <Filter>src\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

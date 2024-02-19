@@ -8,6 +8,7 @@
 #include "nlohmann/json.hpp"
 // myself
 #include "Player.h"
+#include "RuntimeIdManager.h"
 
 void Game::InitConfig()
 {
@@ -23,6 +24,7 @@ void Game::InitConfig()
     configJsonFile >> gameConfig;
     configJsonFile.close();
 
+    // player
     auto nodePlayerInitPos = gameConfig["BasicGameSetting"]["PlayerSetting"]["PlayerInitPosition"];
     _pGameSetting->playerInitPosition.x = nodePlayerInitPos["X"];
     _pGameSetting->playerInitPosition.y = nodePlayerInitPos["Y"];
@@ -32,6 +34,18 @@ void Game::InitConfig()
     _pGameSetting->playerInitSize.y = nodePlayerInitSize["Height"];
 
     _pGameSetting->playerInitMoveSpeed = gameConfig["BasicGameSetting"]["PlayerSetting"]["PlayerInitMoveSpeed"];
+
+    // monster
+    auto nodeMonsterInitPos = gameConfig["BasicGameSetting"]["MonsterSetting"]["MonsterInitPosition"];
+    _pGameSetting->monsterInitPosition.x = nodeMonsterInitPos["X"];
+    _pGameSetting->monsterInitPosition.y = nodeMonsterInitPos["Y"];
+
+    auto nodeMonsterInitSize = gameConfig["BasicGameSetting"]["MonsterSetting"]["MonsterInitSize"];
+    _pGameSetting->monsterInitSize.x = nodeMonsterInitSize["Width"];
+    _pGameSetting->monsterInitSize.y = nodeMonsterInitSize["Height"];
+
+    _pGameSetting->monsterInitMoveSpeed = gameConfig["BasicGameSetting"]["MonsterSetting"]["MonsterInitMoveSpeed"];
+
 }
 
 void Game::InitWindow()
@@ -46,12 +60,21 @@ void Game::InitWindow()
 
 void Game::InitScene()
 {
-    // create a player
+    // create the player
     _pPlayer = std::make_unique<Player>("./assets/player.png");
-    // intialise the player
+    // initialise the player
     _pPlayer->SetPosition(_pGameSetting->playerInitPosition);
     _pPlayer->SetSize(_pGameSetting->playerInitSize);
     _pPlayer->SetSpeed(_pGameSetting->playerInitMoveSpeed);
+
+    // todo
+    // create a monster
+    uint id = RuntimeIdManager::GetNextRuntimeId();
+    _pMonsters[id] = std::make_unique<Monster>("./assets/monster0.png", id);
+    // initialise a monster
+    _pMonsters[id]->SetPosition(_pGameSetting->monsterInitPosition);
+    _pMonsters[id]->SetSize(_pGameSetting->monsterInitSize);
+    _pMonsters[id]->SetSpeed(_pGameSetting->monsterInitMoveSpeed);
 }
 
 void Game::Run()
@@ -75,35 +98,61 @@ void Game::Run()
         }
 
         // User input
-        auto [positionX, positionY] = _pPlayer->GetPosition();
-        auto [sizeX, sizeY] = _pPlayer->GetSize();
-        float playerSpeed = _pPlayer->GetSpeed();
+        // the player status
         auto [windowsSizeX, windowSizeY] = _pWindow->getSize();
+        auto [playerPositionX, playerPositionY] = _pPlayer->GetPosition();
+        auto [playerSizeX, playerSizeY] = _pPlayer->GetSize();
+        float playerSpeed = _pPlayer->GetSpeed();
+        // monsters act
+        for (auto& [id, pMonster] : _pMonsters)
+        {
+            auto [monsterPositionX, monsterPositionY] = pMonster->GetPosition();
+            float monsterSpeed = pMonster->GetSpeed();
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && positionY - sizeY * 0.5f > 0)
-        {
-            positionY -= playerSpeed * deltaTimeSecond;
+            if (monsterPositionX != playerPositionX)
+            {
+                float deltaDistanceX = (playerPositionX - monsterPositionX) / abs(playerPositionX - monsterPositionX) * monsterSpeed * deltaTimeSecond;
+                monsterPositionX += deltaDistanceX;
+                pMonster->SetFlip(deltaDistanceX > 0);
+            }
+            if (monsterPositionY != playerPositionY)
+            {
+                float deltaDistanceY = (playerPositionY - monsterPositionY) / abs(playerPositionY - monsterPositionY) * monsterSpeed * deltaTimeSecond;
+                monsterPositionY += deltaDistanceY;
+            }
+
+            pMonster->SetPosition(sf::Vector2f(monsterPositionX, monsterPositionY));
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) && positionY + sizeY * 0.5f < windowSizeY)
+
+        // the player act
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && playerPositionY - playerSizeY * 0.5f > 0)
         {
-            positionY += playerSpeed * deltaTimeSecond;
+            playerPositionY -= playerSpeed * deltaTimeSecond;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && positionX - sizeX * 0.5f > 0)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) && playerPositionY + playerSizeY * 0.5f < windowSizeY)
         {
-            positionX -= playerSpeed * deltaTimeSecond;
+            playerPositionY += playerSpeed * deltaTimeSecond;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && playerPositionX - playerSizeX * 0.5f > 0)
+        {
+            playerPositionX -= playerSpeed * deltaTimeSecond;
             _pPlayer->SetFlip(false);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && positionX + sizeX * 0.5f < windowsSizeX)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && playerPositionX + playerSizeX * 0.5f < windowsSizeX)
         {
-            positionX += playerSpeed * deltaTimeSecond;
+            playerPositionX += playerSpeed * deltaTimeSecond;
             _pPlayer->SetFlip(true);
         }
 
-        _pPlayer->SetPosition(sf::Vector2f(positionX, positionY));
-
+        _pPlayer->SetPosition(sf::Vector2f(playerPositionX, playerPositionY));
+         
         // Renderer
         _pWindow->clear(sf::Color::White);
         _pWindow->draw(_pPlayer->GetDrawable());
+        for (auto& [id, pMonster] : _pMonsters)
+        {
+            _pWindow->draw(pMonster->GetDrawable());
+        }
         _pWindow->display();
     }
 }

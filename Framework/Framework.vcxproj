@@ -96,13 +96,18 @@
   <ItemGroup>
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Monster.cpp" />
     <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\RuntimeIdManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameSetting.h" />
+    <ClInclude Include="src\GlobalDefine.h" />
+    <ClInclude Include="src\Monster.h" />
     <ClInclude Include="src\Noncopyable.h" />
     <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\RuntimeIdManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\GameConfig.json" />

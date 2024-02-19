@@ -12,6 +12,17 @@
         "Height": 50
       },
       "PlayerInitMoveSpeed": 500
+    },
+    "MonsterSetting": {
+      "MonsterInitPosition": {
+        "X": 350,
+        "Y": 350
+      },
+      "MonsterInitSize": {
+        "Width": 50,
+        "Height": 50
+      },
+      "MonsterInitMoveSpeed": 100
     }
   }
 }
