@@ -94,6 +94,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\CompCamera.cpp" />
+    <ClCompile Include="src\CompGuid.cpp" />
+    <ClCompile Include="src\Component.cpp" />
+    <ClCompile Include="src\CompRenderer.cpp" />
+    <ClCompile Include="src\CompTransform.cpp" />
+    <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\EntityFactory.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Monster.cpp" />
@@ -101,6 +108,14 @@
     <ClCompile Include="src\RuntimeIdManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\CompCamera.h" />
+    <ClInclude Include="src\CompGuid.h" />
+    <ClInclude Include="src\Component.h" />
+    <ClInclude Include="src\ComponentType.h" />
+    <ClInclude Include="src\CompRenderer.h" />
+    <ClInclude Include="src\CompTransform.h" />
+    <ClInclude Include="src\Entity.h" />
+    <ClInclude Include="src\EntityFactory.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameSetting.h" />
     <ClInclude Include="src\GlobalDefine.h" />

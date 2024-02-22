@@ -25,6 +25,12 @@
     <Filter Include="src\Entity\Player">
       <UniqueIdentifier>{2f199021-d65f-47cb-aa1a-8d69e18d92f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Entity\Component">
+      <UniqueIdentifier>{1c9dc675-4b28-47ac-8c49-01a79446f881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Entity\Component\Impl">
+      <UniqueIdentifier>{b251c76b-78a7-4af1-836a-aefd83018269}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -41,6 +47,27 @@
     </ClCompile>
     <ClCompile Include="src\RuntimeIdManager.cpp">
       <Filter>src\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component.cpp">
+      <Filter>src\Entity\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entity.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CompCamera.cpp">
+      <Filter>src\Entity\Component\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CompRenderer.cpp">
+      <Filter>src\Entity\Component\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CompTransform.cpp">
+      <Filter>src\Entity\Component\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EntityFactory.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CompGuid.cpp">
+      <Filter>src\Entity\Component\Impl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +94,30 @@
     </ClInclude>
     <ClInclude Include="src\Util.hpp">
       <Filter>src\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component.h">
+      <Filter>src\Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entity.h">
+      <Filter>src\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComponentType.h">
+      <Filter>src\Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CompCamera.h">
+      <Filter>src\Entity\Component\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CompRenderer.h">
+      <Filter>src\Entity\Component\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CompTransform.h">
+      <Filter>src\Entity\Component\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EntityFactory.h">
+      <Filter>src\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CompGuid.h">
+      <Filter>src\Entity\Component\Impl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
