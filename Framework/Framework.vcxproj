@@ -94,40 +94,37 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\CompCamera.cpp" />
-    <ClCompile Include="src\CompGuid.cpp" />
-    <ClCompile Include="src\Component.cpp" />
-    <ClCompile Include="src\CompRenderer.cpp" />
-    <ClCompile Include="src\CompTransform.cpp" />
-    <ClCompile Include="src\Entity.cpp" />
-    <ClCompile Include="src\EntityFactory.cpp" />
-    <ClCompile Include="src\Game.cpp" />
-    <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\Monster.cpp" />
-    <ClCompile Include="src\Player.cpp" />
-    <ClCompile Include="src\RuntimeIdManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\CompCamera.h" />
-    <ClInclude Include="src\CompGuid.h" />
-    <ClInclude Include="src\Component.h" />
-    <ClInclude Include="src\ComponentType.h" />
-    <ClInclude Include="src\CompRenderer.h" />
-    <ClInclude Include="src\CompTransform.h" />
-    <ClInclude Include="src\Entity.h" />
-    <ClInclude Include="src\EntityFactory.h" />
-    <ClInclude Include="src\Game.h" />
-    <ClInclude Include="src\GameSetting.h" />
-    <ClInclude Include="src\GlobalDefine.h" />
-    <ClInclude Include="src\Monster.h" />
-    <ClInclude Include="src\Noncopyable.h" />
-    <ClInclude Include="src\Player.h" />
-    <ClInclude Include="src\RuntimeIdManager.h" />
-    <ClInclude Include="src\Util.hpp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="config\GameConfig.json" />
     <None Include="scripts\assets_copy.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Component\Component.cpp" />
+    <ClCompile Include="src\Component\Impl\CompCamera.cpp" />
+    <ClCompile Include="src\Component\Impl\CompGuid.cpp" />
+    <ClCompile Include="src\Component\Impl\CompRenderer.cpp" />
+    <ClCompile Include="src\Component\Impl\CompTransform.cpp" />
+    <ClCompile Include="src\Entity\Entity.cpp" />
+    <ClCompile Include="src\Entity\EntityFactory.cpp" />
+    <ClCompile Include="src\Game\Game.cpp" />
+    <ClCompile Include="src\Game\RuntimeIdManager.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Component\Component.h" />
+    <ClInclude Include="src\Component\ComponentType.h" />
+    <ClInclude Include="src\Component\ComponentTypeGetter.h" />
+    <ClInclude Include="src\Component\Impl\CompCamera.h" />
+    <ClInclude Include="src\Component\Impl\CompGuid.h" />
+    <ClInclude Include="src\Component\Impl\CompRenderer.h" />
+    <ClInclude Include="src\Component\Impl\CompTransform.h" />
+    <ClInclude Include="src\Entity\Entity.h" />
+    <ClInclude Include="src\Entity\EntityFactory.h" />
+    <ClInclude Include="src\Game\Game.h" />
+    <ClInclude Include="src\Game\GameSetting.h" />
+    <ClInclude Include="src\Game\GlobalDefine.h" />
+    <ClInclude Include="src\Game\RuntimeIdManager.h" />
+    <ClInclude Include="src\Utility\Noncopyable.h" />
+    <ClInclude Include="src\Utility\Util.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
