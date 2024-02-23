@@ -6,7 +6,7 @@
 class Component
 {
 public:
-	// 有子类的基类，析构必须是虚的，否则析构的时候无法执行子类的析构
+	// 鏈夊瓙绫荤殑鍩虹被锛屾瀽鏋勫繀椤绘槸铏氱殑锛屽惁鍒欐瀽鏋勭殑鏃跺�欐棤娉曟墽琛屽瓙绫荤殑鏋愭瀯
 	virtual ~Component() = default;
 
 public:

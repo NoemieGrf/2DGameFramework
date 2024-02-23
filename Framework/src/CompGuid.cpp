@@ -5,11 +5,6 @@ CompGuid::CompGuid(uint runtimeId)
 {
 }
 
-CompType CompGuid::GetType() const
-{
-	return CompType::Guid;
-}
-
 uint CompGuid::GetGuid() const
 {
 	_guid;

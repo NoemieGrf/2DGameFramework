@@ -1,14 +1,11 @@
 #pragma once
 
-#include "Component.h"
+#include "ComponentTypeGetter.h"
 
-class CompCamera : public Component
+class CompCamera : public ComponentTypeGetter<CompType::Camera>
 {
 public:
 	CompCamera() = default;
-
-public: // override
-	CompType GetType() const override;
 
 
 };

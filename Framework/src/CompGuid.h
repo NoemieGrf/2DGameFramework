@@ -1,19 +1,16 @@
 #pragma once
 
 #include "GlobalDefine.h"
-#include "Component.h"
+#include "ComponentTypeGetter.h"
 
-class CompGuid : public Component
+class CompGuid : public ComponentTypeGetter<CompType::Guid>
 {
 public:
 	explicit CompGuid(uint runtimeId);
-
-public: // override
-	CompType GetType() const override;
 
 public:
 	uint GetGuid() const;
 
 private:
-	uint _guid
+	uint _guid;
 };

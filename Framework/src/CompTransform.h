@@ -1,15 +1,12 @@
 #pragma once
 
-#include "Component.h"
+#include "ComponentTypeGetter.h"
 
-class CompTransform : public Component
+class CompTransform : public ComponentTypeGetter<CompType::Transform>
 {
 public:
 	CompTransform();
 	CompTransform(const vec2f& initPos, const vec2f& initScale);
-
-public: // override
-	CompType GetType() const override;
 
 public:
 	const vec2f& GetPosition() const;

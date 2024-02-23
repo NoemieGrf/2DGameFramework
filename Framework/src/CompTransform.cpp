@@ -12,11 +12,6 @@ CompTransform::CompTransform(const vec2f& initPos, const vec2f& initScale)
 {
 }
 
-CompType CompTransform::GetType() const
-{
-	return CompType::Transform;
-}
-
 const vec2f& CompTransform::GetPosition() const
 {
 	return _position;

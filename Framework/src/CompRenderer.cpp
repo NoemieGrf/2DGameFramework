@@ -6,11 +6,6 @@ CompRenderer::CompRenderer(const std::string& texPath)
 	_sprite.setTexture(_texture);
 }
 
-CompType CompRenderer::GetType() const
-{
-	CompType::Renderer;
-}
-
 const sf::Sprite& CompRenderer::GetSprite() const
 {
 	return _sprite;
