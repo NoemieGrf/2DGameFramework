@@ -5,4 +5,5 @@ enum class CompType: int
 	Transform,
 	Renderer,
 	Guid,
+	Ai,
 };

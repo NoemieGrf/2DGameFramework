@@ -1,6 +1,7 @@
 #pragma once
 
 #include <random>
+#include <cmath>
 #include "../Game/GlobalDefine.h"
 
 class Util
@@ -52,5 +53,14 @@ public:
             innerRectTopLeft.y >= outerRectTopLeft.y &&
             innerRectDownRight.x <= outerRectDownRight.x &&
             innerRectDownRight.y <= outerRectDownRight.y);
+    }
+
+    inline static vec2f Normalize(const vec2f& src)
+    {
+        float norm = std::sqrt(src.x * src.x + src.y * src.y);
+        return vec2f {
+            src.x / norm,
+            src.y / norm
+        };
     }
 };

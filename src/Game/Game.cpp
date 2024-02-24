@@ -12,6 +12,7 @@
 // myself
 #include "../Entity/EntityFactory.h"
 #include "../Component/Impl/CompTransform.h"
+#include "../Component/Impl/CompAi.h"
 #include "../Utility/Util.hpp"
 
 Game::Game() = default;
@@ -78,25 +79,23 @@ void Game::InitScene()
     // create the player
     _playerEntity = EntityFactory::CreatePlayer();
     _allEntitiesMap[_playerEntity->GetRuntimeId()] = _playerEntity;
-    {
-        auto pTrans = _playerEntity->GetComponent<CompTransform>();
-        if (pTrans != nullptr)
-            pTrans->SetPosition(vec2f{ 0.0f, 0.0f });
-    }
+    
+    auto pPlayerTrans = _playerEntity->GetComponent<CompTransform>();
+    if (pPlayerTrans != nullptr)
+        pPlayerTrans->SetPosition(vec2f{ 0.0f, 0.0f });
 
     // create the monster
     for (int i = 0; i < 3; i++)
     {
         auto pMonster = EntityFactory::CreateMonster();
         _allEntitiesMap[pMonster->GetRuntimeId()] = pMonster;
+        
+        auto pMonsterTrans = pMonster->GetComponent<CompTransform>();
+        if (pMonsterTrans != nullptr)
         {
-            auto pTrans = pMonster->GetComponent<CompTransform>();
-            if (pTrans != nullptr)
-            {
-                pTrans->SetPosition(vec2f{ 
-                    Util::GetRandomNumber<float>(10, 100), 
-                    Util::GetRandomNumber<float>(10, 100) });
-            }
+            pMonsterTrans->SetPosition(vec2f{ 
+                Util::GetRandomNumber<float>(100, 1000), 
+                Util::GetRandomNumber<float>(100, 1000) });
         }
     }
 }
@@ -121,7 +120,7 @@ void Game::UpdateTime()
 {
     sf::Time deltaTime = _clock.getElapsedTime();
     _clock.restart();
-    _deltaTimeMs = deltaTime.asMilliseconds();
+    _deltaTimeSecond = deltaTime.asSeconds();
 }
 
 void Game::UpdateWindowEvent()
@@ -141,7 +140,19 @@ void Game::UpdateUserInput()
 
 void Game::UpdateAI()
 {
+    for (auto& [id, pEntity]: _allEntitiesMap)
+    {
+        auto pCompTrans = pEntity->GetComponent<CompTransform>();
+        if (pCompTrans == nullptr)
+            continue;
 
+        auto pCompAi = pEntity->GetComponent<CompAi>();
+        if (pCompAi == nullptr)
+            continue;
+
+        auto newPos = pCompAi->GetTactic()->UpdatePosition(pCompTrans->GetPosition());
+        pCompTrans->SetPosition(newPos);
+    }
 }
 
 void Game::UpdatePhysics()
@@ -172,7 +183,7 @@ Entity* Game::GetPlayerEntity() const
 
 float Game::GetDeltaTime() const
 {
-    return _deltaTimeMs;
+    return _deltaTimeSecond;
 }
 
 Camera* Game::GetCamera() const

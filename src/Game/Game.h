@@ -45,7 +45,7 @@ private:
 
 	/* Game clock */
 	sf::Clock _clock;
-	float _deltaTimeMs;
+	float _deltaTimeSecond;
 
 	/* Game camera */
 	uptr<Camera> _pMainCamera = nullptr;
