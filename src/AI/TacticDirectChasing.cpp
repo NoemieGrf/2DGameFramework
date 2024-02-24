@@ -22,6 +22,10 @@ vec2f TacticDirectChasing::UpdatePosition(const vec2f& inputPos) const
     if (_chasingTarget == nullptr)
         return inputPos;
 
-    vec2f direction = Util::Normalize(_chasingTarget->GetPosition() - inputPos);
-    return inputPos + direction * _chasingSpeed * Game::GetInstance()->GetDeltaTime();
+    vec2f direction = _chasingTarget->GetPosition() - inputPos;
+    float distanceMag = direction.x * direction.x + direction.y * direction.y;
+    if (distanceMag < 350 * 350)
+        return inputPos - Util::Normalize(direction) * (_chasingSpeed / 2) * Game::GetInstance()->GetDeltaTime();
+    else
+        return inputPos + Util::Normalize(direction) * _chasingSpeed * Game::GetInstance()->GetDeltaTime();;
 }
