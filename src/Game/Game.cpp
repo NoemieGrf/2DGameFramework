@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "RuntimeIdManager.h"
 #include "Util.hpp"
+#include "EntityFactory.h"
 
 void Game::InitConfig()
 {
@@ -61,6 +62,10 @@ void Game::InitWindow()
 
 void Game::InitScene()
 {
+    // create the player
+    _playerEntity = EntityFactory::CreatePlayer();
+
+
     // create the player
     _pPlayer = std::make_unique<Player>("./assets/player.png");
     // initialise the player

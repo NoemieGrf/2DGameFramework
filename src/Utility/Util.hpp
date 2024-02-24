@@ -13,16 +13,18 @@ public:
 	{
         std::random_device rd;
         std::mt19937 gen(rd());
-        if constexpr (std::is_integral<T>::value) { // 整数类型
+        if constexpr (std::is_integral<T>::value) 
+        { 
             std::uniform_int_distribution<T> dis(inferiority, superiority);
             return dis(gen);
         }
-        else if constexpr (std::is_floating_point<T>::value) { // 浮点数类型
+        else if constexpr (std::is_floating_point<T>::value) 
+        {
             std::uniform_real_distribution<T> dis(inferiority, superiority);
             return dis(gen);
         }
-        else {
-            // 错误处理，未定义的类型
+        else 
+        {
             throw std::invalid_argument("Unsupported type!");
         }
 	}
