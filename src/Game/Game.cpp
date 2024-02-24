@@ -13,6 +13,7 @@
 // myself
 #include "../Entity/EntityFactory.h"
 #include "../Component/Impl/CompTransform.h"
+#include "../Component/Impl/CompRenderer.h"
 #include "../Component/Impl/CompAi.h"
 #include "../Utility/Util.hpp"
 
@@ -154,6 +155,7 @@ void Game::UpdateUserInput()
     static float playerSpeed = 160.0f;
 
     auto pTrans = _playerEntity->GetComponent<CompTransform>();
+    auto pRender = _playerEntity->GetComponent<CompRenderer>();
     vec2f playerPos = pTrans->GetPosition();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
@@ -166,10 +168,12 @@ void Game::UpdateUserInput()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
         playerPos.x -= playerSpeed * GetDeltaTime();
+        pRender->SetFlip(false);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
         playerPos.x += playerSpeed * GetDeltaTime();
+        pRender->SetFlip(true);
     }
 
     pTrans->SetPosition(playerPos);
@@ -187,8 +191,13 @@ void Game::UpdateAI()
         if (pCompAi == nullptr)
             continue;
 
-        auto newPos = pCompAi->GetTactic()->UpdatePosition(pCompTrans->GetPosition());
+        auto oldPos = pCompTrans->GetPosition();
+        auto newPos = pCompAi->GetTactic()->UpdatePosition(oldPos);
         pCompTrans->SetPosition(newPos);
+
+        auto pRender = pEntity->GetComponent<CompRenderer>();
+        if (pRender != nullptr)
+            pRender->SetFlip(newPos.x > oldPos.x);
     }
 }
 

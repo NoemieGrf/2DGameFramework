@@ -4,6 +4,7 @@ CompRenderer::CompRenderer(const std::string& texPath)
 {
 	_texture.loadFromFile(texPath);
 	_sprite.setTexture(_texture);
+	_sprite.setOrigin(VecConvert<unsigned int, float>(_texture.getSize()) / 2.0f);
 }
 
 vec2f CompRenderer::GetRenderBound() const
