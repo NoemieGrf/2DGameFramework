@@ -8,6 +8,7 @@
 // 3rd party
 #include "SFML/Graphics/Color.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Window/Keyboard.hpp"
 #include "nlohmann/json.hpp"
 // myself
 #include "../Entity/EntityFactory.h"
@@ -98,6 +99,21 @@ void Game::InitScene()
                 Util::GetRandomNumber<float>(100, 1000) });
         }
     }
+
+    // create the gadgets
+    for (int i = 0; i < 40; i++)
+    {
+        auto pGadget = EntityFactory::CreateGadget("./assets/grass.png");
+        _allEntitiesMap[pGadget->GetRuntimeId()] = pGadget;
+        
+        auto pGadgetTrans = pGadget->GetComponent<CompTransform>();
+        if (pGadgetTrans != nullptr)
+        {
+            pGadgetTrans->SetPosition(vec2f{ 
+                Util::GetRandomNumber<float>(-700, 700), 
+                Util::GetRandomNumber<float>(-700, 700) });
+        }
+    }
 }
 
 void Game::Run()
@@ -135,7 +151,28 @@ void Game::UpdateWindowEvent()
 
 void Game::UpdateUserInput()
 {
+    static float playerSpeed = 160.0f;
 
+    auto pTrans = _playerEntity->GetComponent<CompTransform>();
+    vec2f playerPos = pTrans->GetPosition();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+    {
+        playerPos.y -= playerSpeed * GetDeltaTime();
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+    {
+        playerPos.y += playerSpeed * GetDeltaTime();
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+    {
+        playerPos.x -= playerSpeed * GetDeltaTime();
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+    {
+        playerPos.x += playerSpeed * GetDeltaTime();
+    }
+
+    pTrans->SetPosition(playerPos);
 }
 
 void Game::UpdateAI()

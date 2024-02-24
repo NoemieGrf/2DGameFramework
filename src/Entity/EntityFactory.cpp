@@ -45,3 +45,19 @@ sptr<Entity> EntityFactory::CreateMonster()
 
 	return pMonster;
 }
+
+sptr<Entity> EntityFactory::CreateGadget(const std::string& pngPath)
+{
+	sptr<Entity> pGadget = std::make_shared<Entity>();
+
+	// comp guid
+	pGadget->AddComponent(std::make_unique<CompGuid>(RuntimeIdManager::GetNextRuntimeId()));
+
+	// comp transform
+	pGadget->AddComponent(std::make_unique<CompTransform>());
+
+	// comp render
+	pGadget->AddComponent(std::make_unique<CompRenderer>(pngPath));
+
+	return pGadget;
+}
