@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ComponentType.h"
+#include "../Utility/Noncopyable.h"
 
-class Component
+class Component: Noncopyable
 {
 public:
 	// 有子类的基类，析构必须是虚的，否则析构的时候无法执行子类的析构

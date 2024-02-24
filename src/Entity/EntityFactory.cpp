@@ -1,23 +1,9 @@
 #include "EntityFactory.h"
 #include "../Game/RuntimeIdManager.h"
 #include "../Component/Impl/CompGuid.h"
-#include "../Component/Impl/CompCamera.h"
 #include "../Component/Impl/CompRenderer.h"
 #include "../Component/Impl/CompTransform.h"
 
-
-sptr<Entity> EntityFactory::CreateCamera()
-{
-	sptr<Entity> pCamera = std::make_shared<Entity>();
-
-	// comp guid
-	pCamera->AddComponent(std::make_unique<CompGuid>(RuntimeIdManager::GetNextRuntimeId()));
-
-	// comp camera
-	pCamera->AddComponent(std::make_unique<CompCamera>());
-
-	return pCamera;
-}
 
 sptr<Entity> EntityFactory::CreatePlayer()
 {

@@ -6,7 +6,18 @@ CompRenderer::CompRenderer(const std::string& texPath)
 	_sprite.setTexture(_texture);
 }
 
-const sf::Sprite& CompRenderer::GetSprite() const
+vec2f CompRenderer::GetRenderBound() const
+{
+	auto texSize = _texture.getSize();
+	auto scale = _sprite.getScale();
+
+	return vec2f {
+		texSize.x * std::abs(scale.x),
+		texSize.y * std::abs(scale.y)
+	};
+}
+
+sf::Sprite& CompRenderer::GetSprite()
 {
 	return _sprite;
 }

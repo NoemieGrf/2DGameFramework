@@ -3,14 +3,10 @@
 
 int main()
 {
-    Game g;
-    g.InitConfig();
-    g.InitWindow();
-    g.InitScene();
-
-    g.Run();
-
-    g.Destroy();
-
+    Game::GetInstance()->InitConfig();
+    Game::GetInstance()->InitWindow();
+    Game::GetInstance()->InitScene();
+    Game::GetInstance()->Run();
+    Game::GetInstance()->Destroy();
     return 0;
 }

@@ -23,3 +23,14 @@ using sptr = std::shared_ptr<T>;
 using vec2f = sf::Vector2f;
 using vec2i = sf::Vector2i;
 using vec2u = sf::Vector2u;
+
+template<typename From, typename To>
+sf::Vector2<To> VecConvert(const sf::Vector2<From>& src)
+{
+    sf::Vector2<To> result = sf::Vector2<To> {
+        static_cast<To>(src.x),
+        static_cast<To>(src.y)
+    };
+
+    return result;
+}

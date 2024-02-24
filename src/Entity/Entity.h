@@ -40,8 +40,7 @@ auto Entity::GetComponent() const -> const T*
 	if (itr == _compMap.end())
 		return nullptr;
 
-	auto pBase = itr->second;
-	return dynamic_cast<T*>(pBase);
+	return dynamic_cast<T*>(itr->second.get());
 }
 
 template<typename T>
@@ -52,6 +51,5 @@ auto Entity::GetComponent() -> T*
 	if (itr == _compMap.end())
 		return nullptr;
 
-	auto pBase = itr->second;
-	return dynamic_cast<T*>(pBase);
+	return dynamic_cast<T*>(itr->second.get());
 }

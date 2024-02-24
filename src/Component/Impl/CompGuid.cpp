@@ -7,5 +7,5 @@ CompGuid::CompGuid(uint runtimeId)
 
 uint CompGuid::GetGuid() const
 {
-	_guid;
+	return _guid;
 }

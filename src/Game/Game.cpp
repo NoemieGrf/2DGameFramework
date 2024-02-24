@@ -1,16 +1,26 @@
 #include "Game.h"
 
 // std
+#include <cstddef>
 #include <fstream>
 #include <iostream>
+#include <memory>
 // 3rd party
-#include "SFML/Window.hpp"
+#include "SFML/Graphics/Color.hpp"
+#include "SFML/Graphics/RenderWindow.hpp"
 #include "nlohmann/json.hpp"
 // myself
-#include "Player.h"
-#include "RuntimeIdManager.h"
-#include "Util.hpp"
-#include "EntityFactory.h"
+#include "../Entity/EntityFactory.h"
+#include "../Component/Impl/CompTransform.h"
+#include "../Utility/Util.hpp"
+
+Game::Game() = default;
+
+Game* Game::GetInstance()
+{
+    static Game* pGame = new Game();
+    return pGame;
+}
 
 void Game::InitConfig()
 {
@@ -62,117 +72,115 @@ void Game::InitWindow()
 
 void Game::InitScene()
 {
+    // create the camera
+    _pMainCamera = std::make_unique<Camera>();
+
     // create the player
     _playerEntity = EntityFactory::CreatePlayer();
+    _allEntitiesMap[_playerEntity->GetRuntimeId()] = _playerEntity;
+    {
+        auto pTrans = _playerEntity->GetComponent<CompTransform>();
+        if (pTrans != nullptr)
+            pTrans->SetPosition(vec2f{ 0.0f, 0.0f });
+    }
 
-
-    // create the player
-    _pPlayer = std::make_unique<Player>("./assets/player.png");
-    // initialise the player
-    _pPlayer->SetPosition(_pGameSetting->playerInitPosition);
-    _pPlayer->SetSize(_pGameSetting->playerInitSize);
-    _pPlayer->SetSpeed(_pGameSetting->playerInitMoveSpeed);
-
-    // create 3 monsters
+    // create the monster
     for (int i = 0; i < 3; i++)
     {
-        //  create a monster 
-        uint id = RuntimeIdManager::GetNextRuntimeId();
-        _pMonsters[id] = std::make_unique<Monster>("./assets/monster0.png", id);
-        // initialise a monster
-        sf::Vector2f originPos = _pGameSetting->monsterInitPosition;
-        sf::Vector2 finalPos = originPos + sf::Vector2f(
-            Util::GetRandomNumber<float>(10.0f, 300.0f),
-            Util::GetRandomNumber<float>(10.0f, 300.0f)
-        );
-        _pMonsters[id]->SetPosition(finalPos);
-        _pMonsters[id]->SetSize(_pGameSetting->monsterInitSize);
-        _pMonsters[id]->SetSpeed(_pGameSetting->monsterInitMoveSpeed);
+        auto pMonster = EntityFactory::CreateMonster();
+        _allEntitiesMap[pMonster->GetRuntimeId()] = pMonster;
+        {
+            auto pTrans = pMonster->GetComponent<CompTransform>();
+            if (pTrans != nullptr)
+            {
+                pTrans->SetPosition(vec2f{ 
+                    Util::GetRandomNumber<float>(10, 100), 
+                    Util::GetRandomNumber<float>(10, 100) });
+            }
+        }
     }
 }
 
 void Game::Run()
 {
-    sf::Clock clock;
-    clock.restart();
+    _clock.restart();
 
     while (_pWindow->isOpen())
     {
-        // Deal time
-        sf::Time deltaTime = clock.getElapsedTime();
-        clock.restart();
-        float deltaTimeSecond = deltaTime.asSeconds();
+        UpdateTime();
+        UpdateWindowEvent();
+        UpdateUserInput();
+        UpdateAI();
+        UpdatePhysics();
 
-        // Window event
-        sf::Event event;
-        while (_pWindow->pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                _pWindow->close();
-        }
-
-        // User input
-        // the player status
-        auto [windowsSizeX, windowSizeY] = _pWindow->getSize();
-        auto [playerPositionX, playerPositionY] = _pPlayer->GetPosition();
-        auto [playerSizeX, playerSizeY] = _pPlayer->GetSize();
-        float playerSpeed = _pPlayer->GetSpeed();
-        // monsters act
-        for (auto& [id, pMonster] : _pMonsters)
-        {
-            auto [monsterPositionX, monsterPositionY] = pMonster->GetPosition();
-            float monsterSpeed = pMonster->GetSpeed();
-
-            if (monsterPositionX != playerPositionX)
-            {
-                float deltaDistanceX = (playerPositionX - monsterPositionX) / abs(playerPositionX - monsterPositionX) * monsterSpeed * deltaTimeSecond;
-                monsterPositionX += deltaDistanceX;
-
-                if (abs(playerPositionX - monsterPositionX) > 0.5)
-                    pMonster->SetFlip(deltaDistanceX > 0);
-            }
-            if (monsterPositionY != playerPositionY)
-            {
-                float deltaDistanceY = (playerPositionY - monsterPositionY) / abs(playerPositionY - monsterPositionY) * monsterSpeed * deltaTimeSecond;
-                monsterPositionY += deltaDistanceY;
-            }
-
-            pMonster->SetPosition(sf::Vector2f(monsterPositionX, monsterPositionY));
-        }
-
-        // the player act
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && playerPositionY - playerSizeY * 0.5f > 0)
-        {
-            playerPositionY -= playerSpeed * deltaTimeSecond;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) && playerPositionY + playerSizeY * 0.5f < windowSizeY)
-        {
-            playerPositionY += playerSpeed * deltaTimeSecond;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && playerPositionX - playerSizeX * 0.5f > 0)
-        {
-            playerPositionX -= playerSpeed * deltaTimeSecond;
-            _pPlayer->SetFlip(false);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && playerPositionX + playerSizeX * 0.5f < windowsSizeX)
-        {
-            playerPositionX += playerSpeed * deltaTimeSecond;
-            _pPlayer->SetFlip(true);
-        }
-
-        _pPlayer->SetPosition(sf::Vector2f(playerPositionX, playerPositionY));
-         
-        // Renderer
-        _pWindow->clear(sf::Color::White);
-        _pWindow->draw(_pPlayer->GetDrawable());
-        for (auto& [id, pMonster] : _pMonsters)
-        {
-            _pWindow->draw(pMonster->GetDrawable());
-        }
-        _pWindow->display();
+        RenderScene();
     }
+}
+
+void Game::UpdateTime()
+{
+    sf::Time deltaTime = _clock.getElapsedTime();
+    _clock.restart();
+    _deltaTimeMs = deltaTime.asMilliseconds();
+}
+
+void Game::UpdateWindowEvent()
+{
+    sf::Event event;
+    while (_pWindow->pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
+            _pWindow->close();
+    }
+}
+
+void Game::UpdateUserInput()
+{
+
+}
+
+void Game::UpdateAI()
+{
+
+}
+
+void Game::UpdatePhysics()
+{
+
+}
+
+void Game::RenderScene()
+{
+    _pWindow->clear(sf::Color::White);
+    _pMainCamera->DoRender();
+    _pWindow->display();
 }
 
 void Game::Destroy()
 {
+}
+
+sf::RenderWindow* Game::GetWindow() const
+{
+    return _pWindow.get();
+}
+
+Entity* Game::GetPlayerEntity() const
+{
+    return _playerEntity.get();
+}
+
+float Game::GetDeltaTime() const
+{
+    return _deltaTimeMs;
+}
+
+Camera* Game::GetCamera() const
+{
+    return _pMainCamera.get();
+}
+
+const umap<uint, sptr<Entity>>& Game::GetAllEntities() const
+{
+    return _allEntitiesMap;
 }

@@ -9,7 +9,6 @@ public:
 	EntityFactory() = delete;
 
 public:
-	static sptr<Entity> CreateCamera();
 	static sptr<Entity> CreatePlayer();
 	static sptr<Entity> CreateMonster();
 
