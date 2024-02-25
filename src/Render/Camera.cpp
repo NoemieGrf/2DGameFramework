@@ -48,8 +48,8 @@ void Camera::DoRender()
     }
 
     // 3. Draw 
-    for (auto pEntity: allRenderEntities)
+    for (auto pRenderComp: allRenderEntities)
     {
-        pWindow->draw(pEntity->GetSprite());
+        pWindow->draw(pRenderComp->GetSprite());
     }
 }
