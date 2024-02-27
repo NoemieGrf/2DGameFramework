@@ -4,9 +4,8 @@
 #include "SFML/Graphics/RenderWindow.hpp"
 // myself
 #include "GlobalDefine.h"
-#include "Manager/GameManager.h"
-#include "Manager/GameManagerType.h"
-#include "GameSetting.h"
+#include "../Manager/GameManager.h"
+#include "../Manager/GameManagerType.h"
 #include "../Entity/Entity.h"
 #include "../Render/Camera.h"
 #include "../Utility/OrderedHashMap.hpp"
@@ -17,12 +16,8 @@ private:
 	Game();
 
 public:
-	void InitConfig();
-	void InitWindow();
-	void InitScene();
-
+	void Init();
 	void GameLoop();
-
 	void Destroy();
 
 private: 
@@ -41,24 +36,18 @@ public:
 	auto GetAllEntities() const -> const umap<uint, sptr<Entity>>&;
 
 private:
-	uptr<GameSetting> _pGameSetting = nullptr;
+	/* Window */
 	uptr<sf::RenderWindow> _pWindow = nullptr;
-
-	/* Manager */
-	OrderedHashMap<GameManagerType, uptr<GameManager>> _gameMgrMap;
 
 	/* Game clock */
 	sf::Clock _clock;
 	float _deltaTimeSecond;
 
+	/* Manager */
+	OrderedHashMap<GameManagerType, uptr<GameManager>> _gameMgrMap;
+
 	/* Game camera */
 	uptr<Camera> _pMainCamera = nullptr;
-
-	/* All entities in scene */
-	umap<uint, sptr<Entity>> _allEntitiesMap = {};
-
-	/* Fast access cache */
-	sptr<Entity> _playerEntity = nullptr;
 
 public:
 	static Game* GetInstance();

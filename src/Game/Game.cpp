@@ -16,68 +16,33 @@
 #include "../Component/Impl/CompAi.h"
 #include "../Utility/Util.hpp"
 
-#include "Manager/Impl/AiManager.h"
-#include "Manager/Impl/ConfigManager.h"
-#include "Manager/Impl/SceneManager.h"
-#include "Manager/Impl/UserInputManager.h"
+#include "../Manager/Impl/AiManager.h"
+#include "../Manager/Impl/ConfigManager.h"
+#include "../Manager/Impl/SceneManager.h"
+#include "../Manager/Impl/UserInputManager.h"
 
-Game::Game()
+Game::Game() = default;
+
+void Game::Init()
 {
+    // init window
+    using uint = unsigned int;
+    uint screenHeight = sf::VideoMode::getDesktopMode().height;
+    uint screenWidth = sf::VideoMode::getDesktopMode().width;
+    uint windowSize = 0.7 * std::min(screenHeight, screenWidth);
+    _pWindow = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowSize, windowSize), "2DGame");
+
+    // create game manager
+    _gameMgrMap.Add(ConfigManager::Type(), std::make_unique<ConfigManager>());
     _gameMgrMap.Add(UserInputManager::Type(), std::make_unique<UserInputManager>());
+    _gameMgrMap.Add(SceneManager::Type(), std::make_unique<SceneManager>());
+    _gameMgrMap.Add(AiManager::Type(), std::make_unique<AiManager>());
 }
 
 Game* Game::GetInstance()
 {
     static Game* pGame = new Game();
     return pGame;
-}
-
-void Game::InitConfig()
-{
-	_pGameSetting = std::make_unique<GameSetting>();
-
-    nlohmann::json gameConfig;
-    std::ifstream configJsonFile("./config/GameConfig.json");
-    if (!configJsonFile.is_open())
-    {
-        std::cout << "file fucked\n";
-    }
-
-    configJsonFile >> gameConfig;
-    configJsonFile.close();
-
-    // player
-    auto nodePlayerInitPos = gameConfig["BasicGameSetting"]["PlayerSetting"]["PlayerInitPosition"];
-    _pGameSetting->playerInitPosition.x = nodePlayerInitPos["X"];
-    _pGameSetting->playerInitPosition.y = nodePlayerInitPos["Y"];
-
-    auto nodePlayerInitSize = gameConfig["BasicGameSetting"]["PlayerSetting"]["PlayerInitSize"];
-    _pGameSetting->playerInitSize.x = nodePlayerInitSize["Width"];
-    _pGameSetting->playerInitSize.y = nodePlayerInitSize["Height"];
-
-    _pGameSetting->playerInitMoveSpeed = gameConfig["BasicGameSetting"]["PlayerSetting"]["PlayerInitMoveSpeed"];
-
-    // monster
-    auto nodeMonsterInitPos = gameConfig["BasicGameSetting"]["MonsterSetting"]["MonsterInitPosition"];
-    _pGameSetting->monsterInitPosition.x = nodeMonsterInitPos["X"];
-    _pGameSetting->monsterInitPosition.y = nodeMonsterInitPos["Y"];
-
-    auto nodeMonsterInitSize = gameConfig["BasicGameSetting"]["MonsterSetting"]["MonsterInitSize"];
-    _pGameSetting->monsterInitSize.x = nodeMonsterInitSize["Width"];
-    _pGameSetting->monsterInitSize.y = nodeMonsterInitSize["Height"];
-
-    _pGameSetting->monsterInitMoveSpeed = gameConfig["BasicGameSetting"]["MonsterSetting"]["MonsterInitMoveSpeed"];
-
-}
-
-void Game::InitWindow()
-{
-    using uint = unsigned int;
-    uint screenHeight = sf::VideoMode::getDesktopMode().height;
-    uint screenWidth = sf::VideoMode::getDesktopMode().width;
-    uint windowSize = 0.7 * std::min(screenHeight, screenWidth);
-
-    _pWindow = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowSize, windowSize), "Test");
 }
 
 void Game::InitScene()

@@ -3,5 +3,4 @@
 struct GlobalSetting
 {
     float globalGrivity;
-    
 };
