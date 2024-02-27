@@ -6,7 +6,7 @@ int main()
     Game::GetInstance()->InitConfig();
     Game::GetInstance()->InitWindow();
     Game::GetInstance()->InitScene();
-    Game::GetInstance()->Run();
+    Game::GetInstance()->GameLoop();
     Game::GetInstance()->Destroy();
     return 0;
 }

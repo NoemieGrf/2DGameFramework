@@ -2,13 +2,14 @@
 
 // 3rd
 #include "SFML/Graphics/RenderWindow.hpp"
-#include "SFML/Window.hpp"
 // myself
 #include "GlobalDefine.h"
-#include "../Utility/Noncopyable.h"
+#include "Manager/GameManager.h"
+#include "Manager/GameManagerType.h"
 #include "GameSetting.h"
 #include "../Entity/Entity.h"
 #include "../Render/Camera.h"
+#include "../Utility/OrderedHashMap.hpp"
 
 class Game : Noncopyable
 {
@@ -20,7 +21,7 @@ public:
 	void InitWindow();
 	void InitScene();
 
-	void Run();
+	void GameLoop();
 
 	void Destroy();
 
@@ -42,6 +43,9 @@ public:
 private:
 	uptr<GameSetting> _pGameSetting = nullptr;
 	uptr<sf::RenderWindow> _pWindow = nullptr;
+
+	/* Manager */
+	OrderedHashMap<GameManagerType, uptr<GameManager>> _gameMgrMap;
 
 	/* Game clock */
 	sf::Clock _clock;

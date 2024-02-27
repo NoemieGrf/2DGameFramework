@@ -2,7 +2,7 @@
 
 #include "../Utility/Noncopyable.h"
 
-class Camera
+class Camera: public Noncopyable
 {
 public:
     void DoRender();

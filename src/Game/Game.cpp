@@ -1,7 +1,6 @@
 #include "Game.h"
 
 // std
-#include <cstddef>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -17,7 +16,15 @@
 #include "../Component/Impl/CompAi.h"
 #include "../Utility/Util.hpp"
 
-Game::Game() = default;
+#include "Manager/Impl/AiManager.h"
+#include "Manager/Impl/ConfigManager.h"
+#include "Manager/Impl/SceneManager.h"
+#include "Manager/Impl/UserInputManager.h"
+
+Game::Game()
+{
+    _gameMgrMap.Add(UserInputManager::Type(), std::make_unique<UserInputManager>());
+}
 
 Game* Game::GetInstance()
 {
@@ -117,7 +124,7 @@ void Game::InitScene()
     }
 }
 
-void Game::Run()
+void Game::GameLoop()
 {
     _clock.restart();
 
