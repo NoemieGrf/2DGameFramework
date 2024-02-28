@@ -3,12 +3,10 @@
 #include "../../Game/GlobalDefine.h"
 #include "../ComponentTypeGetter.h"
 
-class CompGuid : public ComponentTypeGetter<CompType::Guid>
+class CompGuid : public ComponentTypeGetter<ComponentType::Guid>
 {
 public:
-	explicit CompGuid(uint runtimeId);
-
-public:
+	void SetGuid(uint guid);
 	uint GetGuid() const;
 
 private:

@@ -10,9 +10,8 @@ public:
 	Entity() = default;
 
 public:
-
 	template<typename T>
-	auto AddComponent(uptr<T>&& pComp) -> void;
+	auto AddComponent() -> T*;
 
 	template<typename T>
 	auto GetComponent() const -> const T*;
@@ -24,13 +23,21 @@ public:
 	auto GetRuntimeId() const -> uint;
 
 private:
-	umap<CompType, uptr<Component>> _compMap = {};
+	umap<ComponentType, uptr<Component>> _compMap = {};
 };
 
 template<typename T>
-auto Entity::AddComponent(uptr<T>&& pComp) -> void
+auto Entity::AddComponent() -> T*
 {
-	_compMap[pComp->GetType()] = std::move(pComp);
+	ComponentType t = T::Type();
+
+	uptr<T> pComp = std::make_unique<T>();
+	pComp->SetEntity(this);
+
+	T* rawPointer = pComp.get();
+	_compMap[t] = std::move(pComp);
+
+	return rawPointer;
 }
 
 template<typename T>
@@ -46,7 +53,6 @@ auto Entity::GetComponent() const -> const T*
 template<typename T>
 auto Entity::GetComponent() -> T*
 {
-
 	auto itr = _compMap.find(T::Type());
 	if (itr == _compMap.end())
 		return nullptr;

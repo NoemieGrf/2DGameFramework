@@ -1,8 +1,8 @@
 #include "CompGuid.h"
 
-CompGuid::CompGuid(uint runtimeId)
-	: _guid(runtimeId)
+void CompGuid::SetGuid(uint guid)
 {
+	_guid = guid;
 }
 
 uint CompGuid::GetGuid() const

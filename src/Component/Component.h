@@ -3,12 +3,21 @@
 #include "ComponentType.h"
 #include "../Utility/Noncopyable.h"
 
+// include Entity.h directly will cause recursive inclusion.
+class Entity;
+
 class Component: Noncopyable
 {
 public:
-	// 有子类的基类，析构必须是虚的，否则析构的时候无法执行子类的析构
 	virtual ~Component() = default;
 
 public:
-	virtual CompType GetType() const = 0;
+	virtual ComponentType GetType() const = 0;
+
+public:
+	auto SetEntity(Entity* pEntity) -> void;
+	auto GetEntity() const -> Entity*;
+
+private:
+	Entity* _pParentEntity = nullptr;
 };

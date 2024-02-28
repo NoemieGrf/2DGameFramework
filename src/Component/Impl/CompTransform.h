@@ -3,15 +3,15 @@
 #include "../../Game/GlobalDefine.h"
 #include "../ComponentTypeGetter.h"
 
-class CompTransform : public ComponentTypeGetter<CompType::Transform>
+class CompTransform : public ComponentTypeGetter<ComponentType::Transform>
 {
 public:
 	CompTransform();
 	CompTransform(const vec2f& initPos);
 
 public:
-	const vec2f& GetPosition() const;
-	void SetPosition(const vec2f& newPosition);
+	auto GetPosition() const -> const vec2f&;
+	auto SetPosition(const vec2f& newPosition) -> void;
 
 private:
 	vec2f _position;

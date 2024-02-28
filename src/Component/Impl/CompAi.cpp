@@ -1,6 +1,6 @@
 #include "CompAi.h"
 
-CompAi::CompAi(uptr<Tactic>&& pTactic)
+void CompAi::SetTactic(uptr<Tactic>&& pTactic)
 {
     _pTactic = std::move(pTactic);
 }

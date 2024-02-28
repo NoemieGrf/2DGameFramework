@@ -2,16 +2,16 @@
 
 #include "Component.h"
 
-template <CompType T>
+template <ComponentType T>
 class ComponentTypeGetter : public Component
 {
 public:
-	CompType GetType() const override
+	ComponentType GetType() const override
 	{
 		return T;
 	}
 
-	static CompType Type()
+	static ComponentType Type()
 	{
 		return T;
 	}

@@ -1,9 +1,10 @@
 #pragma once
 
-enum class CompType: int
+enum class ComponentType: int
 {
 	Transform,
 	Renderer,
 	Guid,
 	Ai,
+	Collider,
 };

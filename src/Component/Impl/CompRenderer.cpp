@@ -1,10 +1,13 @@
 #include "CompRenderer.h"
 
-CompRenderer::CompRenderer(const std::string& texPath)
+void CompRenderer::LoadTexture(const std::string& texPath)
 {
 	_texture.loadFromFile(texPath);
 	_sprite.setTexture(_texture);
-	_sprite.setOrigin(VecConvert<unsigned int, float>(_texture.getSize()) / 2.0f);
+
+	// set original to the bottom middle of the texture.
+	vec2f textSize = VecConvert<unsigned int, float>(_texture.getSize());
+	_sprite.setOrigin(vec2f{ textSize.x / 2.0f, textSize.y});
 }
 
 vec2f CompRenderer::GetRenderBound() const
