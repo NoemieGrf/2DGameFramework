@@ -6,9 +6,16 @@ project(2DGameFrameWork)
 
 # build the exe
 set(TARGET_NAME game)
-file(GLOB_RECURSE SRC_FIELS src/*.cpp) 
-add_executable(${TARGET_NAME} ${SRC_FIELS})
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/artifacts/) # CMAKE_CURRENT_SOURCE_DIR: the dirctory of current CMakeLists.txt
+
+file(GLOB_RECURSE SRC_FILES src/*.cpp) # my file
+file(GLOB_RECURSE BOX2D_FILES ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/box2d/src/*.cpp) # box2d source files
+
+add_executable(${TARGET_NAME}
+        ${SRC_FILES}
+        ${BOX2D_FILES}
+)
+
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/artifacts/) # CMAKE_CURRENT_SOURCE_DIR: the directory of current CMakeLists.txt
 
 # PREPROCESS & LINK
 # -------------------------------------------------------------------------------------------------
@@ -17,13 +24,14 @@ target_compile_definitions(${TARGET_NAME} PRIVATE SFML_STATIC)
 
 # additional include directories
 target_include_directories(${TARGET_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/nlohmann/include/
-    ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/sfml/include/
+        ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/nlohmann/include/
+        ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/sfml/include/
+        ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/box2d/include/
 ) 
 
 # additional static lib directories
 target_link_directories(${TARGET_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/sfml/lib/
+        ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/sfml/lib/
 ) 
 
 # set specific lib
