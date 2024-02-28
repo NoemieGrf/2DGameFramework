@@ -24,12 +24,12 @@ void Game::Init()
     uint windowSize = 0.7 * std::min(screenHeight, screenWidth);
     _pWindow = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowSize, windowSize), "2DGame");
 
-    // create game manager
+    // create game manager, order is really important!
     AddManager<ConfigManager>();
+    AddManager<PhysicsManager>();
     AddManager<UserInputManager>();
     AddManager<SceneManager>();
     AddManager<AiManager>();
-    AddManager<PhysicsManager>();
 
     // create level
     GetManager<SceneManager>()->InitLevel();
