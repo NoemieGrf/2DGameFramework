@@ -20,20 +20,14 @@ public:
 	void GameLoop();
 	void Destroy();
 
-private: 
-	void UpdateTime();
-	void UpdateWindowEvent();
-	void UpdateUserInput();
-	void UpdateAI();
-	void UpdatePhysics();
-	void RenderScene();
-
 public:
-	auto GetWindow() const -> sf::RenderWindow*;
-	auto GetPlayerEntity() const -> Entity*;
-	auto GetDeltaTime() const -> float;
-	auto GetCamera() const -> Camera*;
-	auto GetAllEntities() const -> const umap<uint, sptr<Entity>>&;
+	static auto GetInstance() -> Game*;
+	static auto GetDeltaTime() -> float;
+	static auto GetWindow() -> sf::RenderWindow*;
+	static auto GetCamera() -> Camera*;
+
+	template<typename T>
+	static auto GetManager() -> T*;
 
 private:
 	/* Window */
@@ -48,12 +42,6 @@ private:
 
 	/* Game camera */
 	uptr<Camera> _pMainCamera = nullptr;
-
-public:
-	static Game* GetInstance();
-
-	template<typename T>
-	static T* GetManager();
 };
 
 template<typename T>
