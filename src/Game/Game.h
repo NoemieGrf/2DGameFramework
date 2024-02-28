@@ -30,6 +30,10 @@ public:
 	static auto GetManager() -> T*;
 
 private:
+	template<typename T>
+	static void AddManager();
+
+private:
 	/* Window */
 	uptr<sf::RenderWindow> _pWindow = nullptr;
 
@@ -53,4 +57,10 @@ T* Game::GetManager()
 		return nullptr;
 
 	return dynamic_cast<T>(mgrMap[t].get());
+}
+
+template<typename T>
+void Game::AddManager()
+{
+	GetInstance()->_gameMgrMap.Add(T::Type(), std::make_unique<T>());
 }

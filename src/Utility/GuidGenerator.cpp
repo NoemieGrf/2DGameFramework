@@ -1,8 +1,8 @@
-#include "RuntimeIdManager.h"
+#include "GuidGenerator.h"
 
 using uint = unsigned int;
 
-uint RuntimeIdManager::GetNextRuntimeId()
+uint GuidGenerator::GetNextRuntimeId()
 {
 	uint id = _nextId;
 	_nextId++;

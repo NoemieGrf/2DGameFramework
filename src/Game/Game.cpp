@@ -6,16 +6,12 @@
 #include "SFML/Graphics/Color.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/Event.hpp"
-#include "SFML/Window/Keyboard.hpp"
 // myself
-#include "../Entity/EntityFactory.h"
-#include "../Component/Impl/CompTransform.h"
-#include "../Utility/Util.hpp"
-
 #include "../Manager/Impl/AiManager.h"
 #include "../Manager/Impl/ConfigManager.h"
 #include "../Manager/Impl/SceneManager.h"
 #include "../Manager/Impl/UserInputManager.h"
+#include "../Manager/Impl/PhysicsManager.h"
 
 Game::Game() = default;
 
@@ -29,10 +25,11 @@ void Game::Init()
     _pWindow = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowSize, windowSize), "2DGame");
 
     // create game manager
-    _gameMgrMap.Add(ConfigManager::Type(), std::make_unique<ConfigManager>());
-    _gameMgrMap.Add(UserInputManager::Type(), std::make_unique<UserInputManager>());
-    _gameMgrMap.Add(SceneManager::Type(), std::make_unique<SceneManager>());
-    _gameMgrMap.Add(AiManager::Type(), std::make_unique<AiManager>());
+    AddManager<ConfigManager>();
+    AddManager<UserInputManager>();
+    AddManager<SceneManager>();
+    AddManager<AiManager>();
+    AddManager<PhysicsManager>();
 
     // create level
     GetManager<SceneManager>()->InitLevel();

@@ -1,11 +1,11 @@
 #pragma once
 
-class RuntimeIdManager
+class GuidGenerator
 {
 	using uint = unsigned int;
 
 public:
-	RuntimeIdManager() = delete;
+	GuidGenerator() = delete;
 
 public:
 	static uint GetNextRuntimeId();

@@ -6,4 +6,5 @@ enum class GameManagerType
     Scene,
     Ai,
     Config,
+    Physics,
 };

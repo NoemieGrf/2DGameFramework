@@ -14,7 +14,7 @@ sptr<Entity> EntityFactory::CreatePlayer()
 	sptr<Entity> pPlayer = std::make_shared<Entity>();
 
 	// comp guid
-	pPlayer->AddComponent(std::make_unique<CompGuid>(RuntimeIdManager::GetNextRuntimeId()));
+	pPlayer->AddComponent(std::make_unique<CompGuid>(GuidGenerator::GetNextRuntimeId()));
 
 	// comp transform
 	pPlayer->AddComponent(std::make_unique<CompTransform>());
@@ -30,7 +30,7 @@ sptr<Entity> EntityFactory::CreateMonster()
 	sptr<Entity> pMonster = std::make_shared<Entity>();
 
 	// comp guid
-	pMonster->AddComponent(std::make_unique<CompGuid>(RuntimeIdManager::GetNextRuntimeId()));
+	pMonster->AddComponent(std::make_unique<CompGuid>(GuidGenerator::GetNextRuntimeId()));
 
 	// comp transform
 	pMonster->AddComponent(std::make_unique<CompTransform>());
@@ -51,7 +51,7 @@ sptr<Entity> EntityFactory::CreateGadget(const std::string& pngPath)
 	sptr<Entity> pGadget = std::make_shared<Entity>();
 
 	// comp guid
-	pGadget->AddComponent(std::make_unique<CompGuid>(RuntimeIdManager::GetNextRuntimeId()));
+	pGadget->AddComponent(std::make_unique<CompGuid>(GuidGenerator::GetNextRuntimeId()));
 
 	// comp transform
 	pGadget->AddComponent(std::make_unique<CompTransform>());
