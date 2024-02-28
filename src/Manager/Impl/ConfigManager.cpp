@@ -1,8 +1,8 @@
 #include "ConfigManager.h"
 
-#include <iostream>
 #include <fstream>
 #include "nlohmann/json.hpp"
+#include "../../Utility/Logger.h"
 
 static nlohmann::json LoadJsonFile(const std::string& filePath)
 {
@@ -10,7 +10,7 @@ static nlohmann::json LoadJsonFile(const std::string& filePath)
     std::ifstream configJsonFile(filePath);
     if (!configJsonFile.is_open())
     {
-        std::cout << "File open failed: " << filePath << std::endl;
+        Logger::LogError(std::string("File open failed: ") + filePath);
         return json;
     }
 
@@ -34,6 +34,11 @@ void ConfigManager::LoadGlobalSetting()
     _globalSetting.globalGrivity = json["globalGrivity"];
 }
 
+void ConfigManager::LoadLevelSetting()
+{
+    nlohmann::json json = LoadJsonFile("./config/LevelSetting.json");
+}
+
 void ConfigManager::LoadPlayerSetting()
 {
     nlohmann::json json = LoadJsonFile("./config/PlayerSetting.json");
@@ -55,6 +60,11 @@ void ConfigManager::LoadSceneSetting()
 const GlobalSetting& ConfigManager::GetGlobalSetting() const
 {
     return _globalSetting;
+}
+
+const LevelSetting& ConfigManager::GetLevelSetting() const
+{
+    return _levelSetting;
 }
 
 const PlayerSetting& ConfigManager::GetPlayerSetting() const

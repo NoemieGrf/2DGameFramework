@@ -1,8 +1,6 @@
 #include "Game.h"
 
 // std
-#include <fstream>
-#include <iostream>
 #include <memory>
 // 3rd party
 #include "SFML/Graphics/Color.hpp"
@@ -37,6 +35,9 @@ void Game::Init()
     _gameMgrMap.Add(UserInputManager::Type(), std::make_unique<UserInputManager>());
     _gameMgrMap.Add(SceneManager::Type(), std::make_unique<SceneManager>());
     _gameMgrMap.Add(AiManager::Type(), std::make_unique<AiManager>());
+
+    // create level
+    GetManager<SceneManager>()->InitLevel();
 }
 
 Game* Game::GetInstance()

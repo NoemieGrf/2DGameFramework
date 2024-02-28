@@ -6,6 +6,9 @@
 class SceneManager: public GameManagerTypeGetter<GameManagerType::Scene>
 {
 public:
+    auto InitLevel() -> void;
+
+public:
     auto GetEntity(uint guid) const -> Entity*;
     auto GetPlayerEntity() const -> Entity*;
 

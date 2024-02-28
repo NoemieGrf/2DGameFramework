@@ -38,6 +38,11 @@ public:
         }
     }
 
+    bool Contains(const Key& key) const
+    {
+        return _map.contains(key);
+    }
+
     const Value& operator[](const Key& key) const
     {
         return _map[key];

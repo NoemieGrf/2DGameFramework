@@ -51,4 +51,18 @@ private:
 
 public:
 	static Game* GetInstance();
+
+	template<typename T>
+	static T* GetManager();
 };
+
+template<typename T>
+T* Game::GetManager()
+{
+	auto& mgrMap = GetInstance()->_gameMgrMap;
+	GameManagerType t = T::Type();
+	if (!mgrMap.Contains(t))
+		return nullptr;
+
+	return dynamic_cast<T>(mgrMap[t].get());
+}
