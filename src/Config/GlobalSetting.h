@@ -1,6 +1,9 @@
 #pragma once
 
+#include <string>
+
 struct GlobalSetting
 {
-    float globalGrivity;
+    float globalGravity;
+    std::string levelMapPath;
 };

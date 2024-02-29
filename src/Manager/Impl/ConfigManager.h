@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <string>
+
 #include "../GameManagerTypeGetter.h"
 #include "../../Config/GlobalSetting.h"
 #include "../../Config/PlayerSetting.h"
@@ -19,17 +22,25 @@ public:
     auto GetMonsterSetting() const -> const MonsterSetting&;
     auto GetSceneSetting() const -> const SceneSetting&;
 
-private:
-    void LoadGlobalSetting();
-    void LoadLevelSetting();
-    void LoadPlayerSetting();
-    void LoadMonsterSetting();
-    void LoadSceneSetting();
+    auto GetMapData() const -> const std::vector<std::string>&;
 
 private:
-    GlobalSetting _globalSetting;
-    LevelSetting _levelSetting;
-    PlayerSetting _playerSetting;
-    MonsterSetting _monsterSetting;
-    SceneSetting _sceneSetting;
+    auto LoadGlobalSetting() -> void;
+    auto LoadLevelSetting() -> void;
+    auto LoadPlayerSetting() -> void;
+    auto LoadMonsterSetting() -> void;
+    auto LoadSceneSetting() -> void;
+
+    auto LoadMap() -> void;
+
+private:
+    // json setting
+    GlobalSetting _globalSetting = {};
+    LevelSetting _levelSetting = {};
+    PlayerSetting _playerSetting = {};
+    MonsterSetting _monsterSetting = {};
+    SceneSetting _sceneSetting = {};
+
+    // txt setting
+    std::vector<std::string> _mapData = {};
 };

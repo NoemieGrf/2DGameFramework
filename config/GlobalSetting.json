@@ -1,3 +1,4 @@
 {
-    "globalGrivity": 9.8
+    "globalGravity": 9.8,
+    "levelMapPath": "./config/LevelMap.txt"
 }

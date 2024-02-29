@@ -26,20 +26,22 @@ ConfigManager::ConfigManager()
     LoadPlayerSetting();
     LoadMonsterSetting();
     LoadSceneSetting();
+    LoadMap();
 }
 
-void ConfigManager::LoadGlobalSetting()
+auto ConfigManager::LoadGlobalSetting() -> void
 {
     nlohmann::json json = LoadJsonFile("./config/GlobalSetting.json");
-    _globalSetting.globalGrivity = json["globalGrivity"];
+    _globalSetting.globalGravity = json["globalGrivity"];
+    _globalSetting.levelMapPath = json["levelMapPath"];
 }
 
-void ConfigManager::LoadLevelSetting()
+auto ConfigManager::LoadLevelSetting() -> void
 {
     nlohmann::json json = LoadJsonFile("./config/LevelSetting.json");
 }
 
-void ConfigManager::LoadPlayerSetting()
+auto ConfigManager::LoadPlayerSetting() -> void
 {
     nlohmann::json json = LoadJsonFile("./config/PlayerSetting.json");
     _playerSetting.imagePath = json["imagePath"];
@@ -47,37 +49,58 @@ void ConfigManager::LoadPlayerSetting()
     _playerSetting.initMaxMp = json["initMaxMp"];
 }
 
-void ConfigManager::LoadMonsterSetting()
+auto ConfigManager::LoadMonsterSetting() -> void
 {
     nlohmann::json json = LoadJsonFile("./config/MonsterSetting.json");
 }
 
-void ConfigManager::LoadSceneSetting()
+auto ConfigManager::LoadSceneSetting() -> void
 {
     nlohmann::json json = LoadJsonFile("./config/SceneSetting.json");
 }
 
-const GlobalSetting& ConfigManager::GetGlobalSetting() const
+auto ConfigManager::LoadMap() -> void
+{
+    std::ifstream txtFile(_globalSetting.levelMapPath);
+    if (!txtFile.is_open())
+    {
+        Logger::LogError(std::string("File open failed: ") + _globalSetting.levelMapPath);
+        return;
+    }
+
+    _mapData.clear();
+    if (std::string lineContent; std::getline(txtFile, lineContent))
+        _mapData.push_back(std::move(lineContent));
+
+    txtFile.close();
+}
+
+auto ConfigManager::GetGlobalSetting() const -> const GlobalSetting&
 {
     return _globalSetting;
 }
 
-const LevelSetting& ConfigManager::GetLevelSetting() const
+auto ConfigManager::GetLevelSetting() const -> const LevelSetting&
 {
     return _levelSetting;
 }
 
-const PlayerSetting& ConfigManager::GetPlayerSetting() const
+auto ConfigManager::GetPlayerSetting() const -> const PlayerSetting&
 {
     return _playerSetting;
 }
 
-const MonsterSetting& ConfigManager::GetMonsterSetting() const
+auto ConfigManager::GetMonsterSetting() const -> const MonsterSetting&
 {
     return _monsterSetting;
 }
 
-const SceneSetting& ConfigManager::GetSceneSetting() const
+auto ConfigManager::GetSceneSetting() const -> const SceneSetting&
 {
     return _sceneSetting;
+}
+
+auto ConfigManager::GetMapData() const -> const std::vector<std::string>&
+{
+    return _mapData;
 }

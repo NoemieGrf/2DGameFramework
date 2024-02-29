@@ -5,7 +5,13 @@
 PhysicsManager::PhysicsManager()
 {
     const ConfigManager* pConfigMgr = Game::GetManager<ConfigManager>();
-    b2Vec2 grivity { 0.0f, -pConfigMgr->GetGlobalSetting().globalGrivity };
+    b2Vec2 gravity { 0.0f, -pConfigMgr->GetGlobalSetting().globalGravity };
 
-    pPhysicWorld = new b2World(grivity);
+    _pPhysicWorld = std::make_unique<b2World>(gravity);
 }
+
+b2World* PhysicsManager::GetPhysicWorld() const
+{
+    return _pPhysicWorld.get();
+}
+
