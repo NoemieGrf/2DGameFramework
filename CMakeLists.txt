@@ -9,10 +9,14 @@ set(TARGET_NAME game)
 
 file(GLOB_RECURSE SRC_FILES src/*.cpp) # my file
 file(GLOB_RECURSE BOX2D_FILES ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/box2d/src/*.cpp) # box2d source files
+file(GLOB_RECURSE SPINE_CPP_FILES ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/spine-cpp/src/*.cpp) # box2d source files
+file(GLOB_RECURSE SPINE_SFML_FILES ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/spine-sfml/src/*.cpp) # box2d source files
 
 add_executable(${TARGET_NAME}
         ${SRC_FILES}
         ${BOX2D_FILES}
+        ${SPINE_CPP_FILES}
+        ${SPINE_SFML_FILES}
 )
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/artifacts/) # CMAKE_CURRENT_SOURCE_DIR: the directory of current CMakeLists.txt
@@ -27,7 +31,9 @@ target_include_directories(${TARGET_NAME} PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/nlohmann/include/
         ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/sfml/include/
         ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/box2d/include/
-) 
+        ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/spine-cpp/include/
+        ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/spine-sfml/include/
+)
 
 # additional static lib directories
 target_link_directories(${TARGET_NAME} PRIVATE
