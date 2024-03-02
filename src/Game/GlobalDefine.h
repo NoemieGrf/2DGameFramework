@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <unordered_map>
 #include <unordered_set>
 #include <memory>
@@ -8,8 +9,8 @@
 
 using uint = unsigned int;
 
-template<typename T, typename Y>
-using umap = std::unordered_map<T, Y>;
+template<typename Key, typename Value, typename Hash = std::hash<Key>>
+using umap = std::unordered_map<Key, Value, Hash>;
 
 template<typename T>
 using uset = std::unordered_set<T>;
@@ -34,3 +35,16 @@ sf::Vector2<To> VecConvert(const sf::Vector2<From>& src)
 
     return result;
 }
+
+template<typename T>
+struct Vec2Hash
+{
+    size_t operator()(const sf::Vector2<T>& vec) const
+    {
+        return std::hash(vec.x) ^ std::hash(vec.y);
+    }
+};
+
+using vec2fHash = Vec2Hash<float>;
+using vec2iHash = Vec2Hash<int>;
+using vec2uHash = Vec2Hash<unsigned int>;

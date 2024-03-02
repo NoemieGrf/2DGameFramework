@@ -52,6 +52,22 @@ auto ConfigManager::LoadPlayerSetting() -> void
 auto ConfigManager::LoadMonsterSetting() -> void
 {
     nlohmann::json json = LoadJsonFile("./config/MonsterSetting.json");
+
+    // all monster detail
+    for (auto monsterConfigJson: json["allConfig"])
+    {
+        MonsterConfig config;
+        config.monsterName = monsterConfigJson["name"];
+        _monsterSetting.monsterConfig[config.monsterName] = config;
+    }
+
+    // monster mark
+    for (auto monsterMapMarkJson: json["monsterMapMark"])
+    {
+        std::string mark = monsterMapMarkJson["mark"];
+        std::string monster = monsterMapMarkJson["monster"];
+        _monsterSetting.monsterMapMark[mark[0]] = monster;
+    }
 }
 
 auto ConfigManager::LoadSceneSetting() -> void

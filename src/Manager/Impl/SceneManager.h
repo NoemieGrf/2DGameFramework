@@ -2,6 +2,7 @@
 
 #include "../GameManagerTypeGetter.h"
 #include "../../Entity/Entity.h"
+#include "../../Map/Map.h"
 
 class SceneManager: public GameManagerTypeGetter<GameManagerType::Scene>
 {
@@ -13,6 +14,12 @@ public:
     auto GetPlayerEntity() const -> Entity*;
 
 private:
+    auto InitMap() -> void;
+
+private:
+    // level mao
+    Map _levelMap;
+
     // all entities in scene
 	umap<uint, uptr<Entity>> _allEntitiesMap = {};
 
