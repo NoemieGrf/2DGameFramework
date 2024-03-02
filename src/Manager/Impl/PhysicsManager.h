@@ -15,8 +15,8 @@ public:
 
 private:
     // physic world
-    uptr<b2World> _pPhysicWorld = nullptr;
+    b2World* _pPhysicWorld = nullptr;
 
     // ground
-    uptr<b2Body> _pGroundBody = nullptr;
+    b2Body* _pGroundBody = nullptr;
 };

@@ -28,13 +28,29 @@ public:
         }
     }
 
+    void Add(const Key& key, Value&& value)
+    {
+        auto isExistItr = _map.find(key);
+        if (isExistItr != _map.end())
+        {
+            _map[key] = std::move(value);
+            _list.remove(key); // remove old key
+            _list.push_back(key); // add at the tail of the list
+        }
+        else
+        {
+            _map[key] = std::move(value);
+            _list.push_back(key);
+        }
+    }
+
     void Remove(const Key& key)
     {
         auto isExistItr = _map.find(key);
         if (isExistItr != _map.end())
         {
-            _map.erase(key);
-            _list.erase(key);
+            _map.erase(isExistItr);
+            _list.remove(key);
         }
     }
 
@@ -45,7 +61,8 @@ public:
 
     const Value& operator[](const Key& key) const
     {
-        return _map[key];
+        auto itr = _map.find(key);
+        return itr->second;
     }
 
     std::list<Key>::iterator begin()

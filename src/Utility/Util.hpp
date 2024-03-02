@@ -31,7 +31,7 @@ public:
         }
 	}
 
-    inline static bool IsRectOverlap(
+    static bool IsRectOverlap(
         const vec2f& Rect1TopLeft, 
         const vec2f& Rect1DownRight, 
         const vec2f& Rect2TopLeft, 
@@ -43,7 +43,7 @@ public:
         return xOverlap && yOverlap;
     }
 
-    inline static bool IsRectContains(
+    static bool IsRectContains(
         const vec2f& outerRectTopLeft, 
         const vec2f& outerRectDownRight, 
         const vec2f& innerRectTopLeft, 
@@ -55,7 +55,7 @@ public:
             innerRectDownRight.y <= outerRectDownRight.y);
     }
 
-    inline static vec2f Normalize(const vec2f& src)
+    static vec2f Normalize(const vec2f& src)
     {
         float norm = std::sqrt(src.x * src.x + src.y * src.y);
         return vec2f {

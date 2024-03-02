@@ -8,6 +8,7 @@
 
 void Camera::DoRender()
 {
+    /*
     // 1. Calculate the render bound.
     auto pWindow = Game::GetInstance()->GetWindow();
     vec2f windowSize = VecConvert<unsigned int, float>(pWindow->getSize());
@@ -52,4 +53,5 @@ void Camera::DoRender()
     {
         pWindow->draw(pRenderComp->GetSprite());
     }
+    */
 }

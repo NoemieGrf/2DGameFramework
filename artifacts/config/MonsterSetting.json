@@ -1,0 +1,27 @@
+{
+    "allConfig": [
+		{
+			"name": "EasyMonster"
+		},
+		{
+			"name": "MiddleMonster"
+		},
+		{
+			"name": "HardMonster"
+		}
+	],
+	"monsterMapMark": [
+		{
+			"mark": "A",
+			"monster": "EasyMonster"
+		},
+		{
+			"mark": "B",
+			"monster": "MiddleMonster"
+		},
+		{
+			"mark": "C",
+			"monster": "HardMonster"
+		}
+	]
+}

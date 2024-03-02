@@ -41,7 +41,7 @@ struct Vec2Hash
 {
     size_t operator()(const sf::Vector2<T>& vec) const
     {
-        return std::hash(vec.x) ^ std::hash(vec.y);
+        return std::hash<T>()(vec.x) ^ std::hash<T>()(vec.y);
     }
 };
 

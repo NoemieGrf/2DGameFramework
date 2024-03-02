@@ -9,17 +9,17 @@ auto Map::Clear() -> void
     _monstersBornCoord.clear();
 }
 
-auto Map::AddGroundTile(const vec2i& tile)
+auto Map::AddGroundTile(const vec2i& tile) -> void
 {
     _ground.push_back(tile);
 }
 
-auto Map::SetPlayerBornCoord(const vec2i& coord)
+auto Map::SetPlayerBornCoord(const vec2i& coord) -> void
 {
     _playerBornCoord = coord;
 }
 
-auto Map::AddMonsterBornCoord(const vec2i& coord, const std::string& monsterConfigName)
+auto Map::AddMonsterBornCoord(const vec2i& coord, const std::string& monsterConfigName) -> void
 {
     _monstersBornCoord[coord] = monsterConfigName;
 }

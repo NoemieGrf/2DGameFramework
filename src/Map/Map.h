@@ -11,9 +11,9 @@ public:
 
 public:
     auto Clear() -> void;
-    auto SetPlayerBornCoord(const vec2i& coord);
-    auto AddGroundTile(const vec2i& tile);
-    auto AddMonsterBornCoord(const vec2i& coord, const std::string& monsterConfigName);
+    auto SetPlayerBornCoord(const vec2i& coord) -> void;
+    auto AddGroundTile(const vec2i& tile) -> void;
+    auto AddMonsterBornCoord(const vec2i& coord, const std::string& monsterConfigName) -> void;
 
 public:
     auto GetPlayerBornCoord() const -> const vec2i&;

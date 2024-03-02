@@ -56,7 +56,7 @@ T* Game::GetManager()
 	if (!mgrMap.Contains(t))
 		return nullptr;
 
-	return dynamic_cast<T>(mgrMap[t].get());
+	return dynamic_cast<T*>(mgrMap[t].get());
 }
 
 template<typename T>
