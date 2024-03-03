@@ -10,8 +10,9 @@ public:
     auto InitLevel() -> void;
 
 public:
-    auto GetEntity(uint guid) const -> Entity*;
-    auto GetPlayerEntity() const -> Entity*;
+    auto GetEntity(uint guid) -> Entity*;
+    auto GetPlayerEntity() -> Entity*;
+    auto GetSceneEntities() -> umap<uint, uptr<Entity>>&;
 
 private:
     auto InitMap() -> void;

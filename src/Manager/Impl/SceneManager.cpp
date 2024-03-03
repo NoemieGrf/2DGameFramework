@@ -35,7 +35,7 @@ void SceneManager::InitMap()
     }
 }
 
-Entity* SceneManager::GetEntity(uint uid) const
+Entity* SceneManager::GetEntity(uint uid)
 {
     auto itr = _allEntitiesMap.find(uid);
     if (itr == _allEntitiesMap.end())
@@ -44,7 +44,12 @@ Entity* SceneManager::GetEntity(uint uid) const
     return itr->second.get();
 }
 
-Entity* SceneManager::GetPlayerEntity() const 
+Entity* SceneManager::GetPlayerEntity() 
 {
     return GetEntity(_playerGuid);
+}
+
+umap<uint, uptr<Entity>>& SceneManager::GetSceneEntities()
+{
+    return _allEntitiesMap;
 }

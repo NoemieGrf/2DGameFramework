@@ -8,4 +8,5 @@ enum class GameManagerType
     Ai,
     Config,
     Physics,
+    Animation,
 };

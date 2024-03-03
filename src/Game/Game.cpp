@@ -9,9 +9,11 @@
 // myself
 #include "../Manager/Impl/AiManager.h"
 #include "../Manager/Impl/ConfigManager.h"
+#include "../Manager/Impl/ResourceManager.h"
 #include "../Manager/Impl/SceneManager.h"
 #include "../Manager/Impl/UserInputManager.h"
 #include "../Manager/Impl/PhysicsManager.h"
+#include "../Manager/Impl/AnimationManager.h"
 
 Game::Game() = default;
 
@@ -23,13 +25,16 @@ void Game::Init()
     uint screenWidth = sf::VideoMode::getDesktopMode().width;
     uint windowSize = 0.7 * std::min(screenHeight, screenWidth);
     _pWindow = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowSize, windowSize), "2DGame");
+    _pWindow->setFramerateLimit(60);
 
     // create game manager, order is really important!
     AddManager<ConfigManager>();
+    AddManager<ResourceManager>();
     AddManager<PhysicsManager>();
     AddManager<UserInputManager>();
     AddManager<SceneManager>();
     AddManager<AiManager>();
+    AddManager<AnimationManager>();
 
     // create level
     GetManager<SceneManager>()->InitLevel();
