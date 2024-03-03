@@ -46,6 +46,7 @@ auto ConfigManager::LoadSpineSetting() -> void
         spineData.name = spineDataNode["name"];
         spineData.jsonPath = spineDataNode["jsonPath"];
         spineData.atlasPath = spineDataNode["atlasPath"];
+        spineData.loadScale = spineDataNode["loadScale"];
         _spineSetting.allSpineData[spineData.name] = spineData;
     }
 }

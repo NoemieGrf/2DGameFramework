@@ -8,6 +8,7 @@ struct SpineData
     std::string name;
     std::string jsonPath;
     std::string atlasPath;
+    float loadScale;
 };
 
 struct SpineSetting

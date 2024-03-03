@@ -2,7 +2,7 @@
 
 #include <string>
 #include "spine-sfml/spine-sfml.h"
-#include "SpineResData.h"
+#include "../Game/GlobalDefine.h"
 
 class SpineFactory
 {
@@ -10,7 +10,7 @@ public:
     SpineFactory() = delete;
 
 public:
-    static auto GetSpine(const std::string& jsonPath, const std::string& atlasPath) -> SpineResData;
+    static auto CreateSpineDrawable(const std::string& spineName) -> uptr<spine::SkeletonDrawable>;
 
 
 private:
@@ -22,10 +22,10 @@ private:
         // atlas -> hold the reference of real PNG file, and all slices of PNG.
         uptr<spine::Atlas> pAtlasData = nullptr;
 
-        // skeleton -> hold the real data of skeleton data & animation data.
-        uptr<spine::Skeleton> pSkeletonData = nullptr;
+        // skeleton -> hold the real data of skeleton data & reference to atlas.
+        uptr<spine::SkeletonData> pSkeletonData = nullptr;
     };
 
 public:
-    
+    inline static umap<std::string, SpineResData> _spineResourcePool {};
 };
