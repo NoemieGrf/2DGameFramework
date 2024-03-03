@@ -3,7 +3,8 @@
 enum class ComponentType: int
 {
 	Transform,
-	Renderer,
+	SpriteRender,
+	SpineRender,
 	Guid,
 	Ai,
 	Collider,

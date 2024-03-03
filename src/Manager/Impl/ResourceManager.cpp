@@ -1,12 +1,13 @@
-#include "SpineFactory.h"
+#include "ResourceManager.h"
 #include <memory>
-#include "../Game/Game.h"
-#include "../Manager/Impl/ConfigManager.h"
-#include "../Utility/Logger.h"
+#include "../../Game/Game.h"
+#include "../../Manager/Impl/ConfigManager.h"
+#include "../../Utility/Logger.h"
+#include "SFML/Graphics/Texture.hpp"
 #include "spine/Atlas.h"
 #include "spine/SkeletonJson.h"
 
-uptr<spine::SkeletonDrawable> SpineFactory::CreateSpineDrawable(const std::string& spineName)
+uptr<spine::SkeletonDrawable> ResourceManager::CreateSpineDrawable(const std::string& spineName)
 {
     auto itr = _spineResourcePool.find(spineName);
     if (itr != _spineResourcePool.end())
@@ -26,7 +27,7 @@ uptr<spine::SkeletonDrawable> SpineFactory::CreateSpineDrawable(const std::strin
 
         auto& spineSetting = gameSpineSetting.allSpineData.at(spineName);
 
-        // 1. create the texture loader
+        // 1. create the texture loader.
         uptr<spine::SFMLTextureLoader> pTextureLoader = std::make_unique<spine::SFMLTextureLoader>();
 
         // 2. create the atlas and the use texture loader to load the PNG file.
@@ -37,21 +38,43 @@ uptr<spine::SkeletonDrawable> SpineFactory::CreateSpineDrawable(const std::strin
             return nullptr;
         }
 
-        // 3. create skeleton json and use it to load skeleton data
+        // 3. create skeleton json and use it to load skeleton data.
         spine::SkeletonJson tempSkeletonJson(pAtlas.get());
         tempSkeletonJson.setScale(spineSetting.loadScale);
 
         spine::SkeletonData* pSkeletonDataRaw = tempSkeletonJson.readSkeletonDataFile(spineSetting.jsonPath.c_str());
         uptr<spine::SkeletonData> pSkeletonData(pSkeletonDataRaw);
 
-        // 4. save all unique ptr
+        // 4. save all unique ptr.
         SpineResData spineData;
         spineData.pTextureLoader = std::move(pTextureLoader);
         spineData.pAtlasData = std::move(pAtlas);
         spineData.pSkeletonData = std::move(pSkeletonData);
         _spineResourcePool[spineName] = std::move(spineData);
 
-        // 5. make SFML drawable and return
+        // 5. make SFML drawable and return.
         return std::make_unique<spine::SkeletonDrawable>(spineData.pSkeletonData.get());
     }
 }
+
+uptr<sf::Sprite> ResourceManager::CreateSpriteDrawable(const std::string& pngPath)
+{
+    auto itr = _textureResourcePool.find(pngPath);
+    if (itr == _textureResourcePool.end())
+    {
+        _textureResourcePool[pngPath].loadFromFile(pngPath);
+    }
+
+    uptr<sf::Sprite> pSprite = std::make_unique<sf::Sprite>();
+
+    // set texture to sprite.
+    const sf::Texture& texture = _textureResourcePool[pngPath];
+    pSprite->setTexture(itr->second);
+
+    // set original to the bottom middle of the texture.
+	vec2f textSize = VecConvert<unsigned int, float>(texture.getSize());
+	pSprite->setOrigin(vec2f{ textSize.x / 2.0f, textSize.y});
+
+    return pSprite;
+}
+

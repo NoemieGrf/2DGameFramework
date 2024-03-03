@@ -3,6 +3,7 @@
 enum class GameManagerType
 {
     UserInput,
+    Resource,
     Scene,
     Ai,
     Config,
