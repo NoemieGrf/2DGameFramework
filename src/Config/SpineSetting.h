@@ -1,7 +1,15 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
+#include <vector>
+#include "../Game/GlobalDefine.h"
+
+struct AnimationBlendPair
+{
+    std::string from;
+    std::string to;
+    float mixTime;
+};
 
 struct SpineData
 {
@@ -9,9 +17,9 @@ struct SpineData
     std::string jsonPath;
     std::string atlasPath;
     float loadScale;
+    std::vector<AnimationBlendPair> animationData;
 };
-
 struct SpineSetting
 {
-    std::unordered_map<std::string, SpineData> allSpineData;
+    umap<std::string, SpineData> allSpineData;
 };

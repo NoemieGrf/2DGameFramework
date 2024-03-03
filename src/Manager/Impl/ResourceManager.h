@@ -7,6 +7,7 @@
 #include "spine-sfml/spine-sfml.h"
 #include "../GameManagerTypeGetter.h"
 #include "../../Game/GlobalDefine.h"
+#include "spine/AnimationStateData.h"
 
 class ResourceManager: public GameManagerTypeGetter<GameManagerType::Resource>
 {
@@ -25,6 +26,9 @@ private:
 
         // skeleton -> hold the real data of skeleton data & reference to atlas.
         uptr<spine::SkeletonData> pSkeletonData = nullptr;
+
+        // animation -> hold the data of animation blend.
+        uptr<spine::AnimationStateData> pAnimationMixer = nullptr;
     };
 
 public:

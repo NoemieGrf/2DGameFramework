@@ -9,11 +9,13 @@
 
 uptr<spine::SkeletonDrawable> ResourceManager::CreateSpineDrawable(const std::string& spineName)
 {
+    uptr<spine::SkeletonDrawable> pResult = nullptr;
+
     auto itr = _spineResourcePool.find(spineName);
     if (itr != _spineResourcePool.end())
     {
         const SpineResData& spineData = itr->second;
-        return std::make_unique<spine::SkeletonDrawable>(spineData.pSkeletonData.get());
+        pResult = std::make_unique<spine::SkeletonDrawable>(spineData.pSkeletonData.get(), spineData.pAnimationMixer.get());
     }
     else
     {
@@ -45,16 +47,25 @@ uptr<spine::SkeletonDrawable> ResourceManager::CreateSpineDrawable(const std::st
         spine::SkeletonData* pSkeletonDataRaw = tempSkeletonJson.readSkeletonDataFile(spineSetting.jsonPath.c_str());
         uptr<spine::SkeletonData> pSkeletonData(pSkeletonDataRaw);
 
-        // 4. save all unique ptr.
+        // 4. create animation mixer.
+        uptr<spine::AnimationStateData> pAnimationMixer = std::make_unique<spine::AnimationStateData>(pSkeletonDataRaw);
+        for (const auto& animMixPair: spineSetting.animationData)
+            pAnimationMixer->setMix(animMixPair.from.c_str(), animMixPair.to.c_str(), animMixPair.mixTime);
+
+        // 5. save all unique ptr.
         SpineResData spineData;
         spineData.pTextureLoader = std::move(pTextureLoader);
         spineData.pAtlasData = std::move(pAtlas);
         spineData.pSkeletonData = std::move(pSkeletonData);
+        spineData.pAnimationMixer = std::move(pAnimationMixer);
+
         _spineResourcePool[spineName] = std::move(spineData);
 
-        // 5. make SFML drawable and return.
-        return std::make_unique<spine::SkeletonDrawable>(spineData.pSkeletonData.get());
+        // 6. make SFML drawable and return.
+        pResult = std::make_unique<spine::SkeletonDrawable>(spineData.pSkeletonData.get(), spineData.pAnimationMixer.get());
     }
+
+    return pResult;
 }
 
 uptr<sf::Sprite> ResourceManager::CreateSpriteDrawable(const std::string& pngPath)

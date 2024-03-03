@@ -33,7 +33,7 @@ ConfigManager::ConfigManager()
 auto ConfigManager::LoadGlobalSetting() -> void
 {
     nlohmann::json json = LoadJsonFile("./config/GlobalSetting.json");
-    _globalSetting.globalGravity = json["globalGrivity"];
+    _globalSetting.globalGravity = json["globalGravity"];
     _globalSetting.levelMapPath = json["levelMapPath"];
 }
 
@@ -47,7 +47,17 @@ auto ConfigManager::LoadSpineSetting() -> void
         spineData.jsonPath = spineDataNode["jsonPath"];
         spineData.atlasPath = spineDataNode["atlasPath"];
         spineData.loadScale = spineDataNode["loadScale"];
-        _spineSetting.allSpineData[spineData.name] = spineData;
+
+        for (auto blendPairNode: spineDataNode["animationBlend"])
+        {
+            AnimationBlendPair blendPair;
+            blendPair.from = blendPairNode["from"];
+            blendPair.to = blendPairNode["to"];
+            blendPair.mixTime = blendPairNode["mixTime"];
+            spineData.animationData.push_back(std::move(blendPair));
+        }
+
+        _spineSetting.allSpineData[spineData.name] = std::move(spineData);
     }
 }
 

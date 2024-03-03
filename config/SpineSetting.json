@@ -3,6 +3,19 @@
         "name": "player",
         "jsonPath": "./assets/spine/player/player.json",
         "atlasPath": "./assets/spine/player/player.atlas",
-        "loadScale": 0.2
+        "loadScale": 0.2,
+        "animationBlend": 
+        [
+            {
+                "from": "Wait1Loop",
+                "to": "Run",
+                "mixTime": 0.1
+            },
+            {
+                "from": "Run",
+                "to": "Wait1Loop",
+                "mixTime": 0.1
+            }
+        ]
     }
 ]
