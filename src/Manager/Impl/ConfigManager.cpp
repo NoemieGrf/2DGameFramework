@@ -59,7 +59,7 @@ auto ConfigManager::LoadLevelSetting() -> void
 auto ConfigManager::LoadPlayerSetting() -> void
 {
     nlohmann::json json = LoadJsonFile("./config/PlayerSetting.json");
-    _playerSetting.imagePath = json["imagePath"];
+    _playerSetting.spineName = json["spineName"];
     _playerSetting.initMaxHp = json["initMaxHp"];
     _playerSetting.initMaxMp = json["initMaxMp"];
 }

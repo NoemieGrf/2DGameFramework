@@ -7,12 +7,9 @@
 class CompSprite : public ComponentTypeGetter<ComponentType::SpriteRender>
 {
 public:
-	auto LoadTexture(const std::string& texPath) -> void;
-
-	auto GetSprite() -> sf::Sprite&;
-	auto SetFlip(bool doFlip) -> void;
+	auto Load(const std::string& texPath) -> void;
+	auto GetSprite() -> sf::Sprite*;
 
 private:
-	sf::Texture _texture;
-	sf::Sprite _sprite;
+	uptr<sf::Sprite> _pSprite = nullptr;
 };

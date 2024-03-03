@@ -1,14 +1,17 @@
 #include "EntityFactory.h"
 #include "../Game/Game.h"
+#include "../Manager/Impl/ConfigManager.h"
 #include "../Utility/GuidGenerator.h"
 #include "../Component/Impl/CompGuid.h"
-#include "../Component/Impl/CompRenderer.h"
+#include "../Component/Impl/CompSpine.h"
+#include "../Component/Impl/CompSprite.h"
 #include "../Component/Impl/CompTransform.h"
 #include <memory>
 
 
 sptr<Entity> EntityFactory::CreatePlayer()
 {
+	ConfigManager* configMgr = Game::GetManager<ConfigManager>();
 	sptr<Entity> pPlayer = std::make_shared<Entity>();
 
 	// comp guid
@@ -19,8 +22,8 @@ sptr<Entity> EntityFactory::CreatePlayer()
 	pPlayer->AddComponent<CompTransform>();
 
 	// comp render
-	const auto pRender = pPlayer->AddComponent<CompRenderer>();
-	pRender->LoadTexture("./assets/player.png");
+	const auto pRender = pPlayer->AddComponent<CompSpine>();
+	pRender->Load(configMgr->GetPlayerSetting().spineName);
 
 	return pPlayer;
 }
@@ -36,10 +39,6 @@ sptr<Entity> EntityFactory::CreateMonster()
 	// comp transform
 	pMonster->AddComponent<CompTransform>();
 
-	// comp render
-	const auto pRender = pMonster->AddComponent<CompRenderer>();
-	pRender->LoadTexture("./assets/monster0.png");
-
 	return pMonster;
 }
 
@@ -53,10 +52,6 @@ sptr<Entity> EntityFactory::CreateGadget(const std::string& pngPath)
 
 	// comp transform
 	pGadget->AddComponent<CompTransform>();
-
-	// comp render
-	const auto pRender = pGadget->AddComponent<CompRenderer>();
-	pRender->LoadTexture(pngPath);
 
 	return pGadget;
 }

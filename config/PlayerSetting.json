@@ -1,5 +1,5 @@
 {
-    "imagePath": "./assets/player.png",
+    "spineName": "player",
     "initMaxHp": 100,
     "initMaxMp": 100
 }

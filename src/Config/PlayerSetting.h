@@ -4,7 +4,7 @@
 
 struct PlayerSetting
 {
-    std::string imagePath;
+    std::string spineName;
     int initMaxHp;
     int initMaxMp;
 };
