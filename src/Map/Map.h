@@ -36,7 +36,8 @@ public:
     auto SetTileScale(int x, int y) -> void;
     auto SetTileFunction(const vec2i& coord, TileFunction f) -> void;
     auto GetFunctionality(const vec2i& coord) const -> TileFunction;
-    auto GetPlayerBornTileCoordinate() -> const vec2i&;
+    auto GetPlayerBornTileCoordinate() const -> const vec2i&;
+    auto GetTileMap() -> std::vector<std::vector<TileFunction>>&;
 
 private:
     vec2i _playerBornCoord;

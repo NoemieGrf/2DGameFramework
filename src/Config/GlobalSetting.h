@@ -6,4 +6,5 @@ struct GlobalSetting
 {
     float globalGravity;
     std::string levelMapPath;
+    std::string levelWallTexPath;
 };

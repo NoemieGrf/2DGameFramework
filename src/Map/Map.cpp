@@ -39,8 +39,13 @@ Map::TileFunction Map::GetFunctionality(const vec2i& coord) const
     return _tileMap[coord.x][coord.y];
 }
 
-const vec2i& Map::GetPlayerBornTileCoordinate()
+const vec2i& Map::GetPlayerBornTileCoordinate() const
 {
     return _playerBornCoord;
+}
+
+std::vector<std::vector<Map::TileFunction>>& Map::GetTileMap()
+{
+    return _tileMap;
 }
 

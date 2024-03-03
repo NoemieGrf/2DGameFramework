@@ -10,8 +10,8 @@ public:
 	EntityFactory() = delete;
 
 public:
-	static sptr<Entity> CreatePlayer();
-	static sptr<Entity> CreateMonster();
-	static sptr<Entity> CreateGadget(const std::string& pngPath);
+	static std::pair<uint, uptr<Entity>> CreatePlayer(const vec2f& initWorldPos);
+	static std::pair<uint, uptr<Entity>> CreateMonster(const vec2f& initWorldPos);
+	static std::pair<uint, uptr<Entity>> CreateGadget(const std::string& pngPath, const vec2f& initWorldPos);
 
 };

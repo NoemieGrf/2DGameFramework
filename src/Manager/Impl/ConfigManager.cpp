@@ -35,6 +35,7 @@ auto ConfigManager::LoadGlobalSetting() -> void
     nlohmann::json json = LoadJsonFile("./config/GlobalSetting.json");
     _globalSetting.globalGravity = json["globalGravity"];
     _globalSetting.levelMapPath = json["levelMapPath"];
+    _globalSetting.levelWallTexPath = json["levelWallTexPath"];
 }
 
 auto ConfigManager::LoadSpineSetting() -> void

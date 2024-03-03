@@ -1,4 +1,5 @@
 #include "EntityFactory.h"
+
 #include "../Game/Game.h"
 #include "../Manager/Impl/ConfigManager.h"
 #include "../Utility/GuidGenerator.h"
@@ -6,52 +7,62 @@
 #include "../Component/Impl/CompSpine.h"
 #include "../Component/Impl/CompSprite.h"
 #include "../Component/Impl/CompTransform.h"
-#include <memory>
+#include "../Component/Impl/CompCollider.h"
 
 
-sptr<Entity> EntityFactory::CreatePlayer()
+std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(const vec2f& initWorldPos)
 {
 	ConfigManager* configMgr = Game::GetManager<ConfigManager>();
-	sptr<Entity> pPlayer = std::make_shared<Entity>();
+	uint guid = GuidGenerator::GetNextRuntimeId();
+	uptr<Entity> pEntity = std::make_unique<Entity>();
 
 	// comp guid
-	const auto pGuid = pPlayer->AddComponent<CompGuid>();
-	pGuid->SetGuid(GuidGenerator::GetNextRuntimeId());
+	const auto pGuid = pEntity->AddComponent<CompGuid>();
+	pGuid->SetGuid(guid);
 
 	// comp transform
-	pPlayer->AddComponent<CompTransform>();
+	auto pTrans = pEntity->AddComponent<CompTransform>();
+	pTrans->SetPosition(initWorldPos);
 
 	// comp render
-	const auto pRender = pPlayer->AddComponent<CompSpine>();
+	const auto pRender = pEntity->AddComponent<CompSpine>();
 	pRender->Load(configMgr->GetPlayerSetting().spineName);
 
-	return pPlayer;
+	return { guid, std::move(pEntity) };
 }
 
-sptr<Entity> EntityFactory::CreateMonster()
+std::pair<uint, uptr<Entity>> EntityFactory::CreateMonster(const vec2f& initWorldPos)
 {
-	sptr<Entity> pMonster = std::make_shared<Entity>();
+	uptr<Entity> pEntity = std::make_unique<Entity>();
+	uint guid = GuidGenerator::GetNextRuntimeId();
 
 	// comp guid
-	const auto pGuid = pMonster->AddComponent<CompGuid>();
-	pGuid->SetGuid(GuidGenerator::GetNextRuntimeId());
+	const auto pGuid = pEntity->AddComponent<CompGuid>();
+	pGuid->SetGuid(guid);
 
 	// comp transform
-	pMonster->AddComponent<CompTransform>();
+	auto pTrans = pEntity->AddComponent<CompTransform>();
+	pTrans->SetPosition(initWorldPos);
 
-	return pMonster;
+	return { guid, std::move(pEntity) };
 }
 
-sptr<Entity> EntityFactory::CreateGadget(const std::string& pngPath)
+std::pair<uint, uptr<Entity>> EntityFactory::CreateGadget(const std::string& pngPath, const vec2f& initWorldPos)
 {
-	sptr<Entity> pGadget = std::make_shared<Entity>();
+	uptr<Entity> pEntity = std::make_unique<Entity>();
+	uint guid = GuidGenerator::GetNextRuntimeId();
 
 	// comp guid
-	const auto pGuid = pGadget->AddComponent<CompGuid>();
-	pGuid->SetGuid(GuidGenerator::GetNextRuntimeId());
+	auto pGuid = pEntity->AddComponent<CompGuid>();
+	pGuid->SetGuid(guid);
 
 	// comp transform
-	pGadget->AddComponent<CompTransform>();
+	auto pTrans = pEntity->AddComponent<CompTransform>();
+	pTrans->SetPosition(initWorldPos);
 
-	return pGadget;
+	// comp collider
+	auto pCollider = pEntity->AddComponent<CompCollider>();
+	pCollider->Init(false, vec2f {1, 1});
+
+	return { guid, std::move(pEntity) };
 }

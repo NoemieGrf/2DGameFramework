@@ -16,6 +16,7 @@ public:
 
 private:
     auto InitMap() -> void;
+    auto InitPlayer() -> void;
 
 private:
     // level mao

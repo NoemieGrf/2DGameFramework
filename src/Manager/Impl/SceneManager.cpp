@@ -1,11 +1,13 @@
 #include "SceneManager.h"
 
+#include "../../Entity/EntityFactory.h"
 #include "../../Game/Game.h"
 #include "../../Manager/Impl/ConfigManager.h"
 
 void SceneManager::InitLevel() 
 {
     InitMap();
+    InitPlayer();
 }
 
 void SceneManager::InitMap()
@@ -32,6 +34,32 @@ void SceneManager::InitMap()
             _levelMap.SetTileFunction(tileCoord, tileFunction);
         }
     }
+
+    // create all wall
+    auto wallPngPath = pConfigMgr->GetGlobalSetting().levelWallTexPath;
+    auto tileMap = _levelMap.GetTileMap();
+    for (int i = 0; i < tileMap.size() - 1; i++)
+    {
+        for (int j = 0; j < tileMap[i].size() - 1; j++)
+        {
+            if (tileMap[i][j] != Map::TileFunction::Ground)
+                continue;
+
+            vec2f tileCoord = vec2f( i, j );
+            vec2f wallCenter = tileCoord + vec2f{ 0.5f, 0.5f };
+            auto& [guid, pEntity] = EntityFactory::CreateGadget(wallPngPath, wallCenter);
+            _allEntitiesMap[guid] = std::move(pEntity);
+        }
+    }
+}
+
+void SceneManager::InitPlayer()
+{
+    vec2f playerBornTilePos = VecConvert<int, float>(_levelMap.GetPlayerBornTileCoordinate());
+    vec2f playerBornWorldPos = playerBornTilePos + vec2f{ 0.5f, 0.5f };
+    auto& [guid, pEntity] = EntityFactory::CreatePlayer(playerBornWorldPos);
+    _playerGuid = guid;
+    _allEntitiesMap[guid] = std::move(pEntity);
 }
 
 Entity* SceneManager::GetEntity(uint uid)
