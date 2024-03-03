@@ -18,7 +18,7 @@ int main()
 
     // load json
     spine::SkeletonJson json(pAtlas);
-    json.setScale(1.0f);
+    json.setScale(0.2f);
     auto pSkeletonData = json.readSkeletonDataFile(jsonPath);
     if (!pSkeletonData)
     {
@@ -29,12 +29,13 @@ int main()
     spine::SkeletonDrawable drawable(pSkeletonData);
     drawable.timeScale = 1;
     drawable.setUsePremultipliedAlpha(true);
-
+ 
     spine::Skeleton* pSkeleton = drawable.skeleton;
     pSkeleton->setPosition(320, 320);
     pSkeleton->updateWorldTransform();
+    pSkeleton->setScaleX(-1);
 
-    drawable.state->setAnimation(0, "attack", true);
+    drawable.state->setAnimation(0, "Run", true);
 
     sf::RenderWindow window(sf::VideoMode(640, 640), "Spine SFML - example");
     window.setFramerateLimit(60);
@@ -49,6 +50,12 @@ int main()
 
         float delta = deltaClock.getElapsedTime().asSeconds();
         deltaClock.restart();
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            drawable.state->setAnimation(1, "Attack", true);
+            drawable.state->getCurrent(1)->setAlpha(0.5f);
+        }
 
         drawable.update(delta);
 

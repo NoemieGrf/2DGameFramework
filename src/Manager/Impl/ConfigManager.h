@@ -9,6 +9,7 @@
 #include "../../Config/MonsterSetting.h"
 #include "../../Config/SceneSetting.h"
 #include "../../Config/LevelSetting.h"
+#include "../../Config/SpineSetting.h"
 
 class ConfigManager: public GameManagerTypeGetter<GameManagerType::Config>
 {
@@ -17,6 +18,7 @@ public:
 
 public:
     auto GetGlobalSetting() const -> const GlobalSetting&;
+    auto GetSpineSetting() const -> const SpineSetting&;
     auto GetLevelSetting() const -> const LevelSetting&;
     auto GetPlayerSetting() const -> const PlayerSetting&;
     auto GetMonsterSetting() const -> const MonsterSetting&;
@@ -26,6 +28,7 @@ public:
 
 private:
     auto LoadGlobalSetting() -> void;
+    auto LoadSpineSetting() -> void;
     auto LoadLevelSetting() -> void;
     auto LoadPlayerSetting() -> void;
     auto LoadMonsterSetting() -> void;
@@ -36,6 +39,7 @@ private:
 private:
     // json setting
     GlobalSetting _globalSetting = {};
+    SpineSetting _spineSetting = {};
     LevelSetting _levelSetting = {};
     PlayerSetting _playerSetting = {};
     MonsterSetting _monsterSetting = {};

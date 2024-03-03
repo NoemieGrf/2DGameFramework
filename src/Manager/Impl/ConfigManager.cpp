@@ -23,6 +23,7 @@ static nlohmann::json LoadJsonFile(const std::string& filePath)
 ConfigManager::ConfigManager()
 {
     LoadGlobalSetting();
+    LoadSpineSetting();
     LoadPlayerSetting();
     LoadMonsterSetting();
     LoadSceneSetting();
@@ -34,6 +35,19 @@ auto ConfigManager::LoadGlobalSetting() -> void
     nlohmann::json json = LoadJsonFile("./config/GlobalSetting.json");
     _globalSetting.globalGravity = json["globalGrivity"];
     _globalSetting.levelMapPath = json["levelMapPath"];
+}
+
+auto ConfigManager::LoadSpineSetting() -> void
+{
+    nlohmann::json json = LoadJsonFile("./config/SpineSetting.json");
+    for (auto& spineDataNode : json)
+    {
+        SpineData spineData;
+        spineData.name = spineDataNode["name"];
+        spineData.jsonPath = spineDataNode["jsonPath"];
+        spineData.atlasPath = spineDataNode["atlasPath"];
+        _spineSetting.allSpineData[spineData.name] = spineData;
+    }
 }
 
 auto ConfigManager::LoadLevelSetting() -> void
@@ -94,6 +108,11 @@ auto ConfigManager::LoadMap() -> void
 auto ConfigManager::GetGlobalSetting() const -> const GlobalSetting&
 {
     return _globalSetting;
+}
+
+auto ConfigManager::GetSpineSetting() const -> const SpineSetting&
+{
+    return _spineSetting;
 }
 
 auto ConfigManager::GetLevelSetting() const -> const LevelSetting&
