@@ -12,7 +12,6 @@ void SceneManager::InitMap()
 {
     const ConfigManager* pConfigMgr = Game::GetManager<ConfigManager>();
     const std::vector<std::string>& mapData = pConfigMgr->GetMapData();
-    const MonsterSetting& monsterSetting = pConfigMgr->GetMonsterSetting();
 
     // calculate the tile size of this map
     int yMax = mapData.size();
