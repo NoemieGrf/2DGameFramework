@@ -18,3 +18,8 @@ spine::SkeletonDrawable* CompSpine::GetSkeletonDrawable()
 {
     return _pSpine.get();
 }
+
+void CompSpine::SetAnimation(const std::string& animName, bool isLoop)
+{
+    _pSpine->state->setAnimation(0, animName.c_str(), isLoop);
+}

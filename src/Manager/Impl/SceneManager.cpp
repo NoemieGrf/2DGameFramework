@@ -11,37 +11,26 @@ void SceneManager::InitLevel()
 void SceneManager::InitMap()
 {
     const ConfigManager* pConfigMgr = Game::GetManager<ConfigManager>();
-    const auto& mapData = pConfigMgr->GetMapData();
-    const auto& monsterSetting = pConfigMgr->GetMonsterSetting();
+    const std::vector<std::string>& mapData = pConfigMgr->GetMapData();
+    const MonsterSetting& monsterSetting = pConfigMgr->GetMonsterSetting();
 
-    // map tile coord
+    // calculate the tile size of this map
+    int yMax = mapData.size();
+    int xMax = -1;
+    for (const auto& layer: mapData)
+        xMax = std::max(xMax, (int)layer.size());
+
     _levelMap.Clear();
+    _levelMap.SetTileScale(xMax, yMax);
+
+    // set every map tile functionality
     for (int i = (int)mapData.size() - 1; i >= 0; i--)
     {
-        const std::string& thisLayerMap = mapData[i];
-        const int mapLengthThisLayer = static_cast<int>(thisLayerMap.size());
-
-        for (int j = 0; j < mapLengthThisLayer - 1; j++)
+        for (int j = 0; j < (int)mapData[i].size() - 1; j++)
         {
-            const auto tileCoord = vec2i {static_cast<int>(mapData.size()) - 1 - i, j};
-            switch (thisLayerMap[j])
-            {
-            case '*':   // chunk
-                _levelMap.AddGroundTile(tileCoord);
-                break;
-            case '0':   // player born point
-                _levelMap.SetPlayerBornCoord(tileCoord);
-                break;
-            default:
-                char monsterMark = thisLayerMap[j];
-                if (monsterSetting.monsterMapMark.contains(monsterMark))
-                {
-                    const std::string& monsterName = monsterSetting.monsterMapMark.at(monsterMark);
-                    if (monsterSetting.monsterConfig.contains(monsterName))
-                        _levelMap.AddMonsterBornCoord(tileCoord, monsterName);
-                }
-                break;
-            }
+            vec2i tileCoord = vec2i {j, (int)mapData.size() - 1 - i};
+            Map::TileFunction tileFunction = Map::GetTileFunctionFromMapMark(mapData[i][j]);
+            _levelMap.SetTileFunction(tileCoord, tileFunction);
         }
     }
 }

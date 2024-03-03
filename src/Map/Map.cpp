@@ -2,39 +2,45 @@
 
 Map::Map() = default;
 
-auto Map::Clear() -> void
+Map::TileFunction Map::GetTileFunctionFromMapMark(char c)
+{
+    auto itr = _mapMapToTileFunction.find(c);
+    if (itr != _mapMapToTileFunction.end())
+        return itr->second;
+
+    return Map::TileFunction::Air;
+}
+
+void Map::Clear()
 {
     _playerBornCoord = vec2i{0, 0};
-    _ground.clear();
-    _monstersBornCoord.clear();
+    _tileMap.clear();
 }
 
-auto Map::AddGroundTile(const vec2i& tile) -> void
+void Map::SetTileScale(int x, int y)
 {
-    _ground.push_back(tile);
+    _tileMap.resize(x);
+    for (auto& layer: _tileMap)
+    {
+        layer.resize(y);
+        std::fill(layer.begin(), layer.end(), TileFunction::Air);
+    }
 }
 
-auto Map::SetPlayerBornCoord(const vec2i& coord) -> void
+void Map::SetTileFunction(const vec2i& coord, TileFunction f)
 {
-    _playerBornCoord = coord;
+    _tileMap[coord.x][coord.y] = f;
+    if (f == TileFunction::PlayerBorn)
+        _playerBornCoord = coord;
 }
 
-auto Map::AddMonsterBornCoord(const vec2i& coord, const std::string& monsterConfigName) -> void
+Map::TileFunction Map::GetFunctionality(const vec2i& coord) const
 {
-    _monstersBornCoord[coord] = monsterConfigName;
+    return _tileMap[coord.x][coord.y];
 }
 
-auto Map::GetPlayerBornCoord() const -> const vec2i&
+const vec2i& Map::GetPlayerBornTileCoordinate()
 {
     return _playerBornCoord;
 }
 
-auto Map::GetGroundTileCoords() const -> const std::vector<vec2i>&
-{
-    return _ground;
-}
-
-auto Map::GetMonstersBornCoords() const -> const umap<vec2i, std::string, vec2iHash>&
-{
-    return _monstersBornCoord;
-}

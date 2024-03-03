@@ -10,18 +10,35 @@ public:
     Map();
 
 public:
-    auto Clear() -> void;
-    auto SetPlayerBornCoord(const vec2i& coord) -> void;
-    auto AddGroundTile(const vec2i& tile) -> void;
-    auto AddMonsterBornCoord(const vec2i& coord, const std::string& monsterConfigName) -> void;
+    enum class TileFunction
+    {
+        Air,
+        Ground,
+        PlayerBorn,
+        MonsterBornA,
+        MonsterBornB,
+        MonsterBornC,
+    };
+
+    inline static umap<char, TileFunction> _mapMapToTileFunction = {
+        {' ', TileFunction::Air,},
+        {'*', TileFunction::Ground,},
+        {'0', TileFunction::PlayerBorn,},
+        {'A', TileFunction::MonsterBornA,},
+        {'B', TileFunction::MonsterBornB,},
+        {'C', TileFunction::MonsterBornC,},
+    };
+
+    static auto GetTileFunctionFromMapMark(char c) -> TileFunction;
 
 public:
-    auto GetPlayerBornCoord() const -> const vec2i&;
-    auto GetGroundTileCoords() const -> const std::vector<vec2i>&;
-    auto GetMonstersBornCoords() const -> const umap<vec2i, std::string, vec2iHash>&;
+    auto Clear() -> void;
+    auto SetTileScale(int x, int y) -> void;
+    auto SetTileFunction(const vec2i& coord, TileFunction f) -> void;
+    auto GetFunctionality(const vec2i& coord) const -> TileFunction;
+    auto GetPlayerBornTileCoordinate() -> const vec2i&;
 
 private:
     vec2i _playerBornCoord;
-    std::vector<vec2i> _ground;
-    umap<vec2i, std::string, vec2iHash> _monstersBornCoord;
+    std::vector<std::vector<TileFunction>> _tileMap;
 };

@@ -65,6 +65,10 @@ uptr<spine::SkeletonDrawable> ResourceManager::CreateSpineDrawable(const std::st
         pResult = std::make_unique<spine::SkeletonDrawable>(spineData.pSkeletonData.get(), spineData.pAnimationMixer.get());
     }
 
+    // common setting
+    pResult->timeScale = 1;
+    pResult->setUsePremultipliedAlpha(true);
+
     return pResult;
 }
 
