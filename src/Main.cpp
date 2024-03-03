@@ -26,21 +26,29 @@ int main()
         std::cout << "error" << std::endl;
     }
 
-    spine::SkeletonDrawable drawable(pSkeletonData);
+    spine::AnimationStateData mix(pSkeletonData);
+    mix.setMix("Wait1Loop", "Run", 0.1f);
+    mix.setMix("Run", "Wait1Loop", 0.1f);
+    mix.setMix("Attack", "Wait1Loop", 0.2f);
+
+
+    spine::SkeletonDrawable drawable(pSkeletonData, &mix);
     drawable.timeScale = 1;
     drawable.setUsePremultipliedAlpha(true);
  
     spine::Skeleton* pSkeleton = drawable.skeleton;
-    pSkeleton->setPosition(320, 320);
+    pSkeleton->setPosition(300, 300);
     pSkeleton->updateWorldTransform();
     pSkeleton->setScaleX(-1);
 
-    drawable.state->setAnimation(0, "Run", true);
+    drawable.state->setAnimation(0, "Wait1Loop", true);
 
     sf::RenderWindow window(sf::VideoMode(640, 640), "Spine SFML - example");
     window.setFramerateLimit(60);
 
     sf::Clock deltaClock;
+
+    bool _lastDPress = false;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -51,10 +59,22 @@ int main()
         float delta = deltaClock.getElapsedTime().asSeconds();
         deltaClock.restart();
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && !_lastDPress)
+        {
+            _lastDPress = true;
+            drawable.state->setAnimation(0, "Run", true);
+        }
+        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::D) && _lastDPress)
+        {
+            _lastDPress = false;
+            drawable.state->setAnimation(0, "Wait1Loop", true);
+        }
+        
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
-            drawable.state->setAnimation(1, "Attack", true);
-            drawable.state->getCurrent(1)->setAlpha(0.5f);
+            drawable.state->setAnimation(0, "Attack", false);
+            drawable.state->addAnimation(0, "Wait1Loop", true, 1.0f);
         }
 
         drawable.update(delta);

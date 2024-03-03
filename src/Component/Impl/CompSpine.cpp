@@ -10,7 +10,7 @@ void CompSpine::Load(const std::string& spineName)
 
     // set some default value
     spine::Skeleton* pSkeleton = _pSpine->skeleton;
-    pSkeleton->setPosition(0, 0);
+    pSkeleton->setPosition(0, 0);   // bottom center
     pSkeleton->updateWorldTransform();
 }
 

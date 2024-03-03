@@ -1,10 +1,6 @@
 #include "Camera.h"
 
-#include <vector>
-#include "../Game/Game.h"
-#include "../Component/Impl/CompTransform.h"
-#include "../Component/Impl/CompRenderer.h"
-#include "../Utility/Util.hpp"
+
 
 void Camera::DoRender()
 {
