@@ -1,8 +1,8 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated September 24, 2021. Replaces all prior versions.
+ * Last updated January 1, 2020. Replaces all prior versions.
  *
- * Copyright (c) 2013-2021, Esoteric Software LLC
+ * Copyright (c) 2013-2020, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
@@ -27,17 +27,22 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
+#ifdef SPINE_UE4
+#include "SpinePluginPrivatePCH.h"
+#endif
+
 #include <spine/EventData.h>
 
 #include <assert.h>
 
-spine::EventData::EventData(const spine::String &name) : _name(name),
-														 _intValue(0),
-														 _floatValue(0),
-														 _stringValue(),
-														 _audioPath(),
-														 _volume(1),
-														 _balance(0) {
+spine::EventData::EventData(const spine::String &name) :
+		_name(name),
+		_intValue(0),
+		_floatValue(0),
+		_stringValue(),
+		_audioPath(),
+		_volume(1),
+		_balance(0) {
 	assert(_name.length() > 0);
 }
 
@@ -46,7 +51,7 @@ const spine::String &spine::EventData::getName() const {
 	return _name;
 }
 
-int spine::EventData::getIntValue() const {
+int spine::EventData::getIntValue() {
 	return _intValue;
 }
 
@@ -54,7 +59,7 @@ void spine::EventData::setIntValue(int inValue) {
 	_intValue = inValue;
 }
 
-float spine::EventData::getFloatValue() const {
+float spine::EventData::getFloatValue() {
 	return _floatValue;
 }
 
@@ -62,7 +67,7 @@ void spine::EventData::setFloatValue(float inValue) {
 	_floatValue = inValue;
 }
 
-const spine::String &spine::EventData::getStringValue() const {
+const spine::String &spine::EventData::getStringValue() {
 	return _stringValue;
 }
 
@@ -70,7 +75,7 @@ void spine::EventData::setStringValue(const spine::String &inValue) {
 	this->_stringValue = inValue;
 }
 
-const spine::String &spine::EventData::getAudioPath() const {
+const spine::String &spine::EventData::getAudioPath() {
 	return _audioPath;
 }
 
@@ -79,7 +84,7 @@ void spine::EventData::setAudioPath(const spine::String &inValue) {
 }
 
 
-float spine::EventData::getVolume() const {
+float spine::EventData::getVolume() {
 	return _volume;
 }
 
@@ -87,7 +92,7 @@ void spine::EventData::setVolume(float inValue) {
 	_volume = inValue;
 }
 
-float spine::EventData::getBalance() const {
+float spine::EventData::getBalance() {
 	return _balance;
 }
 
