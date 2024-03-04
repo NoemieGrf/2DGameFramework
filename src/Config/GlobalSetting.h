@@ -1,11 +1,12 @@
 #pragma once
 
 #include <string>
+#include "../Game/GlobalDefine.h"
 
 struct GlobalSetting
 {
     float globalGravity;
     std::string levelMapPath;
     std::string levelWallTexPath;
-    int wolrdScaleToPixelScale;
+    vec2f cameraRectWorldCoordinateSize;
 };

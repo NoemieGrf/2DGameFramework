@@ -1,53 +1,36 @@
 #include "Camera.h"
-
-
+#include "../Game/Game.h"
+#include "../Manager/Impl/SceneManager.h"
+#include "../Manager/Impl/ConfigManager.h"
+#include "../Component/Impl/CompTransform.h"
 
 void Camera::DoRender()
 {
-    /*
-    // 1. Calculate the render bound.
-    auto pWindow = Game::GetInstance()->GetWindow();
-    vec2f windowSize = VecConvert<unsigned int, float>(pWindow->getSize());
-    auto pPlayer = Game::GetInstance()->GetPlayerEntity();
-    vec2f playerCoordinate = pPlayer->GetComponent<CompTransform>()->GetPosition();
+    CalculateCenterAndBound();
+}
 
-    vec2f viewPortTopLeftCoordinate = playerCoordinate - (windowSize / 2.0f);
-    vec2f viewPortDownRightCoordinate = playerCoordinate + (windowSize / 2.0f);
+void Camera::CalculateCenterAndBound()
+{
+    // calculate center = player world position
+    auto pPlayer = Game::GetManager<SceneManager>()->GetPlayerEntity();
+    if (pPlayer == nullptr)
+        return;
 
-    // 2. Cull objects
-    std::vector<CompRenderer*> allRenderEntities {};
-    for (const auto& [id, pEntity]: Game::GetInstance()->GetAllEntities())
-    {
-        auto pTrans = pEntity->GetComponent<CompTransform>();
-        if (pTrans == nullptr)
-            continue;
+    auto pPlayerTrans = pPlayer->GetComponent<CompTransform>();
+    if (pPlayerTrans == nullptr)
+        return;
 
-        auto pRender = pEntity->GetComponent<CompRenderer>();
-        if (pRender == nullptr)
-            continue;
+    _currentCenterInWorldCoord = pPlayerTrans->GetPosition();
 
-        vec2f entityCoordinate = pTrans->GetPosition();
-        vec2f renderRectSize = pRender->GetRenderBound();
+    // calculate world coordinate bound
+    auto cameraRectSize = Game::GetManager<ConfigManager>()->GetGlobalSetting().cameraRectWorldCoordinateSize;
+    _currentLeftTopInWorldCoord = vec2f { 
+        _currentCenterInWorldCoord.x - cameraRectSize.x / 2, 
+        _currentCenterInWorldCoord.y + cameraRectSize.y / 2 
+        };
 
-        vec2f entityBoundTopLeft = entityCoordinate - (renderRectSize / 2.0f);
-        vec2f entityBoundDownRight = entityCoordinate + (renderRectSize / 2.0f);
-
-        bool isOverlapped = Util::IsRectOverlap(viewPortTopLeftCoordinate, viewPortDownRightCoordinate, entityBoundTopLeft, entityBoundDownRight);
-        bool isContains = Util::IsRectContains(viewPortTopLeftCoordinate, viewPortDownRightCoordinate, entityBoundTopLeft, entityBoundDownRight);
-        if (isOverlapped || isContains)
-        {
-            // Calculate sprite coordinate in screen
-            vec2f spriteScreenPosition = entityCoordinate - viewPortTopLeftCoordinate;
-            pRender->GetSprite().setPosition(spriteScreenPosition);
-
-            allRenderEntities.push_back(pRender);
-        }
-    }
-
-    // 3. Draw 
-    for (auto pRenderComp: allRenderEntities)
-    {
-        pWindow->draw(pRenderComp->GetSprite());
-    }
-    */
+    _currentRightBottomInWorldCoord = vec2f { 
+        _currentCenterInWorldCoord.x + cameraRectSize.x / 2, 
+        _currentCenterInWorldCoord.y - cameraRectSize.y / 2 
+        };
 }

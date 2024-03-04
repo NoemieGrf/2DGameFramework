@@ -10,7 +10,7 @@
 #include "../Component/Impl/CompCollider.h"
 
 
-std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(const vec2f& initWorldPos)
+std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(const vec2f& initWorldPos, const vec2f& sizeInWorld)
 {
 	ConfigManager* configMgr = Game::GetManager<ConfigManager>();
 	uint guid = GuidGenerator::GetNextRuntimeId();
@@ -23,6 +23,10 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(const vec2f& initWorld
 	// comp transform
 	auto pTrans = pEntity->AddComponent<CompTransform>();
 	pTrans->SetPosition(initWorldPos);
+
+	// comp collider
+	auto pCollider = pEntity->AddComponent<CompCollider>();
+	pCollider->Init(true, sizeInWorld);
 
 	// comp spine
 	const auto pSpine = pEntity->AddComponent<CompSpine>();

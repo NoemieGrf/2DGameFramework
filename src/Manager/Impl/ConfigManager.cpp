@@ -36,7 +36,8 @@ auto ConfigManager::LoadGlobalSetting() -> void
     _globalSetting.globalGravity = json["globalGravity"];
     _globalSetting.levelMapPath = json["levelMapPath"];
     _globalSetting.levelWallTexPath = json["levelWallTexPath"];
-    _globalSetting.wolrdScaleToPixelScale = json["wolrdScaleToPixelScale"];
+    _globalSetting.cameraRectWorldCoordinateSize.x = json["cameraRectWorldCoordinateSize"]["x"];
+    _globalSetting.cameraRectWorldCoordinateSize.y = json["cameraRectWorldCoordinateSize"]["y"];
 }
 
 auto ConfigManager::LoadSpineSetting() -> void

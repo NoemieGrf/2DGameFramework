@@ -23,8 +23,9 @@ void Game::Init()
     using uint = unsigned int;
     uint screenHeight = sf::VideoMode::getDesktopMode().height;
     uint screenWidth = sf::VideoMode::getDesktopMode().width;
-    uint windowSize = 0.7 * std::min(screenHeight, screenWidth);
-    _pWindow = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowSize, windowSize), "2DGame");
+    float windowWidth = 0.7 * std::min(screenHeight, screenWidth);
+    float windowHeight = windowWidth * 9 / 16;  // defalut scale = 16 : 9
+    _pWindow = std::make_unique<sf::RenderWindow>(sf::VideoMode((uint)windowWidth, (uint)windowHeight), "2DGame");
     _pWindow->setFramerateLimit(60);
 
     // create game manager, order is really important!
