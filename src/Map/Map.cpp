@@ -17,7 +17,7 @@ void Map::Clear()
     _tileMap.clear();
 }
 
-void Map::SetTileScale(int x, int y)
+void Map::SetMapTileSize(int x, int y)
 {
     _tileMap.resize(x);
     for (auto& layer: _tileMap)

@@ -7,7 +7,7 @@
 class CompSprite : public ComponentTypeGetter<ComponentType::SpriteRender>
 {
 public:
-	auto Load(const std::string& texPath) -> void;
+	auto Load(const std::string& texPath, const vec2f& sizeInScreen) -> void;
 	auto GetSprite() -> sf::Sprite*;
 
 private:

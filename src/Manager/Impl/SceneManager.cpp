@@ -22,7 +22,7 @@ void SceneManager::InitMap()
         xMax = std::max(xMax, (int)layer.size());
 
     _levelMap.Clear();
-    _levelMap.SetTileScale(xMax, yMax);
+    _levelMap.SetMapTileSize(xMax, yMax);
 
     // set every map tile functionality
     for (int i = (int)mapData.size() - 1; i >= 0; i--)

@@ -86,9 +86,9 @@ uptr<sf::Sprite> ResourceManager::CreateSpriteDrawable(const std::string& pngPat
     const sf::Texture& texture = _textureResourcePool[pngPath];
     pSprite->setTexture(itr->second);
 
-    // set original to the bottom middle of the texture.
-	vec2f textSize = VecConvert<unsigned int, float>(texture.getSize());
-	pSprite->setOrigin(vec2f{ textSize.x / 2.0f, textSize.y});
+    // set original to the center of the texture.
+	vec2f textureSize = VecConvert<unsigned int, float>(texture.getSize());
+	pSprite->setOrigin(vec2f{ textureSize.x / 2.0f, textureSize.y / 2.0f});
 
     return pSprite;
 }

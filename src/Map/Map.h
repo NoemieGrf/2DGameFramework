@@ -33,7 +33,7 @@ public:
 
 public:
     auto Clear() -> void;
-    auto SetTileScale(int x, int y) -> void;
+    auto SetMapTileSize(int x, int y) -> void;
     auto SetTileFunction(const vec2i& coord, TileFunction f) -> void;
     auto GetFunctionality(const vec2i& coord) const -> TileFunction;
     auto GetPlayerBornTileCoordinate() const -> const vec2i&;

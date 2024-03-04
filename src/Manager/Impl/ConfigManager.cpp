@@ -36,6 +36,7 @@ auto ConfigManager::LoadGlobalSetting() -> void
     _globalSetting.globalGravity = json["globalGravity"];
     _globalSetting.levelMapPath = json["levelMapPath"];
     _globalSetting.levelWallTexPath = json["levelWallTexPath"];
+    _globalSetting.wolrdScaleToPixelScale = json["wolrdScaleToPixelScale"];
 }
 
 auto ConfigManager::LoadSpineSetting() -> void
