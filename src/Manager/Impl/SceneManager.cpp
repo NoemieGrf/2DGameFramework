@@ -47,7 +47,7 @@ void SceneManager::InitMap()
 
             vec2f tileCoord = vec2f( i, j );
             vec2f wallCenter = tileCoord + vec2f{ 0.5f, 0.5f };
-            auto& [guid, pEntity] = EntityFactory::CreateGadget(wallPngPath, wallCenter);
+            auto [guid, pEntity] = EntityFactory::CreateGadget(wallPngPath, wallCenter);
             _allEntitiesMap[guid] = std::move(pEntity);
         }
     }
@@ -57,7 +57,7 @@ void SceneManager::InitPlayer()
 {
     vec2f playerBornTilePos = VecConvert<int, float>(_levelMap.GetPlayerBornTileCoordinate());
     vec2f playerBornWorldPos = playerBornTilePos + vec2f{ 0.5f, 0.5f };
-    auto& [guid, pEntity] = EntityFactory::CreatePlayer(playerBornWorldPos);
+    auto [guid, pEntity] = EntityFactory::CreatePlayer(playerBornWorldPos);
     _playerGuid = guid;
     _allEntitiesMap[guid] = std::move(pEntity);
 }
