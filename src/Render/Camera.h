@@ -9,11 +9,16 @@ public:
     void DoRender();
 
 private:
+    void SetCurrentScreenSize();
     void CalculateCenterAndBound();
 
+private: // helper
+    vec2f WorldCoordToScreenCoord(const vec2f& worldPos);
 
 private:
+    vec2f _currentScreenSize;
     vec2f _currentCenterInWorldCoord;
-    vec2f _currentLeftTopInWorldCoord;
-    vec2f _currentRightBottomInWorldCoord;
+    vec2f _currentLeftBottomInWorldCoord;
+    vec2f _currentRightTopInWorldCoord;
+    
 };

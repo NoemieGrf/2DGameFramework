@@ -6,7 +6,13 @@
 
 void Camera::DoRender()
 {
+    SetCurrentScreenSize();
     CalculateCenterAndBound();
+}
+
+void Camera::SetCurrentScreenSize()
+{
+    _currentScreenSize = VecConvert<unsigned int, float>(Game::GetWindow()->getSize());
 }
 
 void Camera::CalculateCenterAndBound()
@@ -24,13 +30,27 @@ void Camera::CalculateCenterAndBound()
 
     // calculate world coordinate bound
     auto cameraRectSize = Game::GetManager<ConfigManager>()->GetGlobalSetting().cameraRectWorldCoordinateSize;
-    _currentLeftTopInWorldCoord = vec2f { 
-        _currentCenterInWorldCoord.x - cameraRectSize.x / 2, 
-        _currentCenterInWorldCoord.y + cameraRectSize.y / 2 
-        };
+    _currentLeftBottomInWorldCoord = _currentCenterInWorldCoord - cameraRectSize / 2.0f;
+    _currentRightTopInWorldCoord = _currentCenterInWorldCoord + cameraRectSize / 2.0f;
+}
 
-    _currentRightBottomInWorldCoord = vec2f { 
-        _currentCenterInWorldCoord.x + cameraRectSize.x / 2, 
-        _currentCenterInWorldCoord.y - cameraRectSize.y / 2 
-        };
+vec2f Camera::WorldCoordToScreenCoord(const vec2f& worldPos)
+{
+    // move left bottom wolrd coordinate to original coordinate
+    vec2f worldPosWhenLeftBottomIsOrigin = worldPos - _currentLeftBottomInWorldCoord;
+
+    // move left top world coordinate to original coordinate (which is same with screen coordinate)
+    auto cameraRectSize = Game::GetManager<ConfigManager>()->GetGlobalSetting().cameraRectWorldCoordinateSize;
+    vec2f worldPosWhenLeftTopIsOrigin = vec2f {
+        worldPosWhenLeftBottomIsOrigin.x,
+        cameraRectSize.y - worldPosWhenLeftBottomIsOrigin.y
+    };
+
+    // convert to scrren coordinate
+    vec2f screenCoordinate = vec2f {
+        (worldPosWhenLeftTopIsOrigin.x / cameraRectSize.x) * _currentScreenSize.x,
+        (worldPosWhenLeftTopIsOrigin.y / cameraRectSize.y) * _currentScreenSize.y,
+    };
+
+    return screenCoordinate;
 }
