@@ -14,7 +14,7 @@ sf::Sprite* CompSprite::GetSprite()
     return _pSprite.get();
 }
 
-vec2f CompSprite::GetRenderSizeInScreenCoordinate()
+vec2f CompSprite::GetRenderSizeInScreenCoordinate() const
 {
     vec2f textureSize = VecConvert<unsigned int, float>(_pSprite->getTexture()->getSize());
     vec2f scale = _pSprite->getScale();
@@ -25,7 +25,12 @@ vec2f CompSprite::GetRenderSizeInScreenCoordinate()
         };
 }
 
-const sf::Drawable* CompSprite::GetSfmlDrawable()
+sf::Drawable* CompSprite::GetSfmlDrawable() const
 {
     return _pSprite.get();
+}
+
+void CompSprite::SetSfmlDrawableScreenCoordinate(const vec2f& coord)
+{
+    _pSprite->setPosition(coord);
 }

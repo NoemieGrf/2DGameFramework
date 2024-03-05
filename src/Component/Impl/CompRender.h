@@ -7,6 +7,7 @@
 class CompRender : public ComponentTypeGetter<ComponentType::Render>
 {
 public:
-    virtual auto GetRenderSizeInScreenCoordinate() -> vec2f = 0;
-    virtual auto GetSfmlDrawable() -> const sf::Drawable* = 0;
+    virtual auto GetRenderSizeInScreenCoordinate() const -> vec2f = 0;
+    virtual auto GetSfmlDrawable() const -> sf::Drawable* = 0;
+    virtual auto SetSfmlDrawableScreenCoordinate(const vec2f& coord) -> void = 0;
 };

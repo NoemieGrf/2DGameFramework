@@ -42,7 +42,7 @@ void CompSpine::SetAnimation(const std::string& animName, bool isLoop)
     _pSpine->state->setAnimation(0, animName.c_str(), isLoop);
 }
 
-vec2f CompSpine::GetRenderSizeInScreenCoordinate()
+vec2f CompSpine::GetRenderSizeInScreenCoordinate() const
 {
     float scaleX = _pSpine->skeleton->getScaleX();
     float scaleY = _pSpine->skeleton->getScaleY();
@@ -53,7 +53,12 @@ vec2f CompSpine::GetRenderSizeInScreenCoordinate()
         };
 }
 
-const sf::Drawable* CompSpine::GetSfmlDrawable()
+sf::Drawable* CompSpine::GetSfmlDrawable() const
 {
     return _pSpine.get();
+}
+
+void CompSpine::SetSfmlDrawableScreenCoordinate(const vec2f& coord)
+{
+    _pSpine->skeleton->setPosition(coord.x, coord.y);
 }
