@@ -36,6 +36,7 @@ private:
 private:
 	/* Window */
 	uptr<sf::RenderWindow> _pWindow = nullptr;
+	float _worldCoordinateToScreenCoordinateScale = 100;
 
 	/* Game clock */
 	sf::Clock _clock;

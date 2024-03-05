@@ -14,18 +14,19 @@
 #include "../Manager/Impl/UserInputManager.h"
 #include "../Manager/Impl/PhysicsManager.h"
 #include "../Manager/Impl/AnimationManager.h"
+#include "SFML/Window/WindowStyle.hpp"
 
 Game::Game() = default;
 
 void Game::Init()
 {
     // init window
-    using uint = unsigned int;
-    uint screenHeight = sf::VideoMode::getDesktopMode().height;
-    uint screenWidth = sf::VideoMode::getDesktopMode().width;
-    float windowWidth = 0.7 * std::min(screenHeight, screenWidth);
-    float windowHeight = windowWidth * 9 / 16;  // defalut scale = 16 : 9
-    _pWindow = std::make_unique<sf::RenderWindow>(sf::VideoMode((uint)windowWidth, (uint)windowHeight), "2DGame");
+    _pWindow = std::make_unique<sf::RenderWindow>(
+        sf::VideoMode(800, 600), 
+        "2DGame",
+        sf::Style::Titlebar | sf::Style::Close  // no resize
+        );
+
     _pWindow->setFramerateLimit(60);
 
     // create camera
@@ -39,6 +40,20 @@ void Game::Init()
     AddManager<SceneManager>();
     AddManager<AiManager>();
     AddManager<AnimationManager>();
+
+    // config manager ready, resize window by config.
+    vec2f cameraRectWorldCoordinateSize = GetManager<ConfigManager>()->GetGlobalSetting().cameraRectWorldCoordinateSize;
+    float screenWidthHeightRatio = cameraRectWorldCoordinateSize.x / cameraRectWorldCoordinateSize.y;
+
+    uint userDeviceScreenWidth = sf::VideoMode::getDesktopMode().width;
+    uint userDeviceScreenHeight = sf::VideoMode::getDesktopMode().height;
+    
+    float windowWidth = 0.7 * std::min(userDeviceScreenHeight, userDeviceScreenWidth);
+    float windowHeight = windowWidth / screenWidthHeightRatio;
+
+    _worldCoordinateToScreenCoordinateScale = windowWidth / cameraRectWorldCoordinateSize.x;
+
+    _pWindow->setSize(vec2u { (uint)windowWidth, (uint)windowHeight });
 
     // create level
     GetManager<SceneManager>()->InitLevel();
