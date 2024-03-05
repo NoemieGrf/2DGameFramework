@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 
+#include <sstream>
 #include "../../Entity/EntityFactory.h"
 #include "../../Game/Game.h"
 #include "../../Manager/Impl/ConfigManager.h"
@@ -47,7 +48,19 @@ void SceneManager::InitMap()
 
             vec2f tileCoord = vec2f( i, j );
             vec2f wallCenter = tileCoord + vec2f{ 0.5f, 0.5f };
-            auto [guid, pEntity] = EntityFactory::CreateGadget(wallPngPath, wallCenter, vec2f{ 1, 1 });
+
+            // make entity name
+            std::stringstream nameStringBuilder;
+            nameStringBuilder << "Tile_" << (int)tileCoord.x << "_" << (int)tileCoord.y;
+            std::string entityName = nameStringBuilder.str();
+
+            auto [guid, pEntity] = EntityFactory::CreateGadget(
+                wallPngPath, 
+                wallCenter, 
+                vec2f{ 1, 1 }, 
+                entityName
+                );
+
             _allEntitiesMap[guid] = std::move(pEntity);
         }
     }

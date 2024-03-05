@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include "../Game/GlobalDefine.h"
 #include "../Component/ComponentType.h"
 #include "../Component/Component.h"
@@ -19,8 +20,9 @@ public:
 	template<typename T>
 	auto GetComponent() -> T*;
 
-public:
+public:	// fast access
 	auto GetRuntimeId() const -> uint;
+	auto GetName() const -> const std::string&;
 
 private:
 	umap<ComponentType, uptr<Component>> _compMap = {};

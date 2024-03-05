@@ -1,6 +1,7 @@
 #include "Entity.h"
 
 #include "../Component/Impl/CompGuid.h"
+#include "../Component/Impl/CompName.h"
 
 uint Entity::GetRuntimeId() const
 {
@@ -9,4 +10,9 @@ uint Entity::GetRuntimeId() const
 		return 0;
 
 	return pCompGuid->GetGuid();
+}
+
+const std::string& Entity::GetName() const
+{
+	return GetComponent<CompName>()->GetName();
 }

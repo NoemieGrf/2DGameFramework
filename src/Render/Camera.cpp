@@ -54,6 +54,8 @@ void Camera::CullScene(std::vector<CompRender*>& resultVec)
         if (pTransform == nullptr)
             continue;
 
+        auto debugName = pEntity->GetName();
+
         vec2f entityCenterWorldCoord = pTransform->GetPosition();
         vec2f entityCenterScreenCoord = WorldCoordToScreenCoord(entityCenterWorldCoord);
         vec2f entityRenderSizeScreenCoord = pRender->GetRenderSizeInScreenCoordinate();

@@ -8,17 +8,25 @@
 #include "../Component/Impl/CompSprite.h"
 #include "../Component/Impl/CompTransform.h"
 #include "../Component/Impl/CompCollider.h"
+#include "../Component/Impl/CompName.h"
 
 
-std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(const vec2f& initWorldPos, const vec2f& sizeInWorld)
+std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(
+	const vec2f& initWorldPos, 
+	const vec2f& sizeInWorld
+	)
 {
 	ConfigManager* configMgr = Game::GetManager<ConfigManager>();
 	uint guid = GuidGenerator::GetNextRuntimeId();
 	uptr<Entity> pEntity = std::make_unique<Entity>();
 
 	// comp guid
-	const auto pGuid = pEntity->AddComponent<CompGuid>();
+	auto pGuid = pEntity->AddComponent<CompGuid>();
 	pGuid->SetGuid(guid);
+
+	// comp name
+	auto pName = pEntity->AddComponent<CompName>();
+	pName->SetName("Player");
 
 	// comp transform
 	auto pTrans = pEntity->AddComponent<CompTransform>();
@@ -35,7 +43,9 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(const vec2f& initWorld
 	return { guid, std::move(pEntity) };
 }
 
-std::pair<uint, uptr<Entity>> EntityFactory::CreateMonster(const vec2f& initWorldPos)
+std::pair<uint, uptr<Entity>> EntityFactory::CreateMonster(
+	const vec2f& initWorldPos
+	)
 {
 	uptr<Entity> pEntity = std::make_unique<Entity>();
 	uint guid = GuidGenerator::GetNextRuntimeId();
@@ -51,7 +61,12 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreateMonster(const vec2f& initWorl
 	return { guid, std::move(pEntity) };
 }
 
-std::pair<uint, uptr<Entity>> EntityFactory::CreateGadget(const std::string& pngPath, const vec2f& initWorldPos, const vec2f& sizeInWorld)
+std::pair<uint, uptr<Entity>> EntityFactory::CreateGadget(
+	const std::string& pngPath, 
+	const vec2f& initWorldPos, 
+	const vec2f& sizeInWorld,
+	const std::string& name
+	)
 {
 	ConfigManager* configMgr = Game::GetManager<ConfigManager>();
 	uint guid = GuidGenerator::GetNextRuntimeId();
@@ -60,6 +75,10 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreateGadget(const std::string& png
 	// comp guid
 	auto pGuid = pEntity->AddComponent<CompGuid>();
 	pGuid->SetGuid(guid);
+
+	// comp name
+	auto pName = pEntity->AddComponent<CompName>();
+	pName->SetName(name);
 
 	// comp transform
 	auto pTrans = pEntity->AddComponent<CompTransform>();

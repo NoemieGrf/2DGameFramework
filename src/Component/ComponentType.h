@@ -7,4 +7,5 @@ enum class ComponentType: int
 	Guid,
 	Ai,
 	Collider,
+	Name,
 };
