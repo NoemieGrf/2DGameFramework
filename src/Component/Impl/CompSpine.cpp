@@ -52,3 +52,8 @@ vec2f CompSpine::GetRenderSizeInScreenCoordinate()
         _screenSize.y * abs(scaleY) 
         };
 }
+
+const sf::Drawable* CompSpine::GetSfmlDrawable()
+{
+    return _pSpine.get();
+}

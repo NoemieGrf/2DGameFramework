@@ -1,4 +1,10 @@
 {
     "globalGravity": 9.8,
-    "levelMapPath": "./config/LevelMap.txt"
+    "levelMapPath": "./config/LevelMap.txt",
+    "levelWallTexPath": "./assets/texture/wall.png",
+    "cameraRectWorldCoordinateSize": 
+    {
+        "x": 16,
+        "y": 9
+    }
 }

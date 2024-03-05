@@ -12,6 +12,7 @@ public:
 
 public:
 	auto GetRenderSizeInScreenCoordinate() -> vec2f override;
+	auto GetSfmlDrawable() -> const sf::Drawable* override;
 
 private:
 	uptr<spine::SkeletonDrawable> _pSpine = nullptr;

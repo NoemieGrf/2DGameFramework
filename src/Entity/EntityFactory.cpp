@@ -71,7 +71,7 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreateGadget(const std::string& png
 
 	// comp sprite
 	auto pSprite = pEntity->AddComponent<CompSprite>();
-	pSprite->Load(pngPath, sizeInWorld * (float)configMgr->GetGlobalSetting().wolrdScaleToPixelScale);
+	pSprite->Load(pngPath);
 
 	return { guid, std::move(pEntity) };
 }

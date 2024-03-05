@@ -42,7 +42,7 @@ void Camera::CalculateCenterAndBound()
 
 void Camera::CullScene(std::vector<CompRender*>& resultVec)
 {
-    auto allEntitiesMap = Game::GetManager<SceneManager>()->GetSceneEntities();
+    auto& allEntitiesMap = Game::GetManager<SceneManager>()->GetSceneEntities();
     auto windowSize = Game::GetWindow()->getSize();
     for (auto& [guid, pEntity]: allEntitiesMap)
     {
