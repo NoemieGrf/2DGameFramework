@@ -7,7 +7,13 @@
 void Camera::DoRender()
 {
     SetCurrentScreenSize();
+
     CalculateCenterAndBound();
+
+    std::vector<CompRender*> allRenderNeedDraw;
+    CullScene(allRenderNeedDraw);
+
+    RenderScene(allRenderNeedDraw);
 }
 
 void Camera::SetCurrentScreenSize()
@@ -32,6 +38,52 @@ void Camera::CalculateCenterAndBound()
     auto cameraRectSize = Game::GetManager<ConfigManager>()->GetGlobalSetting().cameraRectWorldCoordinateSize;
     _currentLeftBottomInWorldCoord = _currentCenterInWorldCoord - cameraRectSize / 2.0f;
     _currentRightTopInWorldCoord = _currentCenterInWorldCoord + cameraRectSize / 2.0f;
+}
+
+void Camera::CullScene(std::vector<CompRender*>& resultVec)
+{
+    auto allEntitiesMap = Game::GetManager<SceneManager>()->GetSceneEntities();
+    auto windowSize = Game::GetWindow()->getSize();
+    for (auto& [guid, pEntity]: allEntitiesMap)
+    {
+        auto pRender = pEntity->GetComponent<CompRender>();
+        if (pRender == nullptr)
+            continue;
+
+        auto pTransform = pEntity->GetComponent<CompTransform>();
+        if (pTransform == nullptr)
+            continue;
+
+        vec2f entityCenterWorldCoord = pTransform->GetPosition();
+        vec2f entityCenterScreenCoord = WorldCoordToScreenCoord(entityCenterWorldCoord);
+        vec2f entityRenderSizeScreenCoord = pRender->GetRenderSizeInScreenCoordinate();
+
+        vec2f entityRenderTopLeftScreenCoord = entityCenterScreenCoord - entityRenderSizeScreenCoord / 2.0f;
+        if (entityRenderTopLeftScreenCoord.x < 0 || entityRenderTopLeftScreenCoord.y < 0)
+            continue;
+
+        vec2f entityRenderBottomRightScreenCoord = entityCenterScreenCoord + entityRenderSizeScreenCoord / 2.0f;
+        if (entityRenderBottomRightScreenCoord.x > windowSize.x || entityRenderBottomRightScreenCoord.y > windowSize.y)
+            continue;
+
+        resultVec.push_back(pRender);
+    }
+}
+
+void Camera::RenderScene(const std::vector<CompRender*>& renderVec)
+{
+    auto pWindow = Game::GetWindow();
+    for (auto pRender: renderVec)
+    {
+        if (pRender == nullptr)
+            continue;
+
+        auto pSfmlDrawable = pRender->GetSfmlDrawable();
+        if (pSfmlDrawable == nullptr)
+            continue;
+
+        pWindow->draw(*pSfmlDrawable);
+    }
 }
 
 vec2f Camera::WorldCoordToScreenCoord(const vec2f& worldPos)

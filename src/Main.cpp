@@ -84,7 +84,6 @@ int main()
         window.display();
     }
 
-
     /*
     Game::GetInstance()->Init();
     Game::GetInstance()->GameLoop();
