@@ -53,16 +53,17 @@ uptr<spine::SkeletonDrawable> ResourceManager::CreateSpineDrawable(const std::st
             pAnimationMixer->setMix(animMixPair.from.c_str(), animMixPair.to.c_str(), animMixPair.mixTime);
 
         // 5. save all unique ptr.
-        SpineResData spineData;
-        spineData.pTextureLoader = std::move(pTextureLoader);
-        spineData.pAtlasData = std::move(pAtlas);
-        spineData.pSkeletonData = std::move(pSkeletonData);
-        spineData.pAnimationMixer = std::move(pAnimationMixer);
-
-        _spineResourcePool[spineName] = std::move(spineData);
+        SpineResData& spineResData = _spineResourcePool[spineName];
+        spineResData.pTextureLoader = std::move(pTextureLoader);
+        spineResData.pAtlasData = std::move(pAtlas);
+        spineResData.pSkeletonData = std::move(pSkeletonData);
+        spineResData.pAnimationMixer = std::move(pAnimationMixer);
 
         // 6. make SFML drawable and return.
-        pResult = std::make_unique<spine::SkeletonDrawable>(spineData.pSkeletonData.get(), spineData.pAnimationMixer.get());
+        pResult = std::make_unique<spine::SkeletonDrawable>(
+            spineResData.pSkeletonData.get(), 
+            spineResData.pAnimationMixer.get()
+            );
     }
 
     // common setting
@@ -84,7 +85,7 @@ uptr<sf::Sprite> ResourceManager::CreateSpriteDrawable(const std::string& pngPat
 
     // set texture to sprite.
     const sf::Texture& texture = _textureResourcePool[pngPath];
-    pSprite->setTexture(itr->second);
+    pSprite->setTexture(texture);
 
     // set original to the center of the texture.
 	vec2f textureSize = VecConvert<unsigned int, float>(texture.getSize());

@@ -8,6 +8,7 @@
 
 int main()
 {
+    /*
     // test spine
     const char* jsonPath = "./assets/spine/player/player.json";
     const char* atlasPath = "./assets/spine/player/player.atlas";
@@ -84,10 +85,12 @@ int main()
         window.display();
     }
 
-    /*
+    */
+
+
     Game::GetInstance()->Init();
     Game::GetInstance()->GameLoop();
     Game::GetInstance()->Destroy();
-    */
+
     return 0;
 }

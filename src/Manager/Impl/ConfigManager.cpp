@@ -113,8 +113,16 @@ auto ConfigManager::LoadMap() -> void
     }
 
     _mapData.clear();
-    if (std::string lineContent; std::getline(txtFile, lineContent))
+
+    // read txt line by line
+    while (true)
+    {
+        std::string lineContent;
+        if (!std::getline(txtFile, lineContent))
+            break;
+
         _mapData.push_back(std::move(lineContent));
+    }
 
     txtFile.close();
 }

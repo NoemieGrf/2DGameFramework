@@ -28,6 +28,9 @@ void Game::Init()
     _pWindow = std::make_unique<sf::RenderWindow>(sf::VideoMode((uint)windowWidth, (uint)windowHeight), "2DGame");
     _pWindow->setFramerateLimit(60);
 
+    // create camera
+    _pMainCamera = std::make_unique<Camera>();
+
     // create game manager, order is really important!
     AddManager<ConfigManager>();
     AddManager<ResourceManager>();
