@@ -3,7 +3,7 @@
         "name": "player",
         "jsonPath": "./assets/spine/player/player.json",
         "atlasPath": "./assets/spine/player/player.atlas",
-        "loadScale": 0.2,
+        "loadScale": 0.08,
         "animationBlend": 
         [
             {

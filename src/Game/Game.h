@@ -6,7 +6,6 @@
 #include "GlobalDefine.h"
 #include "../Manager/GameManager.h"
 #include "../Manager/GameManagerType.h"
-#include "../Entity/Entity.h"
 #include "../Render/Camera.h"
 #include "../Utility/OrderedHashMap.hpp"
 
@@ -24,6 +23,7 @@ public:
 	static auto GetInstance() -> Game*;
 	static auto GetDeltaTime() -> float;
 	static auto GetWindow() -> sf::RenderWindow*;
+	static auto GetWorldCoordinateToScreenCoordinateScale() -> float;
 	static auto GetCamera() -> Camera*;
 
 	template<typename T>

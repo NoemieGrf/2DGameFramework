@@ -63,6 +63,7 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreateMonster(
 
 std::pair<uint, uptr<Entity>> EntityFactory::CreateGadget(
 	const std::string& pngPath, 
+	const vec2f& pngWantedSizeScreenCoordinate,
 	const vec2f& initWorldPos, 
 	const vec2f& sizeInWorld,
 	const std::string& name
@@ -90,7 +91,7 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreateGadget(
 
 	// comp sprite
 	auto pSprite = pEntity->AddComponent<CompSprite>();
-	pSprite->Load(pngPath);
+	pSprite->Load(pngPath, pngWantedSizeScreenCoordinate);
 
 	return { guid, std::move(pEntity) };
 }

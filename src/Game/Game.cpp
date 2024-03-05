@@ -3,7 +3,6 @@
 // std
 #include <memory>
 // 3rd party
-#include "SFML/Graphics/Color.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/Event.hpp"
 // myself
@@ -14,21 +13,12 @@
 #include "../Manager/Impl/UserInputManager.h"
 #include "../Manager/Impl/PhysicsManager.h"
 #include "../Manager/Impl/AnimationManager.h"
-#include "SFML/Window/WindowStyle.hpp"
+
 
 Game::Game() = default;
 
 void Game::Init()
 {
-    // init window
-    _pWindow = std::make_unique<sf::RenderWindow>(
-        sf::VideoMode(800, 600), 
-        "2DGame",
-        sf::Style::Titlebar | sf::Style::Close  // no resize
-        );
-
-    _pWindow->setFramerateLimit(60);
-
     // create camera
     _pMainCamera = std::make_unique<Camera>();
 
@@ -41,7 +31,7 @@ void Game::Init()
     AddManager<AiManager>();
     AddManager<AnimationManager>();
 
-    // config manager ready, resize window by config.
+    // init window
     vec2f cameraRectWorldCoordinateSize = GetManager<ConfigManager>()->GetGlobalSetting().cameraRectWorldCoordinateSize;
     float screenWidthHeightRatio = cameraRectWorldCoordinateSize.x / cameraRectWorldCoordinateSize.y;
 
@@ -53,7 +43,13 @@ void Game::Init()
 
     _worldCoordinateToScreenCoordinateScale = windowWidth / cameraRectWorldCoordinateSize.x;
 
-    _pWindow->setSize(vec2u { (uint)windowWidth, (uint)windowHeight });
+    _pWindow = std::make_unique<sf::RenderWindow>(
+        sf::VideoMode((uint)windowWidth, (uint)windowHeight), 
+        "2DGame",
+        sf::Style::Titlebar | sf::Style::Close  // no resize
+        );
+
+    _pWindow->setFramerateLimit(60);
 
     // create level
     GetManager<SceneManager>()->InitLevel();
@@ -111,6 +107,11 @@ Game* Game::GetInstance()
 sf::RenderWindow* Game::GetWindow()
 {
     return GetInstance()->_pWindow.get();
+}
+
+float Game::GetWorldCoordinateToScreenCoordinateScale()
+{
+    return GetInstance()->_worldCoordinateToScreenCoordinateScale;
 }
 
 Camera* Game::GetCamera()

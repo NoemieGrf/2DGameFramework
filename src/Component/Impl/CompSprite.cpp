@@ -3,10 +3,18 @@
 #include "../../Game/Game.h"
 #include "../../Manager/Impl/ResourceManager.h"
 
-void CompSprite::Load(const std::string& texPath)
+void CompSprite::Load(const std::string& texPath, const vec2f& wantedSizeScreenCoordinate)
 {
     ResourceManager* resMgr = Game::GetManager<ResourceManager>();
     _pSprite = resMgr->CreateSpriteDrawable(texPath);
+
+    vec2f textureSize = VecConvert<unsigned int, float>(_pSprite->getTexture()->getSize());
+    vec2f scale = vec2f {
+        wantedSizeScreenCoordinate.x / textureSize.x,
+        wantedSizeScreenCoordinate.y / textureSize.y
+    };
+
+    _pSprite->setScale(scale);
 }
 
 sf::Sprite* CompSprite::GetSprite()

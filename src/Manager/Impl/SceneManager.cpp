@@ -3,7 +3,8 @@
 #include <sstream>
 #include "../../Entity/EntityFactory.h"
 #include "../../Game/Game.h"
-#include "../../Manager/Impl/ConfigManager.h"
+#include "ConfigManager.h"
+#include "../../Component/Impl/CompSpine.h"
 
 void SceneManager::InitLevel() 
 {
@@ -54,8 +55,13 @@ void SceneManager::InitMap()
             nameStringBuilder << "Tile_" << (int)tileCoord.x << "_" << (int)tileCoord.y;
             std::string entityName = nameStringBuilder.str();
 
+            // make png wanted size
+            float worldCoordinateToScreenCoordinateScale = Game::GetWorldCoordinateToScreenCoordinateScale();
+            vec2f pngWantedSize = vec2f { worldCoordinateToScreenCoordinateScale, worldCoordinateToScreenCoordinateScale };
+
             auto [guid, pEntity] = EntityFactory::CreateGadget(
                 wallPngPath, 
+                pngWantedSize,
                 wallCenter, 
                 vec2f{ 1, 1 }, 
                 entityName
@@ -72,6 +78,9 @@ void SceneManager::InitPlayer()
     vec2f playerBornWorldPos = playerBornTilePos + vec2f{ 0.5f, 0.5f };
     auto [guid, pEntity] = EntityFactory::CreatePlayer(playerBornWorldPos, vec2f{ 1, 1 });
     _playerGuid = guid;
+
+    pEntity->GetComponent<CompSpine>()->SetAnimation("Wait1Loop", true);
+
     _allEntitiesMap[guid] = std::move(pEntity);
 }
 

@@ -1,5 +1,6 @@
 #include "CompCollider.h"
 #include "../../Game/Game.h"
+#include "../../Entity/Entity.h"
 #include "CompTransform.h"
 
 void CompCollider::Init(bool isDynamic, const vec2f& aabbBox)

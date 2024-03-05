@@ -21,6 +21,7 @@ public:
 
 	static std::pair<uint, uptr<Entity>> CreateGadget(
 		const std::string& pngPath, 
+		const vec2f& pngWantedSizeScreenCoordinate,
 		const vec2f& initWorldPos, 
 		const vec2f& sizeInWorld, 
 		const std::string& name
