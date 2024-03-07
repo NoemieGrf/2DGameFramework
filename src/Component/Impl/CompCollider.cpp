@@ -2,7 +2,6 @@
 #include "../../Game/Game.h"
 #include "../../Entity/Entity.h"
 #include "CompTransform.h"
-#include "box2d/b2_math.h"
 
 void CompCollider::Init(bool isDynamic, const vec2f& aabbBox)
 {
@@ -52,4 +51,15 @@ void CompCollider::ApplyForce(const vec2f& force)
 void CompCollider::ApplyImpulse(const vec2f& impulse)
 {
     _pPhyBody->ApplyLinearImpulseToCenter(b2Vec2{ impulse.x, impulse.y }, true);
+}
+
+void CompCollider::SetVelocity(const vec2f& velocity)
+{
+    _pPhyBody->SetLinearVelocity(b2Vec2{ velocity.x, velocity.y });
+}
+
+vec2f CompCollider::GetVelocity() const
+{
+    b2Vec2 velocity = _pPhyBody->GetLinearVelocity();
+    return vec2f{ velocity.x, velocity.y };
 }
