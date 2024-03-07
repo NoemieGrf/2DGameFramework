@@ -11,6 +11,8 @@ public:
     auto Init(bool isDynamic, const vec2f& aabbBox) -> void;
     auto GetPhysicalWorldPosition() const -> vec2f;
     auto SetPhysicalWorldPosition(const vec2f& pos) -> void;
+    auto ApplyForce(const vec2f& force) -> void;
+    auto ApplyImpulse(const vec2f& impulse) -> void;
 
 public:
     std::unique_ptr<b2Body, PhysicsManager::B2BodyDeleter> _pPhyBody = nullptr;
