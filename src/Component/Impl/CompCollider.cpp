@@ -18,8 +18,7 @@ void CompCollider::Init(bool isDynamic, const vec2f& aabbBox)
     else
         bodyDef.position.Set(0.0f, 0.0f);
 
-    b2Body* _pPhyBodyRaw = Game::GetManager<PhysicsManager>()->GetPhysicWorld()->CreateBody(&bodyDef);
-    _pPhyBody = std::unique_ptr<b2Body, PhysicsManager::B2BodyDeleter>(_pPhyBodyRaw);
+    _pPhyBody = Game::GetManager<PhysicsManager>()->CreatePhysicBody(&bodyDef);
 
     b2PolygonShape boxShape;
     boxShape.SetAsBox(aabbBox.x, aabbBox.y);    // box size
@@ -31,4 +30,15 @@ void CompCollider::Init(bool isDynamic, const vec2f& aabbBox)
     fixtureDef.restitution = 0.0f;  // 设置弹性
 
     _pPhyBody->CreateFixture(&fixtureDef);
+}
+
+vec2f CompCollider::GetPhysicalWorldPosition() const
+{
+    b2Vec2 pos = _pPhyBody->GetPosition();
+    return vec2f { pos.x, pos.y };
+}
+
+void CompCollider::SetPhysicalWorldPosition(const vec2f& pos)
+{
+    _pPhyBody->SetTransform(b2Vec2 { pos.x, pos.y }, 0);
 }

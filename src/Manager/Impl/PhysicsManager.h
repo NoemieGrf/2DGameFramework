@@ -26,8 +26,16 @@ public:
 
 public:
     auto GetPhysicWorld() const -> b2World*;
+    auto CreatePhysicBody(const b2BodyDef* def) -> std::unique_ptr<b2Body, PhysicsManager::B2BodyDeleter>;
+
+public:
+    auto Tick() -> void override;
 
 private:
     // physic world
     uptr<b2World> _pPhysicWorld = nullptr;
+
+    // const
+    static const int velocityIterations = 8;
+    static const int positionIterations = 3;
 };
