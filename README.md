@@ -69,4 +69,9 @@ The core of this question is sprite scale. The texture size is absolute size, is
 
 Descriptions above is suitable for sprite drawing object, but things will be different when object is spine drawing.
 
+Doesn't like sprite, in spine, texture will be separated into lots of image slices，and be combined to full image in the runtime.
+Original texture size mean's nothing in spine, the "original size" is stored in skeleton data, can be get by **spine::SkeletonData::getWidth()** and **spine::SkeletonData::getHeight()**, uint is pixels.
+
+Spine also has a value to control how big image will be shown, which is scale in SkeletonJson.
+
 
