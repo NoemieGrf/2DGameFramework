@@ -15,6 +15,6 @@ void AnimationManager::Tick()
         if (pSpine == nullptr)
             continue;
 
-        pSpine->GetSkeletonDrawable()->update(deltaTime);
+        pSpine->UpdateSkeletonDrawable(deltaTime);
     }
 }

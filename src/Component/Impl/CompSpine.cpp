@@ -2,14 +2,16 @@
 
 #include "../../Game/Game.h"
 #include "../../Manager/Impl/ResourceManager.h"
-#include "../../Manager/Impl/ConfigManager.h"
+#include "spine/SkeletonData.h"
 
-void CompSpine::Load(const std::string& spineName)
+void CompSpine::Load(const std::string& spineName, float widthInWorld)
 {
     ResourceManager* resMgr = Game::GetManager<ResourceManager>();
-    ConfigManager* configMgr = Game::GetManager<ConfigManager>();
 
     _pSpine = resMgr->CreateSpineDrawable(spineName);
+
+    float scaleFromWorldToScreen = Game::GetWorldCoordinateToScreenCoordinateScale();
+    float widthInScreen = scaleFromWorldToScreen * widthInWorld;
 
     // set some default value
     spine::Skeleton* pSkeleton = _pSpine->skeleton;
@@ -17,24 +19,24 @@ void CompSpine::Load(const std::string& spineName)
     pSkeleton->updateWorldTransform();
 
     // calculate screen size
-    float spineImportScale = 1;
-    auto allSpineConfig = configMgr->GetSpineSetting().allSpineData;
-    auto itr = allSpineConfig.find(spineName);
-    if (itr != allSpineConfig.end())
-        spineImportScale = (itr->second).loadScale;
-
     spine::SkeletonData* pSkeletonData = pSkeleton->getData();
-    float widthInSpine = pSkeletonData->getWidth();
-    float heightInSpine = pSkeletonData->getHeight();
-    _screenSize = vec2f {
-        widthInSpine * spineImportScale,
-        heightInSpine * spineImportScale
-    };
+    auto originalWidth = pSkeletonData->getWidth();
+    auto scale = widthInScreen / originalWidth;
+
+    pSkeleton->setScaleX(scale);
+    pSkeleton->setScaleY(scale);
 }
 
-spine::SkeletonDrawable* CompSpine::GetSkeletonDrawable()
+void CompSpine::UpdateSkeletonDrawable(float deltaTime)
 {
-    return _pSpine.get();
+    _pSpine->update(deltaTime);
+}
+
+float CompSpine::GetSkeletonWidthHeightScale()
+{
+    spine::Skeleton* pSkeleton = _pSpine->skeleton;
+    spine::SkeletonData* pSkeletonData = pSkeleton->getData();
+    return pSkeletonData->getWidth() / pSkeletonData->getHeight();
 }
 
 void CompSpine::SetAnimation(const std::string& animName, bool isLoop)
@@ -44,12 +46,17 @@ void CompSpine::SetAnimation(const std::string& animName, bool isLoop)
 
 vec2f CompSpine::GetRenderSizeInScreenCoordinate() const
 {
-    float scaleX = _pSpine->skeleton->getScaleX();
-    float scaleY = _pSpine->skeleton->getScaleY();
+    spine::Skeleton* pSkeleton = _pSpine->skeleton;
+    float scaleX = pSkeleton->getScaleX();
+    float scaleY = pSkeleton->getScaleY();
+
+    spine::SkeletonData* pSkeletonData = pSkeleton->getData();
+    auto originalWidth = pSkeletonData->getWidth();
+    auto originalHeight = pSkeletonData->getHeight();
 
     return vec2f { 
-        _screenSize.x * abs(scaleX), 
-        _screenSize.y * abs(scaleY) 
+        originalWidth * abs(scaleX), 
+        originalHeight * abs(scaleY) 
         };
 }
 

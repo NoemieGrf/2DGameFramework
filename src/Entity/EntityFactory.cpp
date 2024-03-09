@@ -32,13 +32,13 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(
 	auto pTrans = pEntity->AddComponent<CompTransform>();
 	pTrans->SetPosition(initWorldPos);
 
+	// comp spine
+	const auto pSpine = pEntity->AddComponent<CompSpine>();
+	pSpine->Load(configMgr->GetPlayerSetting().spineName, 1);
+
 	// comp collider
 	auto pCollider = pEntity->AddComponent<CompCollider>();
 	pCollider->Init(true, sizeInWorld);
-
-	// comp spine
-	const auto pSpine = pEntity->AddComponent<CompSpine>();
-	pSpine->Load(configMgr->GetPlayerSetting().spineName);
 
 	return { guid, std::move(pEntity) };
 }
@@ -63,7 +63,6 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreateMonster(
 
 std::pair<uint, uptr<Entity>> EntityFactory::CreateGadget(
 	const std::string& pngPath, 
-	const vec2f& pngWantedSizeScreenCoordinate,
 	const vec2f& initWorldPos, 
 	const vec2f& sizeInWorld,
 	const std::string& name
@@ -91,7 +90,7 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreateGadget(
 
 	// comp sprite
 	auto pSprite = pEntity->AddComponent<CompSprite>();
-	pSprite->Load(pngPath, pngWantedSizeScreenCoordinate);
+	pSprite->Load(pngPath, sizeInWorld);
 
 	return { guid, std::move(pEntity) };
 }

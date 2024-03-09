@@ -6,9 +6,10 @@
 class CompSpine : public CompRender
 {
 public:
-	auto Load(const std::string& spineName) -> void;
-    auto GetSkeletonDrawable() -> spine::SkeletonDrawable*;
+	auto Load(const std::string& spineName, float widthInWorld) -> void;
 	auto SetAnimation(const std::string& animName, bool isLoop) -> void;
+	auto UpdateSkeletonDrawable(float deltaTime) -> void;
+	auto GetSkeletonWidthHeightScale() -> float;
 
 public:
 	auto GetRenderSizeInScreenCoordinate() const -> vec2f override;
@@ -17,5 +18,4 @@ public:
 
 private:
 	uptr<spine::SkeletonDrawable> _pSpine = nullptr;
-	vec2f _screenSize;
 };

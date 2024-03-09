@@ -56,12 +56,8 @@ void SceneManager::InitMap()
             std::string entityName = nameStringBuilder.str();
 
             // make png wanted size
-            float worldCoordinateToScreenCoordinateScale = Game::GetWorldCoordinateToScreenCoordinateScale();
-            vec2f pngWantedSize = vec2f { worldCoordinateToScreenCoordinateScale, worldCoordinateToScreenCoordinateScale };
-
             auto [guid, pEntity] = EntityFactory::CreateGadget(
                 wallPngPath, 
-                pngWantedSize,
                 wallCenter, 
                 vec2f{ 1, 1 }, 
                 entityName

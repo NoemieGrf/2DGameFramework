@@ -7,7 +7,7 @@
 class CompSprite : public CompRender
 {
 public:
-	auto Load(const std::string& texPath, const vec2f& wantedSizeScreenCoordinate) -> void;
+	auto Load(const std::string& texPath, const vec2f& sizeInWorld) -> void;
 	auto GetSprite() -> sf::Sprite*;
 
 public:

@@ -12,10 +12,6 @@
 class ResourceManager: public GameManagerTypeGetter<GameManagerType::Resource>
 {
 public:
-    auto CreateSpineDrawable(const std::string& spineName) -> uptr<spine::SkeletonDrawable>;
-    auto CreateSpriteDrawable(const std::string& pngPath) -> uptr<sf::Sprite>;
-
-private:
     struct SpineResData
     {
         // texture loader -> hold the real data of PNG file.
@@ -30,6 +26,16 @@ private:
         // animation -> hold the data of animation blend.
         uptr<spine::AnimationStateData> pAnimationMixer = nullptr;
     };
+
+public:
+    auto GetTextureResource(const std::string& pngPath) -> const sf::Texture*;
+    auto GetSpineResource(const std::string& spineName) -> const SpineResData*;
+    auto CreateSpineDrawable(const std::string& spineName) -> uptr<spine::SkeletonDrawable>;
+    auto CreateSpriteDrawable(const std::string& pngPath) -> uptr<sf::Sprite>;
+
+private:
+    auto LoadSpineResourceInternal(const std::string& spineName) -> void;
+    auto LoadTextureResourceInternal(const std::string& pngPath) -> void;
 
 public:
     umap<std::string, SpineResData> _spineResourcePool {};
