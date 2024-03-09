@@ -40,12 +40,23 @@ void UserInputManager::Tick()
         pPlayerCollider->SetVelocity(velocity); 
     }
 
+    if (_thisFrameReleasedKey.contains(sf::Keyboard::Key::D)
+        || _thisFrameReleasedKey.contains(sf::Keyboard::Key::A))
+    {
+        auto velocity = pPlayerCollider->GetVelocity();
+        if (abs(velocity.y) < 0.0001)   // on ground
+        {
+            velocity.x = 0;
+            pPlayerCollider->SetVelocity(velocity); 
+        }
+    }
+
     // jump
     if (_thisFramePressedKey.contains(sf::Keyboard::Key::Space))
     {
         auto velocity = pPlayerCollider->GetVelocity();
         if (abs(velocity.y) < 0.0001)
-            pPlayerCollider->ApplyImpulse(vec2f {0, 8});
+            pPlayerCollider->ApplyImpulse(vec2f {0, 7});
     }
 }
 

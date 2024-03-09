@@ -39,7 +39,11 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(
 
 	// comp collider
 	auto pCollider = pEntity->AddComponent<CompCollider>();
-	pCollider->Init(true, sizeInWorld, fixture);
+	vec2f aabbBox = vec2f {
+		sizeInWorld.x * 0.7f,	// 角色的碰撞稍微小一点
+		sizeInWorld.y
+	};
+	pCollider->Init(true, aabbBox, fixture);
 
 	return { guid, std::move(pEntity) };
 }
