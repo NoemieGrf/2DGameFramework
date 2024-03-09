@@ -14,6 +14,7 @@ public:
 	auto GetRenderSizeInScreenCoordinate() const -> vec2f override;
 	auto GetSfmlDrawable() const -> sf::Drawable* override;
 	auto SetSfmlDrawableScreenCoordinate(const vec2f& coord) -> void override;
+	auto SetFlip(bool doFlip) -> void override;
 
 private:
 	uptr<sf::Sprite> _pSprite = nullptr;

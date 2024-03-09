@@ -45,3 +45,15 @@ void CompSprite::SetSfmlDrawableScreenCoordinate(const vec2f& coord)
 {
     _pSprite->setPosition(coord);
 }
+
+void CompSprite::SetFlip(bool doFlip)
+{
+    vec2f scale = _pSprite->getScale();
+
+    if (doFlip)
+        scale.x = - abs(scale.x);
+    else
+        scale.x = abs(scale.x);
+
+    _pSprite->setScale(scale);
+}

@@ -87,7 +87,9 @@ void SceneManager::InitPlayer()
     _playerGuid = guid;
 
     // set idle animation
-    pEntity->GetComponent<CompSpine>()->SetAnimation("Wait1Loop", true);
+    CompSpine* pPlayerSpine = pEntity->GetComponent<CompSpine>();
+    pPlayerSpine->SetFlip(true);
+    pPlayerSpine->SetAnimation("Wait1Loop", true);
 
     _allEntitiesMap[guid] = std::move(pEntity);
 }

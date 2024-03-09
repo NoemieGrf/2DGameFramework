@@ -3,6 +3,7 @@
 #include "../../Game/Game.h"
 #include "../../Manager/Impl/ResourceManager.h"
 #include "spine/SkeletonData.h"
+#include <cstdlib>
 
 void CompSpine::Load(const std::string& spineName, float widthInWorld)
 {
@@ -69,4 +70,17 @@ void CompSpine::SetSfmlDrawableScreenCoordinate(const vec2f& coord)
     // half of height.
     vec2f screenSize = GetRenderSizeInScreenCoordinate();
     _pSpine->skeleton->setPosition(coord.x, coord.y + screenSize.y / 2);
+}
+
+void CompSpine::SetFlip(bool doFlip)
+{
+    spine::Skeleton* pSkeleton = _pSpine->skeleton;
+    float scaleX = pSkeleton->getScaleX();
+
+    if (doFlip)
+        scaleX = - abs(scaleX);
+    else
+        scaleX = abs(scaleX);
+
+    pSkeleton->setScaleX(scaleX);
 }
