@@ -34,7 +34,7 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(
 
 	// comp spine
 	const auto pSpine = pEntity->AddComponent<CompSpine>();
-	pSpine->Load(configMgr->GetPlayerSetting().spineName, 1);
+	pSpine->Load(configMgr->GetPlayerSetting().spineName, sizeInWorld.x);
 
 	// comp collider
 	auto pCollider = pEntity->AddComponent<CompCollider>();

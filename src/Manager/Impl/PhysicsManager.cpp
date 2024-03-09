@@ -27,11 +27,17 @@ std::unique_ptr<b2Body, PhysicsManager::B2BodyDeleter> PhysicsManager::CreatePhy
 
 void PhysicsManager::Tick()
 {
+    auto pSceneMgr = Game::GetManager<SceneManager>();
+    auto pPlayer = pSceneMgr->GetPlayerEntity();
+    auto pPlayerCollider = pPlayer->GetComponent<CompCollider>();
+    auto playerPhyPos = pPlayerCollider->GetPhysicalWorldPosition();
+
     // update physics world
     _pPhysicWorld->Step(Game::GetDeltaTime(), velocityIterations, positionIterations);
 
+    playerPhyPos = pPlayerCollider->GetPhysicalWorldPosition();
+
     // apply all physics world position to real world position
-    auto pSceneMgr = Game::GetManager<SceneManager>();
     auto& allEntities = pSceneMgr->GetSceneEntities();
     for (auto& [guid, pEntity]: allEntities)
     {

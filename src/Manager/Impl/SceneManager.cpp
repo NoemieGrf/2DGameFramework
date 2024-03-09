@@ -4,6 +4,7 @@
 #include "../../Entity/EntityFactory.h"
 #include "../../Game/Game.h"
 #include "ConfigManager.h"
+#include "ResourceManager.h"
 #include "../../Component/Impl/CompSpine.h"
 
 void SceneManager::InitLevel() 
@@ -70,14 +71,30 @@ void SceneManager::InitMap()
 
 void SceneManager::InitPlayer()
 {
+    ConfigManager* pConfigMgr = Game::GetManager<ConfigManager>();
+    ResourceManager* pResMgr = Game::GetManager<ResourceManager>();
+
+    // calculate the born coordinate
     vec2f playerBornTilePos = VecConvert<int, float>(_levelMap.GetPlayerBornTileCoordinate());
     vec2f playerBornWorldPos = playerBornTilePos + vec2f{ 0.5f, 0.5f };
-    auto [guid, pEntity] = EntityFactory::CreatePlayer(playerBornWorldPos, vec2f{ 1, 1 });
+
+    // calculate the width-height scale of avatar
+    const auto* pSpineRes = pResMgr->GetSpineResource(pConfigMgr->GetPlayerSetting().spineName);
+    float avatarWidthHeightScale = pSpineRes->GetSkeletonWidthHeightScale();
+
+    // create player
+    auto [guid, pEntity] = EntityFactory::CreatePlayer(playerBornWorldPos, vec2f{ 1, 1 / avatarWidthHeightScale });
     _playerGuid = guid;
 
+    // set idle animation
     pEntity->GetComponent<CompSpine>()->SetAnimation("Wait1Loop", true);
 
     _allEntitiesMap[guid] = std::move(pEntity);
+}
+
+uint SceneManager::GetPlayerEntityGuid() const
+{
+    return _playerGuid;
 }
 
 Entity* SceneManager::GetEntity(uint uid)

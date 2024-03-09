@@ -11,6 +11,7 @@ public:
 
 public:
     auto GetEntity(uint guid) -> Entity*;
+    auto GetPlayerEntityGuid() const -> uint;
     auto GetPlayerEntity() -> Entity*;
     auto GetSceneEntities() -> umap<uint, uptr<Entity>>&;
 

@@ -21,7 +21,7 @@ void CompCollider::Init(bool isDynamic, const vec2f& aabbBox)
     _pPhyBody = Game::GetManager<PhysicsManager>()->CreatePhysicBody(&bodyDef);
 
     b2PolygonShape boxShape;
-    boxShape.SetAsBox(aabbBox.x, aabbBox.y);    // box size
+    boxShape.SetAsBox(aabbBox.x / 2, aabbBox.y / 2);    // box size (parameter is half width and half height)
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &boxShape;

@@ -103,3 +103,8 @@ void ResourceManager::LoadTextureResourceInternal(const std::string& pngPath)
 {
     _textureResourcePool[pngPath].loadFromFile(pngPath);
 }
+
+float ResourceManager::SpineResData::GetSkeletonWidthHeightScale() const
+{
+    return pSkeletonData->getWidth() / pSkeletonData->getHeight();
+}

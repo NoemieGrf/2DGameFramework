@@ -9,7 +9,6 @@ public:
 	auto Load(const std::string& spineName, float widthInWorld) -> void;
 	auto SetAnimation(const std::string& animName, bool isLoop) -> void;
 	auto UpdateSkeletonDrawable(float deltaTime) -> void;
-	auto GetSkeletonWidthHeightScale() -> float;
 
 public:
 	auto GetRenderSizeInScreenCoordinate() const -> vec2f override;

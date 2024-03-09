@@ -38,7 +38,7 @@ void Game::Init()
     uint userDeviceScreenWidth = sf::VideoMode::getDesktopMode().width;
     uint userDeviceScreenHeight = sf::VideoMode::getDesktopMode().height;
     
-    float windowWidth = 0.7 * std::min(userDeviceScreenHeight, userDeviceScreenWidth);
+    float windowWidth = 0.9 * std::min(userDeviceScreenHeight, userDeviceScreenWidth);
     float windowHeight = windowWidth / screenWidthHeightRatio;
 
     _worldCoordinateToScreenCoordinateScale = windowWidth / cameraRectWorldCoordinateSize.x;

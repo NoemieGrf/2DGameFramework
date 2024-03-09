@@ -14,6 +14,7 @@ class ResourceManager: public GameManagerTypeGetter<GameManagerType::Resource>
 public:
     struct SpineResData
     {
+    public:
         // texture loader -> hold the real data of PNG file.
         uptr<spine::SFMLTextureLoader> pTextureLoader = nullptr;
 
@@ -25,6 +26,9 @@ public:
 
         // animation -> hold the data of animation blend.
         uptr<spine::AnimationStateData> pAnimationMixer = nullptr;
+
+    public:
+        auto GetSkeletonWidthHeightScale() const -> float;
     };
 
 public:

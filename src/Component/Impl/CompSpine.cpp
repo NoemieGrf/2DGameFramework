@@ -32,13 +32,6 @@ void CompSpine::UpdateSkeletonDrawable(float deltaTime)
     _pSpine->update(deltaTime);
 }
 
-float CompSpine::GetSkeletonWidthHeightScale()
-{
-    spine::Skeleton* pSkeleton = _pSpine->skeleton;
-    spine::SkeletonData* pSkeletonData = pSkeleton->getData();
-    return pSkeletonData->getWidth() / pSkeletonData->getHeight();
-}
-
 void CompSpine::SetAnimation(const std::string& animName, bool isLoop)
 {
     _pSpine->state->setAnimation(0, animName.c_str(), isLoop);
@@ -67,5 +60,13 @@ sf::Drawable* CompSpine::GetSfmlDrawable() const
 
 void CompSpine::SetSfmlDrawableScreenCoordinate(const vec2f& coord)
 {
-    _pSpine->skeleton->setPosition(coord.x, coord.y);
+    // ATTENTION!
+    // The screen position of spine is quiet special, in spine,
+    // the root point is the middle of avatar's feet, so all of 
+    // body is drew above the root point. By this reason, the
+    // screen position of spine should be original position plus
+    // half of height, which will make whole avatar move down
+    // half of height.
+    vec2f screenSize = GetRenderSizeInScreenCoordinate();
+    _pSpine->skeleton->setPosition(coord.x, coord.y + screenSize.y / 2);
 }

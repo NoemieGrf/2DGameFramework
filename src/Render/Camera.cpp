@@ -42,7 +42,8 @@ void Camera::CalculateCenterAndBound()
 
 void Camera::CullScene(std::vector<CompRender*>& resultVec)
 {
-    auto& allEntitiesMap = Game::GetManager<SceneManager>()->GetSceneEntities();
+    SceneManager* pSceneMgr = Game::GetManager<SceneManager>();
+    auto& allEntitiesMap =pSceneMgr ->GetSceneEntities();
     auto windowSize = Game::GetWindow()->getSize();
     for (auto& [guid, pEntity]: allEntitiesMap)
     {
@@ -60,12 +61,12 @@ void Camera::CullScene(std::vector<CompRender*>& resultVec)
 
         vec2f entityRenderSizeScreenCoord = pRender->GetRenderSizeInScreenCoordinate();
 
-        vec2f entityRenderTopLeftScreenCoord = entityCenterScreenCoord - entityRenderSizeScreenCoord / 2.0f;
-        if (entityRenderTopLeftScreenCoord.x < 0 || entityRenderTopLeftScreenCoord.y < 0)
+        vec2f entityRenderBottomRightScreenCoord = entityCenterScreenCoord + entityRenderSizeScreenCoord / 2.0f;
+        if (entityRenderBottomRightScreenCoord.x < 0 || entityRenderBottomRightScreenCoord.y < 0)
             continue;
 
-        vec2f entityRenderBottomRightScreenCoord = entityCenterScreenCoord + entityRenderSizeScreenCoord / 2.0f;
-        if (entityRenderBottomRightScreenCoord.x > windowSize.x || entityRenderBottomRightScreenCoord.y > windowSize.y)
+        vec2f entityRenderTopLeftScreenCoord = entityCenterScreenCoord - entityRenderSizeScreenCoord / 2.0f;
+        if (entityRenderTopLeftScreenCoord.x > windowSize.x || entityRenderTopLeftScreenCoord.y > windowSize.y)
             continue;
 
         resultVec.push_back(pRender);
