@@ -26,7 +26,7 @@ void CompCollider::Init(bool isDynamic, const vec2f& aabbBox)
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &boxShape;
     fixtureDef.density = 1.0f; // 设置密度，影响物体的质量
-    fixtureDef.friction = 0.3f; // 设置摩擦系数
+    fixtureDef.friction = 1.0f; // 设置摩擦系数
     fixtureDef.restitution = 0.0f;  // 设置弹性
 
     _pPhyBody->CreateFixture(&fixtureDef);
