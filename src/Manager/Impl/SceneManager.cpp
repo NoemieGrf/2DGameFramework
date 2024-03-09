@@ -61,7 +61,8 @@ void SceneManager::InitMap()
                 wallPngPath, 
                 wallCenter, 
                 vec2f{ 1, 1 }, 
-                entityName
+                entityName,
+                pConfigMgr->GetGlobalSetting().wallPhysicsFixture
                 );
 
             _allEntitiesMap[guid] = std::move(pEntity);
@@ -83,14 +84,19 @@ void SceneManager::InitPlayer()
     float avatarWidthHeightScale = pSpineRes->GetSkeletonWidthHeightScale();
 
     // create player
-    auto [guid, pEntity] = EntityFactory::CreatePlayer(playerBornWorldPos, vec2f{ 1, 1 / avatarWidthHeightScale });
-    _playerGuid = guid;
+    auto [guid, pEntity] = EntityFactory::CreatePlayer(
+        playerBornWorldPos, 
+        vec2f{ 1, 1 / avatarWidthHeightScale },
+        pConfigMgr->GetGlobalSetting().entityPhysicsFixture
+        );
 
     // set idle animation
     CompSpine* pPlayerSpine = pEntity->GetComponent<CompSpine>();
     pPlayerSpine->SetFlip(true);
     pPlayerSpine->SetAnimation("Wait1Loop", true);
 
+    // record
+    _playerGuid = guid;
     _allEntitiesMap[guid] = std::move(pEntity);
 }
 

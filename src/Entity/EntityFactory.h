@@ -3,6 +3,7 @@
 #include <string>
 #include "../Game/GlobalDefine.h"
 #include "Entity.h"
+#include "../Config/GlobalSetting.h"
 
 class EntityFactory
 {
@@ -12,7 +13,8 @@ public:
 public:
 	static std::pair<uint, uptr<Entity>> CreatePlayer(
 		const vec2f& initWorldPos, 
-		const vec2f& sizeInWorld
+		const vec2f& sizeInWorld,
+		const PhysicsFixture& fixture
 		);
 
 	static std::pair<uint, uptr<Entity>> CreateMonster(
@@ -23,7 +25,8 @@ public:
 		const std::string& pngPath, 
 		const vec2f& initWorldPos, 
 		const vec2f& sizeInWorld, 
-		const std::string& name
+		const std::string& name,
+		const PhysicsFixture& fixture
 		);
 
 };

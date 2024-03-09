@@ -13,7 +13,8 @@
 
 std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(
 	const vec2f& initWorldPos, 
-	const vec2f& sizeInWorld
+	const vec2f& sizeInWorld,
+	const PhysicsFixture& fixture
 	)
 {
 	ConfigManager* configMgr = Game::GetManager<ConfigManager>();
@@ -38,7 +39,7 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(
 
 	// comp collider
 	auto pCollider = pEntity->AddComponent<CompCollider>();
-	pCollider->Init(true, sizeInWorld);
+	pCollider->Init(true, sizeInWorld, fixture);
 
 	return { guid, std::move(pEntity) };
 }
@@ -65,7 +66,8 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreateGadget(
 	const std::string& pngPath, 
 	const vec2f& initWorldPos, 
 	const vec2f& sizeInWorld,
-	const std::string& name
+	const std::string& name,
+	const PhysicsFixture& fixture
 	)
 {
 	ConfigManager* configMgr = Game::GetManager<ConfigManager>();
@@ -86,7 +88,7 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreateGadget(
 
 	// comp collider
 	auto pCollider = pEntity->AddComponent<CompCollider>();
-	pCollider->Init(false, sizeInWorld);
+	pCollider->Init(false, sizeInWorld, fixture);
 
 	// comp sprite
 	auto pSprite = pEntity->AddComponent<CompSprite>();

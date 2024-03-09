@@ -3,11 +3,12 @@
 #include "../../Game/GlobalDefine.h"
 #include "../ComponentTypeGetter.h"
 #include "../../Manager/Impl/PhysicsManager.h"
+#include "../../Config/GlobalSetting.h"
 
 class CompCollider: public ComponentTypeGetter<ComponentType::Collider>
 {
 public:
-    auto Init(bool isDynamic, const vec2f& aabbBox) -> void;
+    auto Init(bool isDynamic, const vec2f& aabbBox, const PhysicsFixture& fixture) -> void;
     auto GetPhysicalWorldPosition() const -> vec2f;
     auto SetPhysicalWorldPosition(const vec2f& pos) -> void;
     auto ApplyForce(const vec2f& force) -> void;

@@ -36,8 +36,17 @@ auto ConfigManager::LoadGlobalSetting() -> void
     _globalSetting.globalGravity = json["globalGravity"];
     _globalSetting.levelMapPath = json["levelMapPath"];
     _globalSetting.levelWallTexPath = json["levelWallTexPath"];
+
     _globalSetting.cameraRectWorldCoordinateSize.x = json["cameraRectWorldCoordinateSize"]["x"];
     _globalSetting.cameraRectWorldCoordinateSize.y = json["cameraRectWorldCoordinateSize"]["y"];
+
+    _globalSetting.wallPhysicsFixture.density = json["wallPhysics"]["density"];
+    _globalSetting.wallPhysicsFixture.friction = json["wallPhysics"]["friction"];
+    _globalSetting.wallPhysicsFixture.restitution = json["wallPhysics"]["restitution"];
+
+    _globalSetting.entityPhysicsFixture.density = json["entityPhysics"]["density"];
+    _globalSetting.entityPhysicsFixture.friction = json["entityPhysics"]["friction"];
+    _globalSetting.entityPhysicsFixture.restitution = json["entityPhysics"]["restitution"];
 }
 
 auto ConfigManager::LoadSpineSetting() -> void
