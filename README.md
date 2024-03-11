@@ -1,5 +1,7 @@
 # Dev notes
 
+![](./images/pic.png)
+
 ## Coordinates
 
 ### Tile coordinate:

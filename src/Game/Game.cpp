@@ -88,7 +88,7 @@ void Game::GameLoop()
             _gameMgrMap[mgrType]->LateTick();
 
         // render scene
-        _pWindow->clear(sf::Color::White);
+        _pWindow->clear(sf::Color{220, 220, 220});
         _pMainCamera->DoRender();
         _pWindow->display();
     }
