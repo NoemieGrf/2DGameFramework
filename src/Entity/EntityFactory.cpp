@@ -9,6 +9,7 @@
 #include "../Component/Impl/CompTransform.h"
 #include "../Component/Impl/CompCollider.h"
 #include "../Component/Impl/CompName.h"
+#include "../Component/Impl/CompAnimator.h"
 
 
 std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(
@@ -44,6 +45,9 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(
 		sizeInWorld.y
 	};
 	pCollider->Init(true, aabbBox, fixture);
+
+	// comp animator
+	auto pAnimator = pEntity->AddComponent<CompAnimator>();
 
 	return { guid, std::move(pEntity) };
 }

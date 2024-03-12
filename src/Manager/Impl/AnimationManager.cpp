@@ -1,20 +1,29 @@
 #include "AnimationManager.h"
 #include "../../Game/Game.h"
 #include "../../Component/Impl/CompSpine.h"
+#include "../../Component/Impl/CompAnimator.h"
 #include "SceneManager.h"
 
 void AnimationManager::Tick()
 {
+    
+}
+
+void AnimationManager::LateTick()
+{
     SceneManager* sceneMgr = Game::GetManager<SceneManager>();
     float deltaTime = Game::GetDeltaTime();
     
-    // update all spine
     for (auto& [guid, pEntity]: sceneMgr->GetSceneEntities())
     {
-        CompSpine* pSpine = pEntity->GetComponent<CompSpine>();
-        if (pSpine == nullptr)
-            continue;
+        // update all animator
+        CompAnimator* pAnimator = pEntity->GetComponent<CompAnimator>();
+        if (pAnimator != nullptr)
+            pAnimator->Update();
 
-        pSpine->UpdateSkeletonDrawable(deltaTime);
+        // update all spine
+        CompSpine* pSpine = pEntity->GetComponent<CompSpine>();
+        if (pSpine != nullptr)
+            pSpine->UpdateSkeletonDrawable(deltaTime);
     }
 }

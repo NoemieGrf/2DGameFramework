@@ -6,4 +6,8 @@ class AnimationManager: public GameManagerTypeGetter<GameManagerType::Animation>
 {
 public:
     void Tick() override;
+    void LateTick() override;
+
+private:
+    
 };

@@ -63,4 +63,9 @@ public:
             src.y / norm
         };
     }
+
+    static bool NearZero(float value)
+    {
+        return abs(value) < 0.0001;
+    }
 };

@@ -6,6 +6,7 @@ enum class ComponentType: int
 	Render,
 	Guid,
 	Ai,
+	Animator,
 	Collider,
 	Name,
 };

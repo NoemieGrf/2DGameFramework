@@ -25,11 +25,11 @@ void Game::Init()
     // create game manager, order is really important!
     AddManager<ConfigManager>();
     AddManager<ResourceManager>();
-    AddManager<PhysicsManager>();
     AddManager<UserInputManager>();
+    AddManager<AnimationManager>();
+    AddManager<PhysicsManager>();
     AddManager<SceneManager>();
     AddManager<AiManager>();
-    AddManager<AnimationManager>();
 
     // init window
     vec2f cameraRectWorldCoordinateSize = GetManager<ConfigManager>()->GetGlobalSetting().cameraRectWorldCoordinateSize;
