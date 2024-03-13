@@ -1,0 +1,158 @@
+[
+    {
+        "name": "player",
+        "state": [
+            {
+                "anim": "idle",
+                "transition": [
+                    {
+                        "anim": "run",
+                        "condition": [
+                            {
+                                "type": "checkValue",
+                                "source": "horizontalVelocity",
+                                "operation": "greaterThan",
+                                "target": 0
+                            },
+                            {
+                                "type": "checkState",
+                                "state": "onAir",
+                                "value": 0
+                            }
+                        ]
+                    },
+                    {
+                        "anim": "jump",
+                        "condition": [
+                            {
+                                "type": "checkTrigger",
+                                "triggerName": "jump"
+                            }
+                        ]
+                    },
+                    {
+                        "anim": "attack",
+                        "condition": [
+                            {
+                                "type": "checkTrigger",
+                                "triggerName": "attack"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "anim": "run",
+                "transition": [
+                    {
+                        "anim": "idle",
+                        "condition": [
+                            {
+                                "type": "checkValue",
+                                "source": "horizontalVelocity",
+                                "operation": "equal",
+                                "target": 0
+                            },
+                            {
+                                "type": "checkState",
+                                "state": "onAir",
+                                "value": 0
+                            }
+                        ]
+                    },
+                    {
+                        "anim": "jump",
+                        "condition": [
+                            {
+                                "type": "checkTrigger",
+                                "triggerName": "jump"
+                            }
+                        ]
+                    },
+                    {
+                        "anim": "attack",
+                        "condition": [
+                            {
+                                "type": "checkTrigger",
+                                "triggerName": "attack"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "anim": "jump",
+                "transition": [
+                    {
+                        "anim": "idle",
+                        "condition": [
+                            {
+                                "type": "checkValue",
+                                "source": "horizontalVelocity",
+                                "operation": "equal",
+                                "target": 0
+                            },
+                            {
+                                "type": "checkState",
+                                "state": "onAir",
+                                "value": 0
+                            }
+                        ]
+                    },
+                    {
+                        "anim": "run",
+                        "condition": [
+                            {
+                                "type": "checkValue",
+                                "source": "horizontalVelocity",
+                                "operation": "greaterThan",
+                                "target": 0
+                            },
+                            {
+                                "type": "checkState",
+                                "state": "onAir",
+                                "value": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "anim": "attack",
+                "transition": [
+                    {
+                        "anim": "idle",
+                        "condition": [
+                            {
+                                "type": "checkProgress",
+                                "value": 1
+                            }
+                        ]
+                    },
+                    {
+                        "anim": "attack",
+                        "condition": [
+                            {
+                                "type": "checkProgress",
+                                "value": 1
+                            },
+                            {
+                                "type": "checkTrigger",
+                                "triggerName": "attack"
+                            }
+                        ]
+                    },
+                    {
+                        "anim": "jump",
+                        "condition": [
+                            {
+                                "type": "checkTrigger",
+                                "triggerName": "jump"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
