@@ -28,6 +28,7 @@ target_compile_definitions(${TARGET_NAME} PRIVATE SFML_STATIC)
 
 # additional include directories
 target_include_directories(${TARGET_NAME} PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/
         ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/nlohmann/include/
         ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/sfml/include/
         ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/box2d/include/
