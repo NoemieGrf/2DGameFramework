@@ -10,6 +10,8 @@ void UserInputManager::PreTick()
     static std::vector<sf::Keyboard::Key> allKeyCodeWeCare = {
         sf::Keyboard::Key::A,
         sf::Keyboard::Key::D,
+        sf::Keyboard::Key::J,
+        sf::Keyboard::Key::K,
         sf::Keyboard::Key::Space,
     };
     
@@ -18,6 +20,21 @@ void UserInputManager::PreTick()
 
     for (auto key : allKeyCodeWeCare)
         CheckKeyCode(key);
+}
+
+bool UserInputManager::IsKeyPressedThisFrame(sf::Keyboard::Key keyCode) const
+{
+    return _thisFramePressedKey.contains(keyCode);
+}
+
+bool UserInputManager::IsKeyReleasedThisFrame(sf::Keyboard::Key keyCode) const
+{
+    return _thisFrameReleasedKey.contains(keyCode);
+}
+
+bool UserInputManager::IsKeyPressing(sf::Keyboard::Key keyCode) const
+{
+    return _pressingKeySet.contains(keyCode);
 }
 
 void UserInputManager::Tick()

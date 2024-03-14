@@ -1,5 +1,8 @@
 #pragma once
 
+#include <queue>
+#include <string>
+#include <optional>
 #include "../ComponentTypeGetter.h"
 
 class CompAnimator : public ComponentTypeGetter<ComponentType::Animator>
@@ -7,15 +10,11 @@ class CompAnimator : public ComponentTypeGetter<ComponentType::Animator>
 public:
     void Update();
 
-private:
-    enum HorizontalMoveState
-    {
-        RunLeft,
-        Idle,
-        RunRight
-    };
+public:
+    auto EnqueueTrigger(const std::string& trigger) -> void;
+    auto DequeueTrigger() -> std::optional<std::string>;
 
 private:
-    HorizontalMoveState _lastFrameHorizontalMoveState = HorizontalMoveState::Idle;
+    std::queue<std::string> _animTriggers;
     
 };

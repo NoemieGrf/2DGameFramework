@@ -11,6 +11,11 @@ public:
     auto PreTick() -> void override;
     auto Tick() -> void override;
 
+public:
+    bool IsKeyPressedThisFrame(sf::Keyboard::Key keyCode) const;
+    bool IsKeyReleasedThisFrame(sf::Keyboard::Key keyCode) const;
+    bool IsKeyPressing(sf::Keyboard::Key keyCode) const;
+
 private:
     auto CheckKeyCode(sf::Keyboard::Key keyCode) -> void;
 

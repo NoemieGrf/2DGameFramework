@@ -2,6 +2,7 @@
 
 #include "../../Game/Game.h"
 #include "../../Manager/Impl/ResourceManager.h"
+#include "Utility/Util.hpp"
 #include "spine/SkeletonData.h"
 #include <cstdlib>
 
@@ -52,6 +53,15 @@ vec2f CompSpine::GetRenderSizeInScreenCoordinate() const
         originalWidth * abs(scaleX), 
         originalHeight * abs(scaleY) 
         };
+}
+
+float CompSpine::GetCurrentAnimProgress() const
+{
+    auto* pAnimTrack = _pSpine->state->getCurrent(0);
+    float animTime = pAnimTrack->getAnimationTime();
+    float duration = pAnimTrack->getAnimationEnd() - pAnimTrack->getAnimationStart();
+    float result = animTime / duration;
+    return Util::Clamp01(result);
 }
 
 sf::Drawable* CompSpine::GetSfmlDrawable() const
