@@ -25,3 +25,8 @@ std::optional<std::string> CompAnimator::DequeueTrigger()
     _animTriggers.pop();
     return result;
 }
+
+void CompAnimator::SetAnimationTransitionMap(const AnimatorConfig* map)
+{
+    _animationTransitionMap = map;
+}

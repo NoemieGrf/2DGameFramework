@@ -4,12 +4,13 @@
 #include "Game/GlobalDefine.h"
 #include "Animation/Condition/AnimTransCondition.h"
 
-struct AnimationTransitionMap
+struct AnimatorConfig
 {
-    umap<std::string /* trans target anim */, std::vector<uptr<AnimTransCondition>>> conditions;
+    umap<std::string /* config anim name */, std::string /* spine anim name */> configAnimNameToSpineAnimNameMap;
+    umap<std::string /* trans target anim */, std::vector<uptr<AnimTransCondition>>> transitions;
 };
 
 struct AnimationSetting
 {
-    umap<std::string, AnimationTransitionMap> animationMap;
+    umap<std::string /* animator name */, AnimatorConfig> animatorConfigMap;
 };

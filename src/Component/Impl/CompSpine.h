@@ -1,7 +1,11 @@
 #pragma once
 
+#include <queue>
+#include <string>
+#include <optional>
 #include "spine-sfml/spine-sfml.h"
 #include "CompRender.h"
+#include "Config/AnimationSetting.h"
 
 class CompSpine : public CompRender
 {
@@ -17,6 +21,20 @@ public:
 	auto SetSfmlDrawableScreenCoordinate(const vec2f& coord) -> void override;
 	auto SetFlip(bool doFlip) -> void override;
 
+	// trigger
+    auto EnqueueAnimTrigger(const std::string& trigger) -> void;
+    auto DequeueAnimTrigger() -> std::optional<std::string>;
+
 private:
+	// render
 	uptr<spine::SkeletonDrawable> _pSpine = nullptr;
+
+	// animator config
+    const AnimatorConfig* _animationTransitionMap;
+
+	// animator current
+	std::string _currentAnim;
+
+	// animator triggers
+    std::queue<std::string> _animTriggers;
 };

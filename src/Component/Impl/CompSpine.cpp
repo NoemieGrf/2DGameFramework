@@ -94,3 +94,18 @@ void CompSpine::SetFlip(bool doFlip)
 
     pSkeleton->setScaleX(scaleX);
 }
+
+void CompSpine::EnqueueAnimTrigger(const std::string& trigger)
+{
+    _animTriggers.push(trigger);
+}
+
+std::optional<std::string> CompSpine::DequeueAnimTrigger()
+{
+    if (_animTriggers.empty())
+        return std::nullopt;
+
+    std::string result = _animTriggers.front();
+    _animTriggers.pop();
+    return result;
+}

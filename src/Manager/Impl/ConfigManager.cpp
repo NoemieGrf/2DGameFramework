@@ -123,17 +123,17 @@ auto ConfigManager::LoadAnimationSetting() -> void
         return { targetAnimName, std::move(allConditions) };
     };
 
-    auto CreateTransitionMap = [&](const nlohmann::json& statNode) -> std::pair<std::string, AnimationTransitionMap>
+    auto CreateTransitionMap = [&](const nlohmann::json& statNode) -> std::pair<std::string, AnimatorConfig>
     {
-        std::string animationName = statNode["name"];
-        AnimationTransitionMap transitionMap;
+        std::string animationName = statNode["anim"];
+        AnimatorConfig animatorConfig;
         for (auto& transitionNode: statNode["transition"])
         {
             auto [targetAnimName, conditionVec] = CreateTransition(transitionNode);
-            transitionMap.conditions[targetAnimName] = std::move(conditionVec);
+            animatorConfig.transitions[targetAnimName] = std::move(conditionVec);
         }
 
-        return { animationName, std::move(transitionMap) };
+        return { animationName, std::move(animatorConfig) };
     };
 
     nlohmann::json json = LoadJsonFile("./config/AnimationSetting.json");
@@ -143,7 +143,7 @@ auto ConfigManager::LoadAnimationSetting() -> void
 
         auto [animationName, transMap] = CreateTransitionMap(singleAnimConfig["state"]);
 
-        _animationSetting.animationMap[animatorName] = std::move(transMap);
+        _animationSetting.animatorConfigMap[animatorName] = std::move(transMap);
     }
 }
 
