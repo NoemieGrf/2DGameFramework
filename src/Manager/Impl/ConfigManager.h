@@ -5,6 +5,7 @@
 
 #include "../GameManagerTypeGetter.h"
 #include "../../Config/GlobalSetting.h"
+#include "../../Config/AnimationSetting.h"
 #include "../../Config/PlayerSetting.h"
 #include "../../Config/MonsterSetting.h"
 #include "../../Config/SceneSetting.h"
@@ -19,6 +20,7 @@ public:
 public:
     auto GetGlobalSetting() const -> const GlobalSetting&;
     auto GetSpineSetting() const -> const SpineSetting&;
+    auto GetAnimationSetting() const -> const AnimationSetting&;
     auto GetLevelSetting() const -> const LevelSetting&;
     auto GetPlayerSetting() const -> const PlayerSetting&;
     auto GetMonsterSetting() const -> const MonsterSetting&;
@@ -29,6 +31,7 @@ public:
 private:
     auto LoadGlobalSetting() -> void;
     auto LoadSpineSetting() -> void;
+    auto LoadAnimationSetting() -> void;
     auto LoadLevelSetting() -> void;
     auto LoadPlayerSetting() -> void;
     auto LoadMonsterSetting() -> void;
@@ -40,6 +43,7 @@ private:
     // json setting
     GlobalSetting _globalSetting = {};
     SpineSetting _spineSetting = {};
+    AnimationSetting _animationSetting = {};
     LevelSetting _levelSetting = {};
     PlayerSetting _playerSetting = {};
     MonsterSetting _monsterSetting = {};

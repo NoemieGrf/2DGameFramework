@@ -1,8 +1,11 @@
 #include "ConfigManager.h"
 
 #include <fstream>
+#include <format>
+#include "Animation/Condition/AnimTransCondition.h"
 #include "nlohmann/json.hpp"
-#include "../../Utility/Logger.h"
+#include "Utility/Logger.h"
+#include "Animation/Condition/AnimTransConditionFactory.h"
 
 static nlohmann::json LoadJsonFile(const std::string& filePath)
 {
@@ -24,6 +27,7 @@ ConfigManager::ConfigManager()
 {
     LoadGlobalSetting();
     LoadSpineSetting();
+    LoadAnimationSetting();
     LoadPlayerSetting();
     LoadMonsterSetting();
     LoadSceneSetting();
@@ -70,6 +74,76 @@ auto ConfigManager::LoadSpineSetting() -> void
         }
 
         _spineSetting.allSpineData[spineData.name] = std::move(spineData);
+    }
+}
+
+auto ConfigManager::LoadAnimationSetting() -> void
+{
+    // prepare some functions, to make logic looks clear
+    auto CreateCondition = [&](const nlohmann::json& conditionNode) -> uptr<AnimTransCondition>
+    {
+        const std::string& conditionType = conditionNode["type"];
+        if (conditionType == "checkValue")
+        {
+            const std::string& operation = conditionNode["operation"];
+            const std::string& source = conditionNode["source"];
+            float target = conditionNode["target"];
+            return AnimTransCheckerFactory::CreateValueChecker(operation, source, target);
+        }
+        else if (conditionType == "checkProgress")
+        {
+            float ratio = conditionNode["value"];
+            return AnimTransCheckerFactory::CreateProgressChecker(ratio);
+        }
+        else if (conditionType == "checkTrigger")
+        {
+            const std::string& triggerName = conditionNode["triggerName"];
+            return AnimTransCheckerFactory::CreateTriggerChecker(triggerName);
+        }
+        else if (conditionType == "checkState")
+        {
+            const std::string& state = conditionNode["state"];
+            float value = conditionNode["value"];
+            return AnimTransCheckerFactory::CreateStateChecker(state, value);
+        }
+        else 
+        {
+            Logger::LogError(std::format("[AnimationSetting] No checker named: {}", conditionType));
+            return nullptr;
+        }   
+    };
+
+    auto CreateTransition = [&](const nlohmann::json& transitionNode) -> std::pair<std::string, std::vector<uptr<AnimTransCondition>>>
+    {
+        std::string targetAnimName = transitionNode["name"];
+        std::vector<uptr<AnimTransCondition>> allConditions;
+        for (auto& conditionNode: transitionNode["condition"])
+            allConditions.push_back(CreateCondition(conditionNode));
+
+        return { targetAnimName, std::move(allConditions) };
+    };
+
+    auto CreateTransitionMap = [&](const nlohmann::json& statNode) -> std::pair<std::string, AnimationTransitionMap>
+    {
+        std::string animationName = statNode["name"];
+        AnimationTransitionMap transitionMap;
+        for (auto& transitionNode: statNode["transition"])
+        {
+            auto [targetAnimName, conditionVec] = CreateTransition(transitionNode);
+            transitionMap.conditions[targetAnimName] = std::move(conditionVec);
+        }
+
+        return { animationName, std::move(transitionMap) };
+    };
+
+    nlohmann::json json = LoadJsonFile("./config/AnimationSetting.json");
+    for (auto& singleAnimConfig: json)
+    {
+        std::string animatorName = singleAnimConfig["name"];
+
+        auto [animationName, transMap] = CreateTransitionMap(singleAnimConfig["state"]);
+
+        _animationSetting.animationMap[animatorName] = std::move(transMap);
     }
 }
 
@@ -144,6 +218,11 @@ auto ConfigManager::GetGlobalSetting() const -> const GlobalSetting&
 auto ConfigManager::GetSpineSetting() const -> const SpineSetting&
 {
     return _spineSetting;
+}
+
+auto ConfigManager::GetAnimationSetting() const -> const AnimationSetting&
+{
+    return _animationSetting;
 }
 
 auto ConfigManager::GetLevelSetting() const -> const LevelSetting&
