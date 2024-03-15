@@ -1,9 +1,11 @@
 #pragma once
 
 #include "box2d/box2d.h"
-#include "../../Game/Game.h"
-#include "../../Game/GlobalDefine.h"
-#include "../GameManagerTypeGetter.h"
+#include "Game/Game.h"
+#include "Game/GlobalDefine.h"
+#include "Manager/GameManagerTypeGetter.h"
+
+class CompCollider;
 
 class PhysicsManager: public GameManagerTypeGetter<GameManagerType::Physics>
 {
@@ -20,13 +22,15 @@ public:
         void operator() (b2Body* p)
         {
             PhysicsManager* phyMgr = Game::GetManager<PhysicsManager>();
-            phyMgr->GetPhysicWorld()->DestroyBody(p);
+            phyMgr->DestroyPhysicBody(p);
         }
     };
 
 public:
     auto GetPhysicWorld() const -> b2World*;
-    auto CreatePhysicBody(const b2BodyDef* def) -> std::unique_ptr<b2Body, PhysicsManager::B2BodyDeleter>;
+    auto GetColliderFromBody(b2Body* pBody) -> CompCollider*;
+    auto CreatePhysicBody(const b2BodyDef* def, CompCollider* pCollider) -> std::unique_ptr<b2Body, PhysicsManager::B2BodyDeleter>;
+    auto DestroyPhysicBody(b2Body* pBody) -> void;
 
 public:
     auto Tick() -> void override;
@@ -34,6 +38,9 @@ public:
 private:
     // physic world
     uptr<b2World> _pPhysicWorld = nullptr;
+
+    // all body map
+    umap<b2Body*, CompCollider*> _bodyToColliderMap;
 
     // const
     static const int velocityIterations = 8;

@@ -17,6 +17,9 @@ public:
     bool Check(Entity* pEntity) override;
 
 private:
+    bool GetOnAirState(Entity* pEntity) const;
+
+private:
     StateType _type;
     int _targetValue;
 };

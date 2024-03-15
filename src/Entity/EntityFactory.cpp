@@ -48,7 +48,7 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(
 		sizeInWorld.x * 0.7f,	// 角色的碰撞稍微小一点
 		sizeInWorld.y
 	};
-	pCollider->Init(true, aabbBox, fixture);
+	pCollider->Init(true, aabbBox, fixture, CompCollider::Tag::Entity);
 
 	return { guid, std::move(pEntity) };
 }
@@ -97,7 +97,7 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreateGadget(
 
 	// comp collider
 	auto pCollider = pEntity->AddComponent<CompCollider>();
-	pCollider->Init(false, sizeInWorld, fixture);
+	pCollider->Init(false, sizeInWorld, fixture, CompCollider::Tag::Ground);
 
 	// comp sprite
 	auto pSprite = pEntity->AddComponent<CompSprite>();

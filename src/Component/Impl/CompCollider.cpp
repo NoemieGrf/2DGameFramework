@@ -1,9 +1,10 @@
 #include "CompCollider.h"
-#include "../../Game/Game.h"
-#include "../../Entity/Entity.h"
+#include "Game/Game.h"
+#include "Entity/Entity.h"
 #include "CompTransform.h"
+#include "box2d/b2_body.h"
 
-void CompCollider::Init(bool isDynamic, const vec2f& aabbBox, const PhysicsFixture& fixture)
+void CompCollider::Init(bool isDynamic, const vec2f& aabbBox, const PhysicsFixture& fixture, Tag tag)
 {
     b2BodyDef bodyDef;
     bodyDef.type = isDynamic ? b2_dynamicBody: b2_staticBody;
@@ -18,7 +19,7 @@ void CompCollider::Init(bool isDynamic, const vec2f& aabbBox, const PhysicsFixtu
     else
         bodyDef.position.Set(0.0f, 0.0f);
 
-    _pPhyBody = Game::GetManager<PhysicsManager>()->CreatePhysicBody(&bodyDef);
+    _pPhyBody = Game::GetManager<PhysicsManager>()->CreatePhysicBody(&bodyDef, this);
 
     b2PolygonShape boxShape;
     boxShape.SetAsBox(aabbBox.x / 2, aabbBox.y / 2);    // box size (parameter is half width and half height)
@@ -30,6 +31,14 @@ void CompCollider::Init(bool isDynamic, const vec2f& aabbBox, const PhysicsFixtu
     fixtureDef.restitution = fixture.restitution;  // 设置弹性
 
     _pPhyBody->CreateFixture(&fixtureDef);
+
+    // set tag
+    _tag = tag;
+}
+
+b2Body* CompCollider::GetPhysicsBody() const
+{
+    return _pPhyBody.get();
 }
 
 vec2f CompCollider::GetPhysicalWorldPosition() const
@@ -62,4 +71,9 @@ vec2f CompCollider::GetVelocity() const
 {
     b2Vec2 velocity = _pPhyBody->GetLinearVelocity();
     return vec2f{ velocity.x, velocity.y };
+}
+
+CompCollider::Tag CompCollider::GetTag() const
+{
+    return _tag;
 }

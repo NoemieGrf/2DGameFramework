@@ -19,10 +19,33 @@ b2World* PhysicsManager::GetPhysicWorld() const
     return _pPhysicWorld.get();
 }
 
-std::unique_ptr<b2Body, PhysicsManager::B2BodyDeleter> PhysicsManager::CreatePhysicBody(const b2BodyDef* def)
+CompCollider* PhysicsManager::GetColliderFromBody(b2Body* pBody)
 {
+    auto itr = _bodyToColliderMap.find(pBody);
+    if (itr == _bodyToColliderMap.end())
+        return nullptr;
+
+    return itr->second;
+}
+
+auto PhysicsManager::CreatePhysicBody(const b2BodyDef* def, CompCollider* pCollider) -> std::unique_ptr<b2Body, PhysicsManager::B2BodyDeleter>
+{
+    // create
     b2Body* pBody = _pPhysicWorld->CreateBody(def);
+
+    // add to map
+    _bodyToColliderMap[pBody] = pCollider;
+
     return std::unique_ptr<b2Body, PhysicsManager::B2BodyDeleter>(pBody);
+}
+
+void PhysicsManager::DestroyPhysicBody(b2Body* pBody)
+{
+    // remove from collider map
+    _bodyToColliderMap.erase(pBody);
+
+    // remove from physical world
+    _pPhysicWorld->DestroyBody(pBody);
 }
 
 void PhysicsManager::Tick()
@@ -37,7 +60,7 @@ void PhysicsManager::Tick()
 
     playerPhyPos = pPlayerCollider->GetPhysicalWorldPosition();
 
-    // apply all physics world position to real world position
+    // sync all physics world position to real world position
     auto& allEntities = pSceneMgr->GetSceneEntities();
     for (auto& [guid, pEntity]: allEntities)
     {
