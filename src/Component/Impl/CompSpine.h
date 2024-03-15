@@ -10,23 +10,25 @@
 class CompSpine : public CompRender
 {
 public:
-	auto Load(const std::string& spineName, float widthInWorld) -> void;
+	auto Load(const std::string& spineName, float widthInWorld, const AnimatorConfig* pAnimatorConfig) -> void;
 	
-	auto UpdateSkeletonDrawable(float deltaTime) -> void;
-
-public:
+	// render
 	auto GetRenderSizeInScreenCoordinate() const -> vec2f override;
 	auto GetSfmlDrawable() const -> sf::Drawable* override;
 	auto GetCurrentAnimProgress() const -> float;
 	auto SetSfmlDrawableScreenCoordinate(const vec2f& coord) -> void override;
 	auto SetFlip(bool doFlip) -> void override;
 
-	// trigger
+	// animation
     auto EnqueueAnimTrigger(const std::string& trigger) -> void;
     auto DequeueAnimTrigger() -> std::optional<std::string>;
 
+	// update
+	auto UpdateAnimator() -> void;
+	auto UpdateSkeletonDrawable(float deltaTime) -> void;
+
 private:
-	auto SetAnimation(const std::string& animName, bool isLoop) -> void;
+	auto SetAnimation(const std::string& animName) -> void;
 
 private:
 	// render

@@ -11,6 +11,7 @@ bool AnimTransCheckState::Check(Entity* pEntity)
     switch (_type) 
     {
     case StateType::OnAir:
-      break;
+        
+        return false;
     }
 }

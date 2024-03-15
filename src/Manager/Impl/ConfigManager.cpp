@@ -1,11 +1,10 @@
-#include "ConfigManager.h"
-
 #include <fstream>
 #include <format>
-#include "Animation/Condition/AnimTransCondition.h"
 #include "nlohmann/json.hpp"
+#include "ConfigManager.h"
+#include "Animation/AnimTransCondition.h"
+#include "Animation/AnimTransConditionFactory.h"
 #include "Utility/Logger.h"
-#include "Animation/Condition/AnimTransConditionFactory.h"
 
 static nlohmann::json LoadJsonFile(const std::string& filePath)
 {
@@ -129,11 +128,11 @@ auto ConfigManager::LoadAnimationSetting() -> void
         for (auto& animNode: animatorNode)
         {
             AnimationConfig animationConfig;
-            animationConfig.animName = animatorNode["anim"];
-            animationConfig.spineName = animatorNode["spineAnimName"];
-            animationConfig.isLoop = animatorNode["loop"];
+            animationConfig.animName = animNode["anim"];
+            animationConfig.spineName = animNode["spineAnimName"];
+            animationConfig.isLoop = animNode["loop"];
 
-            for (auto& transitionNode: animatorNode["transition"])
+            for (auto& transitionNode: animNode["transition"])
             {
                 auto [targetAnimName, conditionVec] = CreateTransition(transitionNode);
                 animationConfig.transitions[targetAnimName] = std::move(conditionVec);
@@ -164,6 +163,7 @@ auto ConfigManager::LoadPlayerSetting() -> void
 {
     nlohmann::json json = LoadJsonFile("./config/PlayerSetting.json");
     _playerSetting.spineName = json["spineName"];
+    _playerSetting.animatorName = json["animatorName"];
     _playerSetting.initMaxHp = json["initMaxHp"];
     _playerSetting.initMaxMp = json["initMaxMp"];
 }

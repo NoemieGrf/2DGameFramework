@@ -1,6 +1,6 @@
 #include "AnimTransCheckTrigger.h"
 #include "Entity/Entity.h"
-#include "Component/Impl/CompAnimator.h"
+#include "Component/Impl/CompSpine.h"
 
 AnimTransCheckTrigger::AnimTransCheckTrigger(const std::string& targetTrigger)
     : _targetTrigger(targetTrigger)
@@ -9,11 +9,11 @@ AnimTransCheckTrigger::AnimTransCheckTrigger(const std::string& targetTrigger)
 
 bool AnimTransCheckTrigger::Check(Entity* pEntity) 
 {
-    CompAnimator* pAnimator = pEntity->GetComponent<CompAnimator>();
-    if (pAnimator == nullptr)
+    CompSpine* pSpine = pEntity->GetComponent<CompSpine>();
+    if (pSpine == nullptr)
         return false;
 
-    auto trigger = pAnimator->DequeueTrigger();
+    auto trigger = pSpine->DequeueAnimTrigger();
     if (!trigger.has_value())
         return false;
 

@@ -1,5 +1,6 @@
 {
     "spineName": "player",
+    "animatorName": "player",
     "initMaxHp": 100,
     "initMaxMp": 100
 }

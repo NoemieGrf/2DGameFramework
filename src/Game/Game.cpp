@@ -26,8 +26,8 @@ void Game::Init()
     AddManager<ConfigManager>();
     AddManager<ResourceManager>();
     AddManager<UserInputManager>();
-    AddManager<AnimationManager>();
     AddManager<PhysicsManager>();
+    AddManager<AnimationManager>();
     AddManager<SceneManager>();
     AddManager<AiManager>();
 

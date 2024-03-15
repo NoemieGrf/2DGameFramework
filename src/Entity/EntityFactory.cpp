@@ -9,7 +9,7 @@
 #include "../Component/Impl/CompTransform.h"
 #include "../Component/Impl/CompCollider.h"
 #include "../Component/Impl/CompName.h"
-#include "../Component/Impl/CompAnimator.h"
+#include "Config/AnimationSetting.h"
 
 
 std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(
@@ -35,8 +35,12 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(
 	pTrans->SetPosition(initWorldPos);
 
 	// comp spine
-	const auto pSpine = pEntity->AddComponent<CompSpine>();
-	pSpine->Load(configMgr->GetPlayerSetting().spineName, sizeInWorld.x);
+	const std::string& playerAnimatorName = configMgr->GetPlayerSetting().animatorName;
+	const AnimatorConfig* pAnimatorConfig = configMgr->GetAnimationSetting().GetAnimatorConfig(playerAnimatorName);
+	auto pSpine = pEntity->AddComponent<CompSpine>();
+	pSpine->Load(configMgr->GetPlayerSetting().spineName, sizeInWorld.x, pAnimatorConfig);
+
+	pSpine->Load(configMgr->GetPlayerSetting().spineName, sizeInWorld.x, pAnimatorConfig);
 
 	// comp collider
 	auto pCollider = pEntity->AddComponent<CompCollider>();
@@ -45,9 +49,6 @@ std::pair<uint, uptr<Entity>> EntityFactory::CreatePlayer(
 		sizeInWorld.y
 	};
 	pCollider->Init(true, aabbBox, fixture);
-
-	// comp animator
-	auto pAnimator = pEntity->AddComponent<CompAnimator>();
 
 	return { guid, std::move(pEntity) };
 }

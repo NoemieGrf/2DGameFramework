@@ -1,12 +1,12 @@
+#include <format>
 #include "CompSpine.h"
-
-#include "../../Game/Game.h"
-#include "../../Manager/Impl/ResourceManager.h"
+#include "Game/Game.h"
+#include "Manager/Impl/ResourceManager.h"
 #include "Utility/Util.hpp"
+#include "Utility/Logger.h"
 #include "spine/SkeletonData.h"
-#include <cstdlib>
 
-void CompSpine::Load(const std::string& spineName, float widthInWorld)
+void CompSpine::Load(const std::string& spineName, float widthInWorld, const AnimatorConfig* pAnimatorConfig)
 {
     ResourceManager* resMgr = Game::GetManager<ResourceManager>();
 
@@ -27,6 +27,10 @@ void CompSpine::Load(const std::string& spineName, float widthInWorld)
 
     pSkeleton->setScaleX(scale);
     pSkeleton->setScaleY(scale);
+
+    // set animator
+    _pAnimatorConfig = pAnimatorConfig;
+    SetAnimation("idle");
 }
 
 void CompSpine::UpdateSkeletonDrawable(float deltaTime)
@@ -34,9 +38,25 @@ void CompSpine::UpdateSkeletonDrawable(float deltaTime)
     _pSpine->update(deltaTime);
 }
 
-void CompSpine::SetAnimation(const std::string& animName, bool isLoop)
+void CompSpine::SetAnimation(const std::string& animName)
 {
-    _pSpine->state->setAnimation(0, animName.c_str(), isLoop);
+    if (_pAnimatorConfig == nullptr)
+    {
+        Logger::LogError("Comp spine does not have animator config");
+        return;
+    }
+
+    const auto& nameMap = _pAnimatorConfig->animationConfigMap;
+    auto itr = nameMap.find(animName);
+    if (itr == nameMap.end())
+    {
+        Logger::LogError(std::format("Animator config does not have animation named {}", animName));
+        return;
+    }
+
+    const auto& animationConfig = itr->second;
+    _pSpine->state->setAnimation(0, animationConfig.spineName.c_str(), animationConfig.isLoop);
+    _currentAnim = animName;
 }
 
 vec2f CompSpine::GetRenderSizeInScreenCoordinate() const
@@ -108,4 +128,37 @@ std::optional<std::string> CompSpine::DequeueAnimTrigger()
     std::string result = _animTriggers.front();
     _animTriggers.pop();
     return result;
+}
+
+void CompSpine::UpdateAnimator()
+{
+    if (_pAnimatorConfig == nullptr)
+    {
+        Logger::LogError("Comp spine does not have animator config");
+        return;
+    }
+
+    const auto& nameMap = _pAnimatorConfig->animationConfigMap;
+    auto itr = nameMap.find(_currentAnim);
+    if (itr == nameMap.end())
+        return;
+
+    const auto& transitions = (itr->second).transitions;
+    Entity* pParentEntity = GetEntity();
+    for (const auto& [nextAnimName, conditionVec]: transitions)
+    {
+        bool canTransToNextAnim = true;
+        for (const auto& pCondition: conditionVec)
+        {
+            canTransToNextAnim &= pCondition->Check(pParentEntity);
+            if (!canTransToNextAnim)
+                break;
+        }
+
+        if (canTransToNextAnim)
+        {
+            SetAnimation(nextAnimName);
+            break;
+        }
+    }
 }

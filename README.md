@@ -125,9 +125,12 @@ Under this design, the order of manager-tick is quiet important, current executi
     - Update box2d physics world. All collider's physics world position will be updated.
     - Sync all collider's physics world position to transform's position.
 
+- AnimationManager::Tick()
+
+    - Update all entities' spine-animator, decided what animation should entity behave.
+
 - AnimationManager::LateTick()
 
-    - Update all entities' animator component, decided what animation should entity behave.
-    - Update all entities' spine component, update skeleton to show the animation.
+    - Update all entities' spine-renderer, update skeleton to show the animation.
     
 

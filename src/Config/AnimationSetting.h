@@ -2,7 +2,7 @@
 
 #include <string>
 #include "Game/GlobalDefine.h"
-#include "Animation/Condition/AnimTransCondition.h"
+#include "Animation/AnimTransCondition.h"
 
 struct AnimationConfig
 {
@@ -26,5 +26,9 @@ struct AnimatorConfig
 
 struct AnimationSetting
 {
+public:
     umap<std::string /* animator name */, AnimatorConfig> animatorConfigMap;
+
+public:
+    auto GetAnimatorConfig(const std::string& animatorName) const -> const AnimatorConfig*;
 };
