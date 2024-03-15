@@ -81,5 +81,5 @@ bool AnimTransCheckState::GetOnAirState(Entity* pEntity) const
         b2Vec2 { startPosition.x, startPosition.y }, 
         b2Vec2 { endPosition.x, endPosition.y });
 
-    return entityOnGround;
+    return !entityOnGround;
 }

@@ -1,6 +1,7 @@
 #include <format>
 #include "CompSpine.h"
 #include "Game/Game.h"
+#include "Entity/Entity.h"
 #include "Manager/Impl/ResourceManager.h"
 #include "Utility/Util.hpp"
 #include "Utility/Logger.h"

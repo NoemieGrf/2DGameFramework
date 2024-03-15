@@ -1,9 +1,11 @@
 #include "UserInputManager.h"
+#include "Component/Impl/CompSpine.h"
 #include "SFML/Window/Keyboard.hpp"
 #include "../../Game/Game.h"
 #include "../../Entity/Entity.h"
 #include "../../Manager/Impl/SceneManager.h"
 #include "../../Component/Impl/CompCollider.h"
+#include "../../Component/Impl/CompSpine.h"
 
 void UserInputManager::PreTick()
 {
@@ -42,6 +44,7 @@ void UserInputManager::Tick()
     SceneManager* pSceneManager = Game::GetManager<SceneManager>();
     Entity* pPlayer = pSceneManager->GetPlayerEntity();
     CompCollider* pPlayerCollider = pPlayer->GetComponent<CompCollider>();
+    CompSpine* pPlayerSpine = pPlayer->GetComponent<CompSpine>();
 
     // move left & right
     if (_pressingKeySet.contains(sf::Keyboard::Key::D))
@@ -49,12 +52,14 @@ void UserInputManager::Tick()
         auto velocity = pPlayerCollider->GetVelocity();
         velocity.x = 3;
         pPlayerCollider->SetVelocity(velocity);
+        pPlayerSpine->SetFlip(true);
     }
     else if (_pressingKeySet.contains(sf::Keyboard::Key::A))
     {
         auto velocity = pPlayerCollider->GetVelocity();
         velocity.x = -3;
         pPlayerCollider->SetVelocity(velocity); 
+        pPlayerSpine->SetFlip(false);
     }
 
     if (_thisFrameReleasedKey.contains(sf::Keyboard::Key::D)

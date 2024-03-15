@@ -92,7 +92,6 @@ void SceneManager::InitPlayer()
 
     // set idle animation
     CompSpine* pPlayerSpine = pEntity->GetComponent<CompSpine>();
-    pPlayerSpine->SetFlip(true);
 
     // record
     _playerGuid = guid;
