@@ -11,7 +11,7 @@ class CompSpine : public CompRender
 {
 public:
 	auto Load(const std::string& spineName, float widthInWorld) -> void;
-	auto SetAnimation(const std::string& animName, bool isLoop) -> void;
+	
 	auto UpdateSkeletonDrawable(float deltaTime) -> void;
 
 public:
@@ -26,11 +26,14 @@ public:
     auto DequeueAnimTrigger() -> std::optional<std::string>;
 
 private:
+	auto SetAnimation(const std::string& animName, bool isLoop) -> void;
+
+private:
 	// render
 	uptr<spine::SkeletonDrawable> _pSpine = nullptr;
 
 	// animator config
-    const AnimatorConfig* _animationTransitionMap;
+    const AnimatorConfig* _pAnimatorConfig;
 
 	// animator current
 	std::string _currentAnim;

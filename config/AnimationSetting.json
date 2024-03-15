@@ -1,10 +1,11 @@
 [
     {
         "name": "player",
-        "state": [
+        "animator": [
             {
                 "anim": "idle",
                 "spineAnimName": "Wait1Loop",
+                "loop": true,
                 "transition": [
                     {
                         "anim": "run",
@@ -45,6 +46,7 @@
             {
                 "anim": "run",
                 "spineAnimName": "Run",
+                "loop": true,
                 "transition": [
                     {
                         "anim": "idle",
@@ -85,6 +87,7 @@
             {
                 "anim": "jump",
                 "spineAnimName": "Step",
+                "loop": false,
                 "transition": [
                     {
                         "anim": "idle",
@@ -123,6 +126,7 @@
             {
                 "anim": "attack",
                 "spineAnimName": "Attack",
+                "loop": false,
                 "transition": [
                     {
                         "anim": "idle",

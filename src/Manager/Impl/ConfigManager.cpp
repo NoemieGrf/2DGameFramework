@@ -115,7 +115,7 @@ auto ConfigManager::LoadAnimationSetting() -> void
 
     auto CreateTransition = [&](const nlohmann::json& transitionNode) -> std::pair<std::string, std::vector<uptr<AnimTransCondition>>>
     {
-        std::string targetAnimName = transitionNode["name"];
+        std::string targetAnimName = transitionNode["anim"];
         std::vector<uptr<AnimTransCondition>> allConditions;
         for (auto& conditionNode: transitionNode["condition"])
             allConditions.push_back(CreateCondition(conditionNode));
@@ -123,27 +123,35 @@ auto ConfigManager::LoadAnimationSetting() -> void
         return { targetAnimName, std::move(allConditions) };
     };
 
-    auto CreateTransitionMap = [&](const nlohmann::json& statNode) -> std::pair<std::string, AnimatorConfig>
+    auto CreateAnimatorConfig = [&](const nlohmann::json& animatorNode) -> AnimatorConfig
     {
-        std::string animationName = statNode["anim"];
         AnimatorConfig animatorConfig;
-        for (auto& transitionNode: statNode["transition"])
+        for (auto& animNode: animatorNode)
         {
-            auto [targetAnimName, conditionVec] = CreateTransition(transitionNode);
-            animatorConfig.transitions[targetAnimName] = std::move(conditionVec);
+            AnimationConfig animationConfig;
+            animationConfig.animName = animatorNode["anim"];
+            animationConfig.spineName = animatorNode["spineAnimName"];
+            animationConfig.isLoop = animatorNode["loop"];
+
+            for (auto& transitionNode: animatorNode["transition"])
+            {
+                auto [targetAnimName, conditionVec] = CreateTransition(transitionNode);
+                animationConfig.transitions[targetAnimName] = std::move(conditionVec);
+            }
+
+            animatorConfig.animationConfigMap[animationConfig.animName] = std::move(animationConfig);
         }
 
-        return { animationName, std::move(animatorConfig) };
+        return animatorConfig;
     };
 
     nlohmann::json json = LoadJsonFile("./config/AnimationSetting.json");
     for (auto& singleAnimConfig: json)
     {
-        std::string animatorName = singleAnimConfig["name"];
+        const std::string& animatorName = singleAnimConfig["name"];
+        AnimatorConfig animatorConfig = CreateAnimatorConfig(singleAnimConfig["animator"]);
 
-        auto [animationName, transMap] = CreateTransitionMap(singleAnimConfig["state"]);
-
-        _animationSetting.animatorConfigMap[animatorName] = std::move(transMap);
+        _animationSetting.animatorConfigMap[animatorName] = std::move(animatorConfig);
     }
 }
 
